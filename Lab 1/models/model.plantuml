@@ -1,0 +1,41 @@
+@startuml
+class Paper {
+  + tittle: str
+  + submitted_date: date
+  + acceptance: bool
+}
+
+class Score {
+  + value: int
+  + review_text: str 
+}
+
+class Researcher {
+  - name: str
+  - institution: str
+}
+
+class ResearchEvent{
+  - name: str
+  - start: date
+  - end: date
+}
+
+class Conference {
+}
+
+class Workshop {
+}
+
+class Symposium {
+}
+
+Paper "1" -- "*" Score: scores
+Score "*" -- "1" Researcher: reviewer
+Paper "*" -- "1..*" Researcher: is_authored_by
+ResearchEvent "*" -- "1..*" Researcher: organizers
+ResearchEvent "1" *-- "*" Paper: papers
+ResearchEvent <|-- Conference
+ResearchEvent <|-- Workshop
+ResearchEvent <|-- Symposium
+@enduml
