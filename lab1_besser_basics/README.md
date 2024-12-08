@@ -1,10 +1,10 @@
-# Lab Guide 1
+# Lab Guide 1 - BESSER Basics
 
-## Welcome to our BESSER lab guide!
+## Welcome to the BESSER lab guide!
 
-This guide will walk you through using BESSER as end user. Next, we'll create some models using B-UML (BESSER's modeling language) and utilize code generators to produce executable code, enabling you to deploy your application (or part of it).
+This guide will walk you through using [BESSER](https://github.com/BESSER-PEARL/BESSER.git) as end user. Next, we'll create some models using B-UML (BESSER's modeling language) and utilize code generators to produce executable code, enabling you to deploy your application (or part of it).
 
-## 1. A bit of context
+## 1. Context
 
 In recent years, low-code development tools have seen remarkable growth in the software development landscape. These platforms empower users, regardless of their programming expertise, to build robust applications with minimal hand-coding required. Low-code tools typically provide a modelling language with a concrete syntaxis (graphical, textual, etc..), and pre-built templates to accelerate the development process. They have become instrumental in enabling organizations to rapidly respond to market demands, reduce development costs, and enhance collaboration between business stakeholders and IT teams.
 
@@ -22,13 +22,9 @@ The following diagram depicts a domain related to academic research, where paper
   <img src="figs/research_model.png" alt="Research domain model" width="700"/>
 </div>
 
-## 3. Installing BESSER
+## 3. Requirements
 
-BESSER works with Pyhton 3.9+. We recommend creating a virtual environment (e.g. venv, conda).
-
-The latest stable version of BESSER is available in the Python Package Index (PyPi) and can be installed using this command.
-
-    $ pip install besser
+For this lab guide, the [BESSER basic installation](https://besser.readthedocs.io/en/latest/installation.html#) is sufficient.
 
 ## 4. Creating a model with B-UML
 

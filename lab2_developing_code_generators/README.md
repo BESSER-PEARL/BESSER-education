@@ -2,17 +2,21 @@
 
 ## Welcome to our BESSER lab guide!
 
-In this guide, you will learn to use BESSER from the perspective of a developer user, specifically for developing a code generator.
+In this guide, you will learn to use [BESSER](https://github.com/BESSER-PEARL/BESSER.git) from the perspective of a developer user, specifically for developing a code generator.
 
 ## 1. Context
 
-As you've seen in the previous guide, BESSER provides the B-UML modeling language for creating different types of models. In this case, we will develop a code generator that takes as input a structural model defined with B-UML and generates Java code representing the object model, i.e., the classes and attributes in the Java language.
+BESSER provides the B-UML modeling language for creating different types of models. In this case, we will develop a code generator that takes as input a structural model defined with B-UML and generates Java code representing the object model, i.e., the classes and attributes in the Java language.
 
-To create the code generator, you can utilize the interface provided by BESSER and define a Jinja template for code generation. You can find more information about this in the BESSER documentation at https://besser.readthedocs.io/en/latest/generators.html The documentation provides details about BESSER's code generation capabilities, including how to create custom generators and work with Jinja templates.
+To create the code generator, you can utilize the interface provided by BESSER and define a Jinja template for code generation. You can find more information about this in the [BESSER documentation](https://besser.readthedocs.io/en/latest/generators.html). The documentation provides details about BESSER's code generation capabilities, including how to create custom generators and work with Jinja templates.
 
-## 2. Creating your Code Generator in BESSER
+## 2. Requirements
 
-To create your code generator, you should create a class (for example, JavaGenerator) using the GeneratorInterface interface provided by BESSER, ensuring that all BESSER code generators maintain a consistent structure. You can use the following code to create your Java code generator. The constructor method will receive the DomainModel or B-UML model as an input parameter, while the generate() method performs the code generation. Note that the java_template.py.j2 template is used for code generation.
+For this lab guide, the [BESSER basic installation](https://besser.readthedocs.io/en/latest/installation.html#) is sufficient.
+
+## 3. Creating your Code Generator in BESSER
+
+To create a code generator, you should create a class (for example, JavaGenerator) using the ``GeneratorInterface`` interface provided by BESSER, ensuring that all BESSER code generators maintain a consistent structure. You can use the following code to create your Java code generator. The constructor method will receive the *DomainModel* or B-UML model as an input parameter, while the ``generate()`` method performs the code generation. Note that the ``java_template.py.j2`` template is used for code generation.
 
 Copy this code in a new file named `java_generator.py`:
 
@@ -40,7 +44,7 @@ class JavaGenerator(GeneratorInterface):
             print("Code generated in the location: " + file_path)
 ```
 
-## 3. Jinja template example
+## 4. Jinja template example
 
 Let's create an initial example Jinja template. To do this, create a file named `templates/java_template.py.j2` and write the following code:
 
@@ -106,17 +110,16 @@ generator: JavaGenerator = JavaGenerator(model=library_model)
 generator.generate()
 ```
 
-The B-UML model defined in the previous code corresponds to the diagram in Figure 1. Therefore, by running the above code, you should obtain a file containing the names of the three classes (Library, Book, and Author) as output.
-
+The B-UML model defined in the previous code corresponds to the diagram in the next figure. Therefore, by running the above code, you should obtain a file containing the names of the three classes (Library, Book, and Author) as output.
 
 <div align="center">
-  <img src="figs/library_model.png" alt="Example model domain" width="700"/>
+  <img src="figs/library_model.png" alt="Example model domain" width="550"/>
 </div>
 
 
-## 4. Exercise
+## 5. Exercise
 
-Modify the `java_template.py.j2` to build a Java code generator. In other words, your code generator should produce a set of classes in the Java language with their respective methods, attributes, etc. For example, when providing a model like the one in Figure 1, your code generator should produce a file with the following code:
+Modify the `java_template.py.j2` to build a Java code generator. In other words, your code generator should produce a set of classes in the Java language with their respective methods, attributes, etc. For example, when providing a model like the one in the [previous figure](figs/library_model.png), your code generator should produce a file containing the following code:
 
 ```java
 import java.util.List;
