@@ -134,6 +134,10 @@ Base.metadata.create_all(engine)
 
 The database should have been created as `database.db`. Explore the tables and relationships to see how the model's concepts are mapped to the database. If you're using VSCode, you can install the [SQLite Viewer plugin](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer) to easily visualize the database.
 
+> ### **Exercise:**
+>
+> Modify the [domain model](figs/research_model.png) by adding two new classes: *Junior* and *Senior*, both of which inherit from the *Researcher* class. Redefine the B-UML model using any of the provided options from Section 4 and use the SQLAlchemy code generator to create the database.
+
 ### 5.2 Django code generator
 
 [Django](https://www.djangoproject.com/) is a high-level Python web framework that enables development of web applications. The architecture of web applications created with Django follows a Model-View-Template (MVT) architecture. The model layer represents the data and business logic, the view layer consists of functions or classes that handle the application logic, and the templates are HTML files that define the user interface presentation.
@@ -155,7 +159,3 @@ generator.generate()
 ```
 
 The `models.py` file with the Django models defined will be generated in the `<<current_directory>>/output/models.py` file.
-
-> ### **Exercise:**
->
-> Modify the [domain model](figs/research_model.png) by adding two new classes: *Junior* and *Senior*, both of which inherit from the *Researcher* class. Redefine the B-UML model using any of the provided options from Section 4 and use the SQLAlchemy code generator to create the database.
