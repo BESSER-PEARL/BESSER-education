@@ -5,20 +5,15 @@ class Paper {
   + acceptance: bool
 }
 
-class Score {
-  + value: int
-  + review_text: str 
-}
-
 class Researcher {
-  - name: str
-  - institution: str
+  + name: str
+  + institution: str
 }
 
 class ResearchEvent{
-  - name: str
-  - start: date
-  - end: date
+  + name: str
+  + start: date
+  + end: date
 }
 
 class Conference {
@@ -30,9 +25,7 @@ class Workshop {
 class Symposium {
 }
 
-Paper "1" -- "*" Score: scores
-Score "*" -- "1" Researcher: reviewer
-Paper "*" -- "1..*" Researcher: is_authored_by
+Paper "*" -- "1..*" Researcher: authors
 ResearchEvent "*" -- "1..*" Researcher: organizers
 ResearchEvent "1" *-- "*" Paper: papers
 ResearchEvent <|-- Conference
