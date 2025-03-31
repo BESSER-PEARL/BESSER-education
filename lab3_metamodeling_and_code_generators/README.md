@@ -50,7 +50,7 @@ BESSER also provides a [code generator for Python](https://besser.readthedocs.io
 Currently, the Python generator does not support class methods generation. For example, suppose your model includes new methods such as `seach_book`, and `notify_by_email`, as shown below.
 
 <div align="center">
-  <img src="figs/library_methods.png" alt="Library example with methods" width="550"/>
+  <img src="figs/methods_model.png" alt="Library example with methods" width="550"/>
 </div>
 
 However, the current version of the Python code generator does not process these methods, meaning they will not appear in the generated code.
