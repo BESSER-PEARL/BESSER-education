@@ -6,9 +6,19 @@ In this guide, you will use [BESSER](https://github.com/BESSER-PEARL/BESSER.git)
 
 ## 1. Context
 
-BESSER provides the B-UML modeling language for creating different [types of models](https://besser.readthedocs.io/en/latest/buml_language/model_types.html) including structural, object, deployment, graphical user interface, etc. In this guide, we will extend the structural model definition of B-UML and improve some code generators.
+BESSER provides the B-UML modeling language for creating different [types of models](https://besser.readthedocs.io/en/latest/buml_language/model_types.html) including structural, object, deployment, graphical user interface, etc. These models help define various aspects of a system's architecture and behavior.
 
-The structural model enables the specification of the static structure of an application or system. The metamodel can be accesed in the [BESSER documentation](https://besser.readthedocs.io/en/latest/buml_language/model_types/structural.html), while the source code or implementation in Python is [the repository](https://github.com/BESSER-PEARL/BESSER/blob/master/besser/BUML/metamodel/structural/structural.py).
+However, when developing complex systems, new requirements may arise that go beyond the predefined elements of B-UML. For instance, you might need to specify additional features, new attributes, constraints, relationships, or behaviors that are not currently supported by the existing metamodel.
+
+In such cases, extending the BESSER metamodel becomes necessary. By adding new concepts or refining existing ones, you can customize B-UML to better represent the details and specific needs of your system or domain.
+
+In this guide, we will focus on:
+
+- Extending the [Structural model](https://besser.readthedocs.io/en/latest/buml_language/model_types/structural.html) in B-UML to incorporate additional specifications.
+
+- Improving existing code generation templates to produce richer and more detailed outputs based on the extended metamodel.
+
+The structural model serves as the foundation for defining the static structure of an application or system. You can explore its [metamodel in the BESSER documentation](https://besser.readthedocs.io/en/latest/buml_language/model_types/structural.html), while its implementation in Python is available in the [BESSER repository](https://github.com/BESSER-PEARL/BESSER/blob/master/besser/BUML/metamodel/structural/structural.py).
 
 ## 2. Requirements
 
@@ -29,7 +39,7 @@ BESSER provides a [code generator that creates SQLAlchemy models](https://besser
 Let's consider the following basic model, where a *Library* can has several *Book*s, and a *Book* is written by at least one *Author*.
 
 <div align="center">
-  <img src="figs/library_model.png" alt="Example model domain" width="550"/>
+  <img src="figs/library_model.png" alt="Example model domain" width="700"/>
 </div>
 
 The SQLAlchemy generator currently does not support unique fields. For example, if we want to specify that the book title should be unique (but not necessarily a ForeignKey), the current generator does not allow this.
@@ -50,7 +60,7 @@ BESSER also provides a [code generator for Python](https://besser.readthedocs.io
 Currently, the Python generator does not support class methods generation. For example, suppose your model includes new methods such as `seach_book`, and `notify_by_email`, as shown below.
 
 <div align="center">
-  <img src="figs/methods_model.png" alt="Library example with methods" width="550"/>
+  <img src="figs/methods_model.png" alt="Library example with methods" width="700"/>
 </div>
 
 However, the current version of the Python code generator does not process these methods, meaning they will not appear in the generated code.
