@@ -53,30 +53,27 @@ To address this limitation, we need to extend the Structural metamodel of B-UML,
 > - Check the [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/20/core/constraints.html) to identify how to define unique fields in a table.
 > - Update the jinja template of the SQLAlchemy Generator to address the uniqueness of fields. The templates and the generator code are located in the directory *besser/generators/sql_alchemy*
 
-### 3.2 Python Generator
+### 3.2 Java Generator
 
-BESSER also provides a [code generator for Python](https://besser.readthedocs.io/en/latest/generators/python.html). This generator produces a Python domain model based on a structural model to create *Classes*, *constructors*, *getters*, and *setters* methods. You can test the code generator output by using the Library example in the [Web Modeling Editor](https://editor.besser-pearl.org/): Navigate to *File -> Start from Template -> Library*, and select *Generate Code -> OPP -> Python Classes*.
+BESSER also provides a [code generator for Java](https://besser.readthedocs.io/en/latest/generators/java.html). This generator produces a Java domain model based on a structural model to create *Classes*, *constructors*, *getters*, and *setters* methods. You can test the code generator output by using the Library example in the [Web Modeling Editor](https://editor.besser-pearl.org/): Navigate to *File -> Start from Template -> Library*, and select *Generate Code -> OPP -> Java Classes*.
 
-Currently, the Python generator does not support class methods generation. For example, suppose your model includes new methods such as `seach_book`, and `notify_by_email`, as shown below.
+Currently, the Java generator does not support class methods generation. For example, suppose your model includes new methods such as `searchBook`, and `notifyByEmail`, as shown below.
 
 <div align="center">
   <img src="figs/methods_model.png" alt="Library example with methods" width="700"/>
 </div>
 
-However, the current version of the Python code generator does not process these methods, meaning they will not appear in the generated code.
+However, the current version of the Java code generator does not process these methods, meaning they will not appear in the generated code.
 
 > ### **Exercise:**
 >
-> Modify the Python generator to include method generation by following these recommendations:
+> Modify the Java generator to include method generation by following these recommendations:
 > - The B-UML structural metamodel already supports method definitions, so it's not necesary to modify or extend it.
-> - Modify the jinja templates to address the methods generation. The templates and the generator code are located in the directory *besser/generators/python_classes*
-> - Below is a sample of the code that the generator should produce for the `notify_by_email` method in the *Author* class.
+> - Modify the jinja templates to address the methods generation. The templates and the generator code are located in the directory *besser/generators/java_classes*
+> - Below is a sample of the code that the generator should produce for the `searchBook` method in the *Library* class.
 
-```python
-def notify_by_email(self, msg: str = "hello") -> None:
-  pass
+```java
+public void searchBook(String title) {
+    // Method implementation goes here
+}
 ```
-
-**Alternative Option**
-
-The [Java code generator](https://besser.readthedocs.io/en/latest/generators/java.html) also lacks method generation. If you prefer, you can improve the Java generator instead of the Python generator.
