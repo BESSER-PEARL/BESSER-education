@@ -16,7 +16,7 @@ For this lab guide, the [BESSER basic installation](https://besser.readthedocs.i
 
 ## 3. Creating your Code Generator in BESSER
 
-To create a code generator, you should create a class (for example, JavaGenerator) using the ``GeneratorInterface`` interface provided by BESSER, ensuring that all BESSER code generators maintain a consistent structure. You can use the following code to create your Java code generator. The constructor method will receive the *DomainModel* or B-UML model as an input parameter, while the ``generate()`` method performs the code generation. Note that the ``java_template.py.j2`` template is used for code generation.
+To create a code generator, you should create a class (for example, *JavaGenerator*) using the ``GeneratorInterface`` interface provided by BESSER, ensuring that all BESSER code generators maintain a consistent structure. You can use the following code to create your Java code generator. The constructor method will receive the *DomainModel* or B-UML model as an input parameter, while the ``generate()`` method performs the code generation. Note that the ``java_template.py.j2`` template is used for code generation.
 
 Copy this code in a new file named `java_generator.py`:
 
@@ -95,7 +95,7 @@ lib_book_association: BinaryAssociation = BinaryAssociation(name="lib_book_assoc
 
 # Book-Author association definition
 publishes: Property = Property(name="publishes", type=book, multiplicity=Multiplicity(0, "*"))
-writed_by: Property = Property(name="writedBy", type=author, multiplicity=Multiplicity(1, "*"))
+writed_by: Property = Property(name="writtenBy", type=author, multiplicity=Multiplicity(1, "*"))
 book_author_association: BinaryAssociation = BinaryAssociation(name="book_author_assoc", ends={writed_by, publishes})
 
 # Domain model definition
@@ -110,7 +110,7 @@ generator: JavaGenerator = JavaGenerator(model=library_model)
 generator.generate()
 ```
 
-The B-UML model defined in the previous code corresponds to the diagram in the next figure. Therefore, by running the above code, you should obtain a file containing the names of the three classes (Library, Book, and Author) as output.
+The B-UML model defined in the previous code corresponds to the diagram in the next figure. Therefore, by running the above code, you should obtain a file containing the names of the three classes (*Library*, *Book*, and *Author*) as output.
 
 <div align="center">
   <img src="figs/library_model.png" alt="Example model domain" width="550"/>
@@ -124,7 +124,7 @@ Modify the `java_template.py.j2` to build a Java code generator. In other words,
 ```java
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Library {
     private String name;
@@ -158,21 +158,31 @@ public class Library {
     }
 
     public void addBook(Book book) {
-        books.add(book);
+        if (!books.contains(book)) {
+            books.add(book);
+            book.setLibrary(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Library{name='" + name + "', address='" + address + "', books=" + books.size() + "}";
     }
 }
 
-public class Book {
+class Book {
     private String title;
     private int pages;
-    private Date release;
+    private LocalDate release;
     private List<Author> authors;
+    private Library library;
 
-    public Book(String title, int pages, Date release) {
+    public Book(String title, int pages, LocalDate release) {
         this.title = title;
         this.pages = pages;
         this.release = release;
         this.authors = new ArrayList<>();
+        this.library = null;
     }
 
     public String getTitle() {
@@ -191,11 +201,11 @@ public class Book {
         this.pages = pages;
     }
 
-    public Date getRelease() {
+    public LocalDate getRelease() {
         return release;
     }
 
-    public void setRelease(Date release) {
+    public void setRelease(LocalDate release) {
         this.release = release;
     }
 
@@ -204,17 +214,39 @@ public class Book {
     }
 
     public void addAuthor(Author author) {
-        authors.add(author);
+        if (!authors.contains(author)) {
+            authors.add(author);
+            author.addBook(this);
+        }
+    }
+
+    public Library getLibrary() {
+        return library;
+    }
+
+    public void setLibrary(Library library) {
+        if (this.library != library) {
+            this.library = library;
+            library.addBook(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Book{title='" + title + "', pages=" + pages + ", release=" + release + 
+               ", authors=" + authors.size() + ", library=" + (library != null ? library.getName() : "None") + "}";
     }
 }
 
-public class Author {
+class Author {
     private String name;
     private String email;
+    private List<Book> books;
 
     public Author(String name, String email) {
         this.name = name;
         this.email = email;
+        this.books = new ArrayList<>();
     }
 
     public String getName() {
@@ -232,6 +264,21 @@ public class Author {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void addBook(Book book) {
+        if (!books.contains(book)) {
+            books.add(book);
+            book.addAuthor(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Author{name='" + name + "', email='" + email + "', books=" + books.size() + "}";
+    }
 }
 ```
-
