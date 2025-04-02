@@ -1,7 +1,5 @@
-from besser.BUML.metamodel.structural import DomainModel
 from besser.BUML.metamodel.structural import DomainModel, Class, Property, \
     Multiplicity, BinaryAssociation, StringType, IntegerType, DateTimeType
-from besser.utilities import ModelSerializer
 from java_generator import JavaGenerator
 
 ############################

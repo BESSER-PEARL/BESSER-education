@@ -16,37 +16,25 @@ For this lab guide, the [BESSER basic installation](https://besser.readthedocs.i
 
 ## 3. Creating your Code Generator in BESSER
 
-To create a code generator, you should create a class (for example, *JavaGenerator*) using the ``GeneratorInterface`` interface provided by BESSER, ensuring that all BESSER code generators maintain a consistent structure. You can use the following code to create your Java code generator. The constructor method will receive the *DomainModel* or B-UML model as an input parameter, while the ``generate()`` method performs the code generation. Note that the ``java_template.py.j2`` template is used for code generation.
+To define a code generator, you should create a class (e.g., *JavaGenerator*) that implements the ``GeneratorInterface``. This ensure that all BESSER generators follow a consistent structure. 
 
-Copy this code in a new file named `java_generator.py`:
+An example can be found in the [java_generator.py](java_generator.py) script.You can reuse this script for the purposes of this guide. In the code, the constructor of the `JavaGenerator` class receives a *DomainModel* (or B-UML structural model) as an input parameter, while the ``generate()`` method handles the code generation. Note that the ``java_template.py.j2`` template is used for code generation, and we need to develop this template.
 
-```python
-import os
-from jinja2 import Environment, FileSystemLoader
-from besser.BUML.metamodel.structural import DomainModel
-from besser.generators import GeneratorInterface
-
-class JavaGenerator(GeneratorInterface):
-
-    def __init__(self, model: DomainModel, output_dir: str = None):
-        super().__init__(model, output_dir)
-
-    def generate(self):
-        file_path = self.build_generation_path(file_name="code.java")
-        templates_path = os.path.join(os.path.dirname(
-            os.path.abspath(__file__)), "templates")
-        env = Environment(loader=FileSystemLoader(
-            templates_path), trim_blocks=True, lstrip_blocks=True, extensions=['jinja2.ext.do'])
-        template = env.get_template('java_template.py.j2')
-        with open(file_path, mode="w") as f:
-            generated_code = template.render(model=self.model)
-            f.write(generated_code)
-            print("Code generated in the location: " + file_path)
-```
+Download the [java_generator.py](java_generator.py) file, and let's create the jinja template.
 
 ## 4. Jinja template example
 
-Let's create an initial example Jinja template. To do this, create a file named `templates/java_template.py.j2` and write the following code:
+Now that we have defined our `JavaGenerator` class, we can create the template that will structure the generated code.
+
+### What is a Jinja Template?
+
+[Jinja](https://jinja.palletsprojects.com/en/stable/) is a templating engine for Python that allows us to dynamically generate text-based content, such as HTML, configuration files, and in our case, Java code.
+
+A Jinja template contains placeholders and control structures (e.g., loops and conditionals) that are later replaced with actual data when rendered. This makes it an ideal tool for generating code based on a model, such as our B-UML model.
+
+### Creating a Jinja Template
+
+Create a file named `templates/java_template.py.j2` and add the following code:
 
 ```jinja2
 This is a template example to list the name of the classes
@@ -56,13 +44,17 @@ This is a template example to list the name of the classes
 {% endfor %}
 ```
 
-Now let's test the code generator. First, we need to create a B-UML model, and then instantiate the generator to obtain the generated code. Execute the following code and check the code generated in the output folder:
+This template will generate a basic class declaration for each class in our B-UML model, using a for loop.
+
+### Testing the Code Generator
+
+Now that we have defined our Jinja template, let's test the code generator by applying it to a sample B-UML model.
+
+We will start by defining the library model with its classes (*Library*, *Book*, and *Author*), and then use the generator to produce the corresponding Java code. Execute the following Python code, and check the output folder for the generated code:
 
 ```python
-from besser.BUML.metamodel.structural import DomainModel
 from besser.BUML.metamodel.structural import DomainModel, Class, Property, \
     Multiplicity, BinaryAssociation, StringType, IntegerType, DateTimeType
-from besser.utilities import ModelSerializer
 from java_generator import JavaGenerator
 
 ############################
@@ -110,7 +102,7 @@ generator: JavaGenerator = JavaGenerator(model=library_model)
 generator.generate()
 ```
 
-The B-UML model defined in the previous code corresponds to the diagram in the next figure. Therefore, by running the above code, you should obtain a file containing the names of the three classes (*Library*, *Book*, and *Author*) as output.
+The B-UML model defined in the previous code (Library model) corresponds to the diagram in the next figure. Therefore, by running the above code, you should obtain a file containing the names of the three classes (*Library*, *Book*, and *Author*) as output.
 
 <div align="center">
   <img src="figs/library_model.png" alt="Example model domain" width="550"/>
