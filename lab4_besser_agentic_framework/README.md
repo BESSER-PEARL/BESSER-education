@@ -18,7 +18,7 @@ You will need to add the options [extras,llms,pytorch]
 You can check if the installation was properly done by running an example agent in the BAF library. You can try to run the Greetings Agent:
 
 ```python
-from besser.agent.test.examples.greetings_agent import Agent
+from besser.agent.test.examples.greetings_agent import agent
 
 agent.run()
 ```
