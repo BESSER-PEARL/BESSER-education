@@ -94,6 +94,37 @@ Try to run the agent. At this point, there is only the initial state and the awa
 
 We will implement 2 states for RAG. One, will be used to store pdf files into our vector store, and the other to generate RAG-based answers.
 
+#### Create the RAG
+
+First, we need to create the RAG component of the agent. RAG requires 3 elements: an LLM, a text splitter (which will split our documents in smaller chunks) and a vector store (the database that will store the vectorized representations of the chunks)
+
+```python
+from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from besser.agent.nlp.rag.rag import RAGMessage, RAG
+
+embeddings = OpenAIEmbeddings(openai_api_key='api-key')
+
+
+vector_store: Chroma = Chroma(
+    embedding_function=embeddings,
+    persist_directory='vector_store'  # directory where we store the vector store, optional
+)
+
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+
+
+rag = RAG(
+    agent=agent,
+    vector_store=vector_store,
+    splitter=splitter,
+    llm_name='gpt-4o-mini',
+    k=4,  # Number of chunks to retrieve
+    num_previous_messages=0  # Number of previous messages to add to the query
+)
+```
+
 #### Load documents
 
 Create a state called `load_document_state`. You need to define the transition from `awaiting_state` to `load_document_state`. This transition has
