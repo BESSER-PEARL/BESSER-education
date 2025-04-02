@@ -34,7 +34,7 @@ lib_book_association: BinaryAssociation = BinaryAssociation(name="lib_book_assoc
 
 # Book-Author association definition
 publishes: Property = Property(name="publishes", type=book, multiplicity=Multiplicity(0, "*"))
-writed_by: Property = Property(name="writedBy", type=author, multiplicity=Multiplicity(1, "*"))
+writed_by: Property = Property(name="writtenBy", type=author, multiplicity=Multiplicity(1, "*"))
 book_author_association: BinaryAssociation = BinaryAssociation(name="book_author_assoc", ends={writed_by, publishes})
 
 # Domain model definition
