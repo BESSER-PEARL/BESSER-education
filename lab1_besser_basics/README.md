@@ -110,7 +110,7 @@ In the following sections, we will explore the second option, as using the Model
 
 [SQLAlchemy](https://www.sqlalchemy.org/) is a Python SQL toolkit and Object-Relational Mapping (ORM) library that provides a flexible way to work with databases in Python, allowing developers to interact with databases using high-level Python objects.
 
-Open the model (`.py` file) obtained from the *Exercise* in **Section 4.4**. Add the following code to your file to use the code generator.
+Open the model (`.py` file) obtained from the *Exercise* in **Section 4.3**. Add the following code to your file to use the code generator.
 
 ```python
 from besser.generators.sql_alchemy import SQLAlchemyGenerator
