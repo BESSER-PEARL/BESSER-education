@@ -64,30 +64,7 @@ Workshop
 > - Modify the code of your model by adding the necesary model elements (classes, attributes, associations, etc.)
 > - Verify that the model was correclty updated, for example printing in console the names of the classes and their attributes.
 
-
-### 4.2 Create a B-UML model using the Plantuml notation
-
-The second way to create a B-UML metamodel is to use the [PlantUML](http://www.plantuml.com) notation. PlantUML is an open-source tool that allows users to generate UML diagrams from plain text descriptions, and it is regarded as one of the most popular tools for creating UML diagrams due to its simplicity.
-
-Let's define a B-UML model using PlantUML. [In this file](models/model.plantuml), you can find the specification of our [example domain model](figs/research_model.png) using PlantUML notation. Create a new file, paste this code, and save it with the name domain.plantuml
-
-Then you can use the following code to transform the PlantUML model to a B-UML model.
-
-```python
-from besser.BUML.notations.structuralPlantUML import plantuml_to_buml
-from besser.BUML.metamodel.structural import DomainModel
-
-# PlantUML to B-UML model
-buml_model: DomainModel = plantuml_to_buml(plantUML_model_path="model.plantuml")
-```
-
-Now, the B-UML model is stored in `buml_model`.
-
-> ### **Exercise:**
->
-> Serialization of a model refers to the process of converting its internal representation into a format that can be efficiently stored or transmitted, typically as binary data or structured text. Use the [BESSER serialization function](https://besser.readthedocs.io/en/latest/utilities/serializer.html#model-serialization) to store the obtained buml model. At the end you should get a file with your serialized model.
-
-### 4.3 Creating a B-UML model using an image (optional)
+### 4.2 Creating a B-UML model using an image (optional)
 
 Another way to define a B-UML model is to use an image (e.g., a picture of your class diagram). BESSER will transform the image into a B-UML model using OpenAI's GPT4. But, to use this BESSER functionality, you must have a valid OpenAI token.
 
@@ -100,7 +77,7 @@ from besser.utilities import image_to_buml
 buml_model: DomainModel = image_to_buml(image_path="model.png", openai_token="****")
 ```
 
-### 4.4 Creating a B-UML model using the Web Modeling Editor
+### 4.3 Creating a B-UML model using the Web Modeling Editor
 
 One of the most popular ways to model in BESSER is by using the graphical editor. You cab access and explore the editor at the following link: [https://editor.besser-pearl.org/](https://editor.besser-pearl.org/). To familiarize yourself with the editor, refer to the [editor documentation](https://besser.readthedocs.io/en/latest/web_editor.html)
 
@@ -114,7 +91,7 @@ Once imported, you should see the followng model in the editor:
 
 > ### **Exercise:**
 >
-> - Recreate the tasks from the *Exercise* in **Section 4.1**, but this time using the Graphical Editor.
+> - Recreate the tasks from the *Exercise* in **Section 4.1**, but this time using the [Graphical Editor](https://editor.besser-pearl.org/).
 > - Modify the model to ensure that the value of an *Score* always takes one of the following predifined values: "strong_accept", "accept", "weak_accept", "borderline", "weak_reject", and "reject".
 > - Click on Quality Check to verify that your model is intactically correct.
 > - Export your model by clicking on *File -> Export -> As B-UML* (this model will be used in the next section of this guide).
