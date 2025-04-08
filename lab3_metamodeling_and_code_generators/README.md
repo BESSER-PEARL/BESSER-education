@@ -22,11 +22,11 @@ The structural model serves as the foundation for defining the static structure 
 
 ## 2. Requirements
 
-For this lab guide, [running BESSER locally](https://besser.readthedocs.io/en/latest/installation.html#running-besser-locally) is necessary as we will modify the soure code.
+For this lab guide, [running BESSER locally](https://besser.readthedocs.io/en/latest/installation.html#running-besser-locally) is necessary as we will modify the source code.
 
 ## 3. Code Generators to Improve
 
-BESSER's code generators use [Jinja](https://jinja.palletsprojects.com/en/stable/), a templating engine for Python, used to dynamically generate HTML or other text-based formats by embedding logic within template files. Each generator in BESSER contains at least one jinja template, which traverses the B-UML model to generate code dinamically.
+BESSER's code generators use [Jinja](https://jinja.palletsprojects.com/en/stable/), a templating engine for Python, used to dynamically generate HTML or other text-based formats by embedding logic within template files. Each generator in BESSER contains at least one jinja template, which traverses the B-UML model to generate code dynamically.
 
 Low-code platforms can generate up to 80% of an application’s code. However, these generators can often be improved or extended to support additional specifications.
 
@@ -48,7 +48,7 @@ To address this limitation, we need to extend the Structural metamodel of B-UML,
 
 > ### **Exercise:**
 >
-> Address the limitation above in the SQLAlchemy generator, following the next recomendations:
+> Address the limitation above in the SQLAlchemy generator, following the next recommendations:
 > - Update the code of the structural metamodel of B-UML, to include a new parameter in the *Property* class to capture the *is_unique* information. This metamodel is defined in the file *besser/BUML/metamodel/structural/structural.py*
 > - Check the [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/20/core/constraints.html) to identify how to define unique fields in a table.
 > - Update the jinja template of the SQLAlchemy Generator to address the uniqueness of fields. The templates and the generator code are located in the directory *besser/generators/sql_alchemy*
@@ -68,7 +68,7 @@ However, the current version of the Java code generator does not process these m
 > ### **Exercise:**
 >
 > Modify the Java generator to include method generation by following these recommendations:
-> - The B-UML structural metamodel already supports method definitions, so it's not necesary to modify or extend it.
+> - The B-UML structural metamodel already supports method definitions, so it's not necessary to modify or extend it.
 > - Modify the jinja templates to address the methods generation. The templates and the generator code are located in the directory *besser/generators/java_classes*
 > - Below is a sample of the code that the generator should produce for the `searchBook` method in the *Library* class.
 
