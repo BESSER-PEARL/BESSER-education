@@ -2,13 +2,13 @@
 
 ## Welcome to the BESSER lab guide!
 
-This guide will walk you through using [BESSER](https://github.com/BESSER-PEARL/BESSER.git) as end user. Next, we'll create some models using B-UML (BESSER's modeling language) and utilize code generators to produce executable code, enabling you to deploy your application (or part of it).
+This guide will walk you through using [BESSER](https://github.com/BESSER-PEARL/BESSER.git) as an end user. Next, we'll create some models using B-UML (BESSER's modeling language) and utilize code generators to produce executable code, enabling you to deploy your application (or part of it).
 
 ## 1. Context
 
-In recent years, low-code development tools have seen remarkable growth in the software development landscape. These platforms empower users, regardless of their programming expertise, to build robust applications with minimal hand-coding required. Low-code tools typically provide a modelling language with a concrete syntaxis (graphical, textual, etc..), and pre-built templates to accelerate the development process. They have become instrumental in enabling organizations to rapidly respond to market demands, reduce development costs, and enhance collaboration between business stakeholders and IT teams.
+In recent years, low-code development tools have seen remarkable growth in the software development landscape. These platforms empower users, regardless of their programming expertise, to build robust applications with minimal hand-coding required. Low-code tools typically provide a modelling language with a concrete syntax (graphical, textual, etc..), and pre-built templates to accelerate the development process. They have become instrumental in enabling organizations to rapidly respond to market demands, reduce development costs, and enhance collaboration between business stakeholders and IT teams.
 
-BESSER is an open-source low-code platform for smart software development. The following figure illustrates the architecture of the BESSER platform. At the core of this architecture, we have B-UML (short for BESSER’s Universal Modeling Language), the foundational language of the BESSER platform used for specifying domain models composed by structural models, object models, graphical interface models, and even OCL constraints. Additionally, BESSER offers code generators for various technologies such as SQLAlchemy, Django, Python, and more.
+BESSER is an open-source low-code platform for smart software development. The following figure illustrates the architecture of the BESSER platform. At the core of this architecture, we have B-UML (short for BESSER’s Universal Modeling Language), the foundational language of the BESSER platform used for specifying domain models composed of structural models, object models, graphical interface models, and even OCL constraints. Additionally, BESSER offers code generators for various technologies such as SQLAlchemy, Django, Python, and more.
 
 <div align="center">
   <img src="https://besser.readthedocs.io/en/latest/_images/blc.png" alt="BESSER Architecture" width="700"/>
@@ -61,8 +61,8 @@ Workshop
 > - A new class, *Score*, must be added to represent the score that a *Paper* receives after being reviewed by a *Researcher*.
 > - Each *Paper* can have multiple *Score*s, and each *Score* is provided by a single reviewer.
 > - The *Score* class must have at least two attributes: one for the score value, and one for comments or suggestions from the reviewer.
-> - Modify the code of your model by adding the necesary model elements (classes, attributes, associations, etc.)
-> - Verify that the model was correclty updated, for example printing in console the names of the classes and their attributes.
+> - Modify the code of your model by adding the necessary model elements (classes, attributes, associations, etc.)
+> - Verify that the model was correctly updated, for example printing in console the names of the classes and their attributes.
 
 ### 4.2 Creating a B-UML model using an image
 
@@ -95,11 +95,11 @@ print(plantUML_model)
 
 ### 4.3 Creating a B-UML model using the Web Modeling Editor
 
-One of the most popular ways to model in BESSER is by using the graphical editor. You cab access and explore the editor at the following link: [https://editor.besser-pearl.org/](https://editor.besser-pearl.org/). To familiarize yourself with the editor, refer to the [editor documentation](https://besser.readthedocs.io/en/latest/web_editor.html)
+One of the most popular ways to model in BESSER is by using the graphical editor. You can access and explore the editor at the following link: [https://editor.besser-pearl.org/](https://editor.besser-pearl.org/). To familiarize yourself with the editor, refer to the [editor documentation](https://besser.readthedocs.io/en/latest/web_editor.html)
 
 With the Modeling Editor, you can create a new class diagram, start from a template, or import an existing model. Let's import this [model in JSON format](models/domain_model.json) by clicking on *File -> Import -> JSON Import*.
 
-Once imported, you should see the followng model in the editor:
+Once imported, you should see the following model in the editor:
 
 <div align="center">
   <img src="figs/modeling_editor.png" alt="Modeling Editor" width="700"/>
@@ -108,8 +108,8 @@ Once imported, you should see the followng model in the editor:
 > ### **Exercise:**
 >
 > - Recreate the tasks from the *Exercise* in **Section 4.1**, but this time using the [Graphical Editor](https://editor.besser-pearl.org/).
-> - Modify the model to ensure that the value of an *Score* always takes one of the following predifined values: "strong_accept", "accept", "weak_accept", "borderline", "weak_reject", and "reject".
-> - Click on Quality Check to verify that your model is intactically correct.
+> - Modify the model to ensure that the value of an *Score* always takes one of the following predefined values: "strong_accept", "accept", "weak_accept", "borderline", "weak_reject", and "reject".
+> - Click on Quality Check to verify that your model is syntactically correct.
 > - Export your model by clicking on *File -> Export -> As B-UML* (this model will be used in the next section of this guide).
 
 ## 5. Using the BESSER code generators
@@ -120,7 +120,7 @@ There are two ways to use them, depending on your needs.
 
 - Implementing Code Generators in Python (ideal for development purposes): This approach is preferred if you are developing or improving a code generator in BESSER.
 
-In the following sections, we will explore the second option, as using the Modeling Editor is straighforward.
+In the following sections, we will explore the second option, as using the Modeling Editor is straightforward.
 
 ### 5.1 SQL Alchemy code generator
 
@@ -139,13 +139,13 @@ alchemy_generator.generate(dbms="sqlite")
 More information about this generator is available at the [BESSER documentation](https://besser.readthedocs.io/en/latest/generators/alchemy.html).
 
 In this example, the database management system is set to *SQLite*.
-After execute your code using python, the `sql_alchemy.py` file with the declarative mapping of the database will be generated in `<<current_directory>>/output/sql_alchemy.py`
+After executing your code using Python, the `sql_alchemy.py` file with the declarative mapping of the database will be generated in `<<current_directory>>/output/sql_alchemy.py`
 
 **Creating the Database**
 
 To create the database, execute the generated code
 
-  python slq_achemy.py
+  python sql_achemy.py
 
 After running the script, the database should be created as `database.db`. Explore the tables and relationships to see how the model's concepts are mapped to the database. If you're using VSCode, you can install the [SQLite Viewer plugin](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer) to easily visualize the database.
 

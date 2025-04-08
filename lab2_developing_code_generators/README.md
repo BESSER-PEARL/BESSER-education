@@ -16,11 +16,11 @@ For this lab guide, the [BESSER basic installation](https://besser.readthedocs.i
 
 ## 3. Creating your Code Generator in BESSER
 
-To define a code generator, you should create a class (e.g., *JavaGenerator*) that implements the ``GeneratorInterface``. This ensure that all BESSER generators follow a consistent structure. 
+To define a code generator, you should create a class (e.g., *JavaGenerator*) that implements the ``GeneratorInterface``. This ensures that all BESSER generators follow a consistent structure. 
 
-An example can be found in the [java_generator.py](java_generator.py) script.You can reuse this script for the purposes of this guide. In the code, the constructor of the `JavaGenerator` class receives a *DomainModel* (or B-UML structural model) as an input parameter, while the ``generate()`` method handles the code generation. Note that the ``java_template.py.j2`` template is used for code generation, and we need to develop this template.
+An example can be found in the [java_generator.py](java_generator.py) script. You can reuse this script for the purposes of this guide. In the code, the constructor of the `JavaGenerator` class receives a *DomainModel* (or B-UML structural model) as an input parameter, while the ``generate()`` method handles the code generation. Note that the ``java_template.py.j2`` template is used for code generation, and we need to develop this template.
 
-Download the [java_generator.py](java_generator.py) file, and let's create the jinja template.
+Download the [java_generator.py](java_generator.py) file, and let's create the Jinja template.
 
 ## 4. Jinja template example
 
