@@ -64,36 +64,8 @@ Workshop
 > - Modify the code of your model by adding the necessary model elements (classes, attributes, associations, etc.)
 > - Verify that the model was correctly updated, for example printing in console the names of the classes and their attributes.
 
-### 4.2 Creating a B-UML model using an image
 
-Another way to define a B-UML model is to use an image (e.g., a picture of your class diagram). BESSER can transform scuh an image into a B-UML model using OpenAI's GPT4. To use this BESSER functionality, you must have a valid OpenAI token, which will be provided during the lab session.
-
-You can try this using the figure of our [domain model](figs/research_model.png) or test with this [hand draw image](figs/library_hand_draw.png). Save the image file locally (e.g., `model.png`). BESSER offers two functions to process the image:
-
-- Transform the image into a B-UML structural model.
-- Transform the image into [PlantUML](https://plantuml.com/) code. PlantUML is an open-source tool that lets you create UML diagrams (and other types of diagrams) using plain text.
-
-Run the following code to generate both the B-UML model and its PlantUML textual representation (replace the value of the `openai_token` parameter with your token).
-
-```python
-from besser.BUML.metamodel.structural import DomainModel
-from besser.utilities import image_to_buml, image_to_plantuml
-
-# Image to B-UML
-buml_model: DomainModel = image_to_buml(image_path="model.png", openai_token="****")
-
-# Image to PlantUML
-plantUML_model: str = image_to_plantuml(image_path="model.png", openai_token="***")
-print(plantUML_model)
-```
-
-**Output**
-- `buml_model` store the resulting B-UML structural model. A Python script named `buml_model_from_image.py` is also generated, containing the model definition. You can inspect this script to understand how the model was constructed.
-- `plantUML_model` contains the textual PlantUML representation. You can copy and paste this text into the [PlantUML online tool](https://www.plantuml.com/plantuml/uml/) to view the generated diagram.
-
-**Note:** The accuracy of the transformation depends on the complexity and quality of the input image. For more insights, check out our [blog post on this topic](https://modeling-languages.com/image-to-uml-with-llm/).
-
-### 4.3 Creating a B-UML model using the Web Modeling Editor
+### 4.2 Creating a B-UML model using the Web Modeling Editor
 
 One of the most popular ways to model in BESSER is by using the graphical editor. You can access and explore the editor at the following link: [https://editor.besser-pearl.org/](https://editor.besser-pearl.org/). To familiarize yourself with the editor, refer to the [editor documentation](https://besser.readthedocs.io/en/latest/web_editor.html)
 
