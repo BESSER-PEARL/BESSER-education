@@ -1,6 +1,6 @@
 from besser.BUML.metamodel.structural import DomainModel, Class, Property, \
     Multiplicity, BinaryAssociation, StringType, IntegerType, DateTimeType
-from java_generator import JavaGenerator
+from rails_generator import RailsGenerator
 
 ############################
 #   BUML model definition  #
@@ -43,5 +43,5 @@ library_model: DomainModel = DomainModel(name="Library_model", types={library, b
 #      Code Generation     #
 ############################
 
-generator: JavaGenerator = JavaGenerator(model=library_model)
+generator: RailsGenerator = RailsGenerator(model=library_model)
 generator.generate()
