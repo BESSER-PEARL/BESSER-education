@@ -1,12 +1,13 @@
 # Lab 2 – Building a Full Application with the BESSER Web Modeling Editor
 
 ## 1. Introduction
-In this lab, you will use the **BESSER Web Modeling Editor** to model and generate a complete web application.  
+In this lab, you will use the [**BESSER Web Modeling Editor**](https://editor.besser-pearl.org/) to model and generate a complete web application.
+
 The exercise covers:
 
 - Creating a new BESSER project
 - Modeling a simple domain using a **Class Diagram**
-- Defining an agent using a **State Machine**
+- Defining an agent (Chatbot)
 - Creating a user interface with the **No-Code UI Editor**
 - Generating and deploying the application
 - Populating the database using the provided **FastAPI endpoints**
@@ -31,10 +32,10 @@ Before starting, ensure that you have:
 
 1. Open the BESSER Web Modeling Editor:  
    https://editor.besser-pearl.org/
-2. Click **“New Project”**
-3. Name the project, e.g., `digital_twins_lab` and save it.
+2. Create a new project by selecting **File → New Project** from the menu.
+3. Name the project, e.g., `digital_twins_lab`, fill in the **Owner** and **Description** fields and click on **Create Project**.
 
-When you create a new BESSER project, it automatically includes the following modeling and editing tools:
+When you create a new BESSER project, it automatically includes the following models:
 
 - **Class Diagram**: Model the structure of your domain with classes and relationships.
 - **Object Diagram**: Visualize example instances of your classes and their links.
@@ -42,43 +43,43 @@ When you create a new BESSER project, it automatically includes the following mo
 - **Agent Diagram**: Model agents using a State Machine extension.
 - **Graphical UI Editor**: Design user interfaces with a no-code, drag-and-drop editor.
 
-These components provide a comprehensive starting point for modeling, behavior specification, and UI design in your application.
+These components provide a comprehensive starting point for modeling, behavior specification, and UI design in your application. Throughout this lab, you will create a class diagram, define an agent, and build a GUI to interact with your data, after generate and deploy a web app.
 
 ---
 
 ## 4. Modeling the Domain with a Class Diagram
 
 ### 4.1 Goal of the Model  
-You will create a simple domain model based on a **digital twin scenario**.  
-Example concepts:
+You will create a simple domain model based on a **digital twin scenario**.
 
-- **Device**: represents a physical sensor device  
-  - attributes: `id`, `name`, `location`
-- **Sensor**: associated with a Device  
+A **digital twin** (DT) is a virtual copy of a real-world object, system, or process. It uses data from sensors and other sources to create a digital model that behaves like the real thing. This allows people to monitor, analyze, and test changes in the digital version before making decisions about the physical one. DTs are often used to improve performance, predict problems, and make better choices in areas like manufacturing, healthcare, and smart cities.
+
+Our minimal DT class diagram will contain the following concepts:
+
+- **PhysicalThing**: represents the real-world asset  
+  - attributes: `name`, `location`
+
+- **DigitalTwin**: virtual representation of the physical asset  
+  - attributes: `status`, `lastSync`
+
+- **Sensor**: a sensor attached to the physical thing  
   - attributes: `type`, `unit`
-- **Measurement**: stores sensor readings  
+
+- **Measurement**: stores sensor-generated readings  
   - attributes: `timestamp`, `value`
 
 Feel free to adapt or extend the scenario.
 
 ### 4.2 Steps
 
-1. Open the **Class Diagram Editor**
-2. Create the classes `Device`, `Sensor`, `Measurement`
-3. Add suitable attributes to each class
-4. Define relationships, for example:
-   - A Device *has many* Sensors
-   - A Sensor *generates many* Measurements
-5. Validate the diagram
+1. Open the **Class Diagram Editor** in BESSER.
+2. Define the classes, attributes and relationships. For example, a **PhysicalThing** has many **Sensor**s
+3. Validate the diagram by selecting the **Quality Check** menu. This option checks the syntactic correctness of the diagram. Semantic correctness (ensuring the model reflects the intended domain meaning) must still be reviewed manually, so take a moment to verify that your classes, attributes, and relationships accurately represent the scenario.
 
 ---
 
 ## 5. Creating an Agent with the State Machine Editor
 
-### 5.1 Scenario  
-
-
-### 5.2 Steps
 
 
 
