@@ -26,7 +26,7 @@ logger.setLevel(logging.INFO)
 agent = Agent('rag_agent')
 # Load agent properties stored in a dedicated file
 agent.load_properties('config.ini')
-agent.set_property(OPENAI_API_KEY, 'YOUR-API-KEY')
+# agent.set_property(OPENAI_API_KEY, 'YOUR-API-KEY')  # Uncomment if not using config.ini
 # Define the platform your agent will use
 websocket_platform = agent.use_websocket_platform(use_ui=True)
 
@@ -75,7 +75,7 @@ def awaiting_body(session: Session):
 
 
 awaiting_state.set_body(awaiting_body)
-awaiting_state.when_no_intent_matched_go_to(awaiting_state)  # REMOVE THIS TRANSITION ONCE YOU START DEVELOPING THE AGENT
+awaiting_state.when_no_intent_matched().go_to(awaiting_state)  # REMOVE THIS TRANSITION ONCE YOU START DEVELOPING THE AGENT
 
 # RUN APPLICATION
 
