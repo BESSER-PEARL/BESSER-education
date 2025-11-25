@@ -1,4 +1,4 @@
-# Lab Guide 2: Create your code generator with BESSER
+# Lab Guide 3: Create your code generator with BESSER
 
 ## Welcome to our BESSER lab guide!
 

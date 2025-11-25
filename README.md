@@ -15,19 +15,26 @@ Each lab guide focuses on a specific aspect of the BESSER ecosystem, offering ha
     - Create and validate your first class diagram.
     - Learn how to use the code generators.
 
-2. Lab 2 – Developing Code Generators
+2. Lab 2 - Building a Full Application with the BESSER WME
+
+    - Model a domain using a Class Diagram (e.g., a digital-twin scenario with devices, sensors, and measurements).
+    - Define an agent (Chatbot) for your web application.
+    - Build the graphical user interface using the No-Code UI Editor (drag-and-drop tables, forms, and views).
+    - Generate and deploy a web application from the models.
+
+3. Lab 3 – Developing Code Generators
 
     - Explore how to define model-to-text transformations.
     - Implement simple code generators using Python.
     - Generate code from class diagrams and understand basic transformation rules.
 
-3. Lab 3 – Metamodeling and Advanced Generators
+3. Lab 4 – Metamodeling and Advanced Generators
 
     - Dive into metamodeling to define your own modeling languages.
     - Extend the BESSER metamodel to support new concepts.
     - Build and reuse code generation templates for complex models.
 
-4. Lab 4 – Agent-Based Modeling with BAF
+4. Lab 5 – Agent-Based Modeling with BAF
 
     - Get started with the BESSER Agentic Framework (BAF).
     - Learn how to model agent behaviors and interactions.

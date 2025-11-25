@@ -1,4 +1,4 @@
-# Lab Guide 3: Metamodel extension and code generator improvements
+# Lab Guide 4: Metamodel extension and code generator improvements
 
 ## Welcome to our BESSER lab guide!
 
