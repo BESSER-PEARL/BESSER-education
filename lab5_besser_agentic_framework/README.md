@@ -13,7 +13,11 @@ BAF is a Python library with which you can design agents with rule-based behavio
 ## 1. Requirements
 
 Follow the instructions in the [documentation](https://besser-agentic-framework.readthedocs.io/latest/) to install BAF.
-You will need to add the options [extras,llms,pytorch]
+You will need to add the option [all]
+
+```python
+pip install besser-agentic-framework[extras,llms,pytorch]
+```
 
 You can check if the installation was properly done by running an example agent in the BAF library. You can try to run the Greetings Agent:
 
@@ -133,7 +137,7 @@ to be triggered when a file is received.
 (more info: https://besser-agentic-framework.readthedocs.io/latest/wiki/core/transitions.html#file-transitions)
 
 ```python
-awaiting_state.when_file_received_go_to(load_document_state, allowed_types='application/pdf')
+awaiting_state.when_file_received(allowed_types='application/pdf').go_to(load_document_state)
 ```
 
 Next, we need to implement the body of `load_document_state`:
