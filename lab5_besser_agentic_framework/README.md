@@ -16,7 +16,7 @@ Follow the instructions in the [documentation](https://besser-agentic-framework.
 You will need to add the option [all]
 
 ```python
-pip install besser-agentic-framework[extras,llms,pytorch]
+pip install besser-agentic-framework[all]
 ```
 
 You can check if the installation was properly done by running an example agent in the BAF library. You can try to run the Greetings Agent:
