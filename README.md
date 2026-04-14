@@ -48,26 +48,6 @@ Each lab guide focuses on a specific aspect of the BESSER ecosystem, offering ha
     - Deploy a full-stack web application to the cloud using Render.
     - Integrate conversational agents powered by the BESSER Agentic Framework.
 
-## 🌟 Support Us
-
-If you found these laboratory guides helpful and would like to support our work, you can:
-
-1. **Star our GitHub repository**  
-   Visit the repository below and click the ⭐ star button to show your support:  
-   https://github.com/BESSER-PEARL/BESSER  
-
-<div align="center">
-  <img src="figs/github_star.png" alt="GitHub Star" width="700"/>
-</div>
-
-2. **Complete a short survey (≈5 minutes)**  
-   Your feedback helps us improve future materials:  
-   [Take the survey](https://docs.google.com/forms/d/e/1FAIpQLSdhYVFFu8xiFkoV4u6Pgjf5F7-IS_W7aTj34N5YS2L143vxoQ/viewform)
-
----
-
-Your support is greatly appreciated and helps us continue developing and improving these resources.
-
 ## 🧩 Solutions for Educators
 
 We provide a private repository with solutions to all lab guides.
