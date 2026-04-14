@@ -28,17 +28,45 @@ Each lab guide focuses on a specific aspect of the BESSER ecosystem, offering ha
     - Implement simple code generators using Python.
     - Generate code from class diagrams and understand basic transformation rules.
 
-3. Lab 4 – Metamodeling and Advanced Generators
+4. Lab 4 – Metamodeling and Advanced Generators
 
     - Dive into metamodeling to define your own modeling languages.
     - Extend the BESSER metamodel to support new concepts.
     - Build and reuse code generation templates for complex models.
 
-4. Lab 5 – Agent-Based Modeling with BAF
+5. Lab 5 – Agent-Based Modeling with BAF
 
     - Get started with the BESSER Agentic Framework (BAF).
     - Learn how to model agent behaviors and interactions.
     - Simulate intelligent agents based on event-driven logic.
+
+6. Lab 6 – From Modeling to Deployment with BESSER
+
+    - Design a complete web application using the BESSER Web Modeling Editor.
+    - Create class diagrams, agent models, and GUI layouts using no-code tools.
+    - Generate production-ready code with BESSER's Full Web App Generator.
+    - Deploy a full-stack web application to the cloud using Render.
+    - Integrate conversational agents powered by the BESSER Agentic Framework.
+
+## 🌟 Support Us
+
+If you found these laboratory guides helpful and would like to support our work, you can:
+
+1. **Star our GitHub repository**  
+   Visit the repository below and click the ⭐ star button to show your support:  
+   https://github.com/BESSER-PEARL/BESSER  
+
+<div align="center">
+  <img src="figs/github_star.png" alt="GitHub Star" width="700"/>
+</div>
+
+2. **Complete a short survey (≈5 minutes)**  
+   Your feedback helps us improve future materials:  
+   [Take the survey](https://docs.google.com/forms/d/e/1FAIpQLSdhYVFFu8xiFkoV4u6Pgjf5F7-IS_W7aTj34N5YS2L143vxoQ/viewform)
+
+---
+
+Your support is greatly appreciated and helps us continue developing and improving these resources.
 
 ## 🧩 Solutions for Educators
 
