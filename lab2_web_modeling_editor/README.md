@@ -168,9 +168,6 @@ Now create at least one `DigitalTwin`, one `Sensor`, and several `Measurement`s.
 >
 > Add a new state to the chatbot that explains what a "digital twin" is. Wire it up with a `definition` intent triggered by the keyword `what is`. Redeploy and test.
 
-> **Exercise 4.2 — Seed data via a script**
->
-> Write a small Python script that uses `requests` to hit the Swagger endpoints and seed the database with one `PhysicalThing`, one `DigitalTwin`, 2 `Sensor`s, and 20 `Measurement`s. Keep the script in the project folder so you can rerun it after each deployment.
 
 ---
 
