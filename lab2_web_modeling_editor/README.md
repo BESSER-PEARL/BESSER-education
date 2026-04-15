@@ -77,7 +77,7 @@ Feel free to adapt or extend the scenario.
 3. Validate the diagram by selecting the **Quality Check** menu. This option checks the syntactic correctness of the diagram. Semantic correctness (ensuring the model reflects the intended domain meaning) must still be reviewed manually, so take a moment to verify that your classes, attributes, and relationships accurately represent the scenario.
 
 **Tip:** Before creating your class diagram, you can explore an example template:  
-**File → Load Template → Library** — this contains a small diagram with classes, attributes and realtionships.
+**File → Load Template → Library** — this contains a small diagram with classes, attributes and relationships.
 
 ---
 
@@ -104,7 +104,7 @@ To complete this lab, you will create a chatbot agent that follows a hand-crafte
 - **Several intents and transitions**
 
 Each state must define a **fixed plain-string response**, and transitions must be triggered by simple intents (keywords or short sentences), such as `help`, `sensor`, `measurement`, `back`, or `exit`. You can also define
-Bot Fallback Actions for each state, to define a default response if the user answer doen't fit the intents.
+Bot Fallback Actions for each state, to define a default response if the user answer doesn't fit the intents.
 
 The following could be a starting point to build your agent.
 
@@ -160,7 +160,7 @@ To deploy the generated web application using Docker Compose, follow these steps
 3. Build and start the containers by running:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 4. Wait until all containers are running (it could take some minutes). You should see logs indicating that both the backend and frontend services have started successfully.
 5. Open your web browser and navigate to the URL specified in the logs (typically http://localhost:3000 for the frontend).
@@ -173,7 +173,7 @@ You will probably not see any data in the tables and charts because the database
 
 The code generator produce an API REST with FastAPI with endpoints to apply CRUD operations over the entities or classes defined in your class diagram. For example, in our DT scenario, CRUD endpoints for *Measurement*, *Sensor*, *PhysicalThing*, and *DigitalTwin* will be available.
 
-Additionally, you will be able to access the Swager interface generated to use the REST API directly, and populate the database, or test. For example, to create a *PhysicalThing* register, you can follow this steps
+Additionally, you will be able to access the Swagger interface generated to use the REST API directly, and populate the database, or test. For example, to create a *PhysicalThing* register, you can follow this steps
 
 1. Open the url `http://127.0.0.1:8000/docs` (Swagger UI)
 2. Click on the **POST /physicalthing/** endpoint, the **Try it out** and fill the JSON Object:
@@ -194,7 +194,7 @@ Now, fill in the database. Create at least one *DigitalTwin* for the *PhysicalTh
 
 Then reload your web page (frontend) at `http://127.0.0.1:3000`, and the data should be reflected in your charts and tables.
 
-## 10. Additional Resources
+## 9. Additional Resources
 
 - BESSER Web Modeling Editor  
   https://editor.besser-pearl.org/

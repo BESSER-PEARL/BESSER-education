@@ -6,17 +6,17 @@ import io
 import logging
 
 import fitz  # pip install pymupdf
-from besser.agent.core.file import File
-from besser.agent.nlp import OPENAI_API_KEY
-from besser.agent.nlp.intent_classifier.intent_classifier_configuration import LLMIntentClassifierConfiguration
+from baf.core.file import File
+from baf.nlp import OPENAI_API_KEY
+from baf.nlp.intent_classifier.intent_classifier_configuration import LLMIntentClassifierConfiguration
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from besser.agent.core.agent import Agent
-from besser.agent.core.session import Session
-from besser.agent.exceptions.logger import logger
-from besser.agent.nlp.llm.llm_openai_api import LLMOpenAI
-from besser.agent.nlp.rag.rag import RAGMessage, RAG
+from baf.core.agent import Agent
+from baf.core.session import Session
+from baf.exceptions.logger import logger
+from baf.nlp.llm.llm_openai_api import LLMOpenAI
+from baf.nlp.rag.rag import RAGMessage, RAG
 from langchain.schema import Document
 
 # Configure the logging module (optional)
@@ -25,8 +25,8 @@ logger.setLevel(logging.INFO)
 # Create the agent
 agent = Agent('rag_agent')
 # Load agent properties stored in a dedicated file
-agent.load_properties('config.ini')
-# agent.set_property(OPENAI_API_KEY, 'YOUR-API-KEY')  # Uncomment if not using config.ini
+agent.load_properties('config.yaml')
+# agent.set_property(OPENAI_API_KEY, 'YOUR-API-KEY')  # Uncomment if not using config.yaml
 # Define the platform your agent will use
 websocket_platform = agent.use_websocket_platform(use_ui=True)
 

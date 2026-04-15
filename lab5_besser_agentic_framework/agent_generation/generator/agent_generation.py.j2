@@ -4,8 +4,8 @@
 
 import logging
 
-from besser.agent.core.agent import Agent
-from besser.agent.core.session import Session
+from baf.core.agent import Agent
+from baf.core.session import Session
 
 # Configure the logging module
 logging.basicConfig(level=logging.INFO, format='{levelname} - {asctime}: {message}', style='{')
@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO, format='{levelname} - {asctime}: {messag
 # Create the agent
 agent = Agent('{{ agent_name }}')
 # Load agent properties stored in a dedicated file
-agent.load_properties('config.ini')
+agent.load_properties('config.yaml')
 # Define the platform your agent will use
 websocket_platform = agent.use_websocket_platform(use_ui=False)
 

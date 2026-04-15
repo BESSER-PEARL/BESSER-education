@@ -38,10 +38,10 @@ The first way consists of instantiating directly in Python the classes of the B-
 from besser.BUML.metamodel.structural import Class, Property, StringType, DateType, BooleanType
 
 # Paper class definition
-tittle: Property = Property(name="tittle", type=StringType)
+title: Property = Property(name="title", type=StringType)
 submitted_date: Property = Property(name="submitted_date", type=DateType)
 acceptance: Property = Property(name="acceptance", type=BooleanType)
-paper: Class = Class(name="Paper", attributes={tittle, submitted_date, acceptance})
+paper: Class = Class(name="Paper", attributes={title, submitted_date, acceptance})
 ```
 
 You can find the code for the definition of [the domain model here](models/domain_model.py). Run this code using Python and you should get in console the names of the classes of your model.
@@ -98,7 +98,7 @@ In the following sections, we will explore the second option, as using the Model
 
 [SQLAlchemy](https://www.sqlalchemy.org/) is a Python SQL toolkit and Object-Relational Mapping (ORM) library that provides a flexible way to work with databases in Python, allowing developers to interact with databases using high-level Python objects.
 
-Open the model (`.py` file) obtained from the *Exercise* in **Section 4.3**. Add the following code to your file to use the code generator.
+Open the model (`.py` file) obtained from the *Exercise* in **Section 4.2**. Add the following code to your file to use the code generator.
 
 ```python
 from besser.generators.sql_alchemy import SQLAlchemyGenerator
@@ -117,7 +117,7 @@ After executing your code using Python, the `sql_alchemy.py` file with the decla
 
 To create the database, execute the generated code
 
-  python sql_achemy.py
+  python sql_alchemy.py
 
 After running the script, the database should be created as `database.db`. Explore the tables and relationships to see how the model's concepts are mapped to the database. If you're using VSCode, you can install the [SQLite Viewer plugin](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer) to easily visualize the database.
 

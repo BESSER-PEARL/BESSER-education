@@ -1,5 +1,5 @@
-from besser.agent.core.agent import Agent
-from besser.agent.platforms.websocket import WEBSOCKET_PORT
+from baf.core.agent import Agent
+from baf.platforms.websocket import WEBSOCKET_PORT
 
 
 class AgentManager:

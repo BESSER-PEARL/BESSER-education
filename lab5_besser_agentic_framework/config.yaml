@@ -1,0 +1,20 @@
+nlp:
+  language: en
+  region: US
+  timezone: Europe/Madrid
+  pre_processing: True
+  intent_threshold: 0.4
+  openai:
+    api_key: YOUR-API-KEY
+  huggingface:
+    token: YOUR-TOKEN
+  replicate:
+    api_key: YOUR-API-KEY
+
+platforms:
+  websocket:
+    host: 0.0.0.0
+    port: 8765
+    streamlit:
+      host: 0.0.0.0
+      port: 5000

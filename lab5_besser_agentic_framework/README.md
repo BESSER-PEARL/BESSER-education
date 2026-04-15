@@ -22,7 +22,7 @@ pip install besser-agentic-framework[all]
 You can check if the installation was properly done by running an example agent in the BAF library. You can try to run the Greetings Agent:
 
 ```python
-from besser.agent.test.examples.greetings_agent import agent
+from baf.test.examples.greetings_agent import agent
 
 agent.run()
 ```
@@ -42,11 +42,11 @@ In [smart_agent.py](smart_agent.py), you will write the agent code. This file al
 agent = Agent('rag_agent')
 ```
 
-You will need an OpenAI API key. You can store it in a dedicated `config.ini` file, or define it directly in the code:
+You will need an OpenAI API key. You can store it in a dedicated `config.yaml` file, or define it directly in the code:
 
 ```python
 # option 1
-agent.load_properties('config.ini')
+agent.load_properties('config.yaml')
 # option 2
 agent.set_property(OPENAI_API_KEY, 'YOUR-API-KEY')
 ```
@@ -106,7 +106,7 @@ First, we need to create the RAG component of the agent. RAG requires 3 elements
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from besser.agent.nlp.rag.rag import RAGMessage, RAG
+from baf.nlp.rag.rag import RAGMessage, RAG
 
 embeddings = OpenAIEmbeddings(openai_api_key='api-key')
 
@@ -144,7 +144,7 @@ Next, we need to implement the body of `load_document_state`:
 
 ```python
 def load_document_body(session: Session):
-    file: File = session.file
+    file: File = session.event.file
     load_pdf_from_base64(file, rag)
     session.reply('Document loaded!')
 
@@ -198,7 +198,7 @@ Now, we will define the body of the `rag_state`
 
 ```python
 def rag_body(session: Session):
-    rag_message: RAGMessage = session.run_rag(session.message)
+    rag_message: RAGMessage = session.run_rag(session.event.message)
     # You can save the answer in the session if you want it for later
     websocket_platform.reply_rag(session, rag_message)
 
@@ -222,7 +222,7 @@ This way, when a question is sent, the agent will run RAG, while when the messag
 ```python
 def llm_body(session: Session):
     # You can add some instructions together with the message to adapt the LLM message (e.g., "You are an expert in...", "You are talking to a kid...", etc.)
-    answer = gpt.predict(session.message)
+    answer = gpt.predict(session.event.message)
     session.reply(answer)
 
 
@@ -296,8 +296,8 @@ The generated agent scripts will be stored in the [agents](agent_generation/agen
 ## 4. Implementing a custom language processor
 
 A [processor](https://besser-agentic-framework.readthedocs.io/latest/wiki/core/processors.html) can be used to process user and/or agent messages for specific purposes.
-BAF comes with 2 example processors to (1) [detect the message language](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework/blob/v2.1.0/besser/agent/core/processors/language_detection_processor.py)
-and (2) [adapt the agent messages to specific user profiles](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework/blob/v2.1.0/besser/agent/core/processors/user_adaptation_processor.py) (this one using an LLM).
+BAF comes with example processors to (1) [detect the message language](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework/blob/main/baf/core/processors/language_detection_processor.py)
+and (2) [adapt the agent messages to specific user profiles](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework/blob/main/baf/core/processors/user_adaptation_processor.py) (this one using an LLM).
 
 In this exercise, you will create a custom processor for your agent. Read the processors documentation and the existing processors to understand how to create it. Here you have some ideas for processors:
 

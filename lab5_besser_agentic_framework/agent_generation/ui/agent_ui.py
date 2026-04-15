@@ -11,16 +11,16 @@ import pandas as pd
 import plotly
 import streamlit as st
 import websocket
-from besser.agent.core.agent import Agent
-from besser.agent.platforms.websocket import WEBSOCKET_HOST, WEBSOCKET_PORT
-from besser.agent.platforms.websocket.streamlit_ui.chat import write_message
-from besser.agent.platforms.websocket.streamlit_ui.vars import *
+from baf.core.agent import Agent
+from baf.platforms.websocket import WEBSOCKET_HOST, WEBSOCKET_PORT
+from baf.platforms.websocket.streamlit_ui.chat import write_message
+from baf.platforms.websocket.streamlit_ui.vars import *
 from streamlit.runtime import Runtime
 from streamlit.runtime.app_session import AppSession
 from streamlit.runtime.scriptrunner import add_script_run_ctx, get_script_run_ctx
 
-from besser.agent.platforms.payload import Payload, PayloadAction, PayloadEncoder
-from besser.agent.core.message import Message, MessageType
+from baf.platforms.payload import Payload, PayloadAction, PayloadEncoder
+from baf.core.message import Message, MessageType
 
 # Time interval to check if a streamlit session is still active, in seconds
 SESSION_MONITORING_INTERVAL = 10
