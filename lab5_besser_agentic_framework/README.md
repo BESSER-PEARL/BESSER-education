@@ -19,12 +19,13 @@ You will need to add the option [all]
 pip install besser-agentic-framework[all]
 ```
 
-You can check if the installation was properly done by running an example agent in the BAF library. You can try to run the Greetings Agent:
+You can check if the installation was properly done by creating a minimal agent:
 
 ```python
-from baf.test.examples.greetings_agent import agent
+from baf.core.agent import Agent
 
-agent.run()
+agent = Agent('test_agent')
+print('BAF installed correctly. Agent created:', agent.name)
 ```
 
 ## 2. Low-code agent development
