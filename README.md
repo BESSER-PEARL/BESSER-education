@@ -1,61 +1,113 @@
-# BESSER Education: Hands-On Guides and Exercises
+# BESSER Education
 
-Welcome to BESSER Education!
-This repository provides laboratory guides and exercises to help you explore and master the [BESSER low-code framework (BLC)](https://github.com/BESSER-PEARL/BESSER.git) and the [BESSER Agentic Framework (BAF)](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework). Whether you're a beginner or an advanced user, these resources are designed to deepen your understanding and enhance your practical skills with BESSER.
+**Hands-on guides and exercises for the BESSER ecosystem.**
 
+Welcome! This repository is a self-paced course for learning the [BESSER low-code platform (BLC)](https://github.com/BESSER-PEARL/BESSER) and the [BESSER Agentic Framework (BAF)](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework). It's organized as a sequence of **six labs** that take you from your first B-UML model to a full-stack web application deployed to the cloud, with a conversational agent inside.
 
-## 🔬 Laboratory Guides Overview
+Whether you are a beginner to low-code or an advanced developer, each lab is a standalone unit you can tackle on its own — but doing them in order gives you the smoothest path.
 
-Each lab guide focuses on a specific aspect of the BESSER ecosystem, offering hands-on experience with modeling, code generation, and agent-based systems. Here’s what each lab includes:
+---
 
-1. Lab 1 – BESSER Basics
+## Prerequisites
 
-    - Learn the fundamentals of the BESSER Low-Code platform (BLC).
-    - Get familiar with the web-based modeling environment.
-    - Create and validate your first class diagram.
-    - Learn how to use the code generators.
+- **Python 3.11+** for every lab that runs code
+- **A modern browser** for the labs using the Web Modeling Editor
+- **Docker Desktop** (for Lab 2's local deployment)
+- **Free GitHub & Render accounts** (for Lab 6's cloud deployment)
+- Core libraries:
+  ```bash
+  pip install besser[all]
+  pip install besser-agentic-framework[all]
+  ```
 
-2. Lab 2 - Building a Full Application with the BESSER WME
+No prior BESSER experience is assumed. Basic UML / Python literacy is enough to get started.
 
-    - Model a domain using a Class Diagram (e.g., a digital-twin scenario with devices, sensors, and measurements).
-    - Define an agent (Chatbot) for your web application.
-    - Build the graphical user interface using the No-Code UI Editor (drag-and-drop tables, forms, and views).
-    - Generate and deploy a web application from the models.
+---
 
-3. Lab 3 – Developing Code Generators
+## Lab overview
 
-    - Explore how to define model-to-text transformations.
-    - Implement simple code generators using Python.
-    - Generate code from class diagrams and understand basic transformation rules.
+| # | Lab | Track |
+|---|---|---|
+| 1 | [BESSER Basics](lab1_besser_basics/README.md) | BLC |
+| 2 | [Full Application with the WME](lab2_web_modeling_editor/README.md) | BLC |
+| 3 | [Developing a Code Generator](lab3_developing_code_generators/README.md) | BLC |
+| 4 | [Metamodeling and Advanced Generators](lab4_metamodeling_and_code_generators/README.md) | BLC |
+| 5 | [Building Agents with BAF](lab5_besser_agentic_framework/README.md) | BAF |
+| 6 | [From Modeling to Deployment](lab6_render_deployment/README.md) | BLC + BAF |
 
-4. Lab 4 – Metamodeling and Advanced Generators
+---
 
-    - Dive into metamodeling to define your own modeling languages.
-    - Extend the BESSER metamodel to support new concepts.
-    - Build and reuse code generation templates for complex models.
+## What each lab covers
 
-5. Lab 5 – Agent-Based Modeling with BAF
+### Lab 1 — BESSER Basics *(BLC)*
 
-    - Get started with the BESSER Agentic Framework (BAF).
-    - Learn how to model agent behaviors and interactions.
-    - Simulate intelligent agents based on event-driven logic.
+Your first contact with B-UML. Create a class diagram in Python, then again in the Web Modeling Editor, then use built-in code generators to produce SQLAlchemy models and a Django project.
 
-6. Lab 6 – From Modeling to Deployment with BESSER
+**You'll produce:** a Python domain model, a SQLite database, a runnable Django app.
 
-    - Design a complete web application using the BESSER Web Modeling Editor.
-    - Create class diagrams, agent models, and GUI layouts using no-code tools.
-    - Generate production-ready code with BESSER's Full Web App Generator.
-    - Deploy a full-stack web application to the cloud using Render.
-    - Integrate conversational agents powered by the BESSER Agentic Framework.
+### Lab 2 — Building a Full Application with the BESSER WME *(BLC)*
 
-## 🧩 Solutions for Educators
+End-to-end low-code workflow inside the Web Modeling Editor. Model a digital-twin domain, design a chatbot as a state machine, build a no-code UI, generate a full web application, and deploy it locally with Docker Compose.
 
-We provide a private repository with solutions to all lab guides.
+**You'll produce:** a running full-stack app (FastAPI + React + SQLite), populated via the generated REST API.
 
-If you're an educator using these materials for teaching, you can request access by contacting us at info@besser-pearl.org
+### Lab 3 — Developing a Code Generator *(BLC)*
 
-## 📚 Official Documentation
+Switch perspective from user to developer. Subclass `GeneratorInterface`, write a Jinja2 template, and build a custom **Ruby on Rails** generator that turns any B-UML structural model into idiomatic Rails `ApplicationRecord` classes with associations.
 
-[BESSER Low-code Platform](https://besser.readthedocs.io/en/latest/)
+**You'll produce:** a custom `RailsGenerator` that emits `models.rb` from any B-UML model.
 
-[BESSER Agentic Framework](https://besser-agentic-framework.readthedocs.io/latest/)
+### Lab 4 — Metamodeling and Advanced Generators *(BLC)*
+
+Go deeper: extend the B-UML metamodel itself, then propagate the change through BESSER's built-in generators. Two exercises: add an `is_unique` property flag and update the SQLAlchemy generator, and add class-method support to the Java generator.
+
+**You'll produce:** a patched BESSER install with new metamodel features and matching generator output.
+
+### Lab 5 — Building Agents with BAF *(BAF)*
+
+Build intelligent agents with the BESSER Agentic Framework. Cover state machines, LLM-backed intent classification, Retrieval-Augmented Generation (RAG) over PDFs, a no-code agent generator from CSV, and custom message processors.
+
+**You'll produce:** a RAG-powered chatbot and a Streamlit app that generates new agents from data.
+
+### Lab 6 — From Modeling to Deployment *(BLC + BAF)*
+
+Capstone lab: put it all together. Use class diagrams, agent diagrams, and the GUI editor to design a library-management system, generate a full app, push to GitHub, and deploy to Render. The final artifact is a live, shareable web app with an integrated agent.
+
+**You'll produce:** a publicly deployed full-stack web application on Render.
+
+---
+
+## Suggested paths
+
+| Your goal | Recommended order |
+|---|---|
+| **Learn BESSER from scratch** | 1 → 2 → 3 → 4 → 5 → 6 |
+| **Just low-code app building** | 1 → 2 → 6 |
+| **Just agent building** | 5 (optionally 2 for the WME's agent editor) |
+| **Generator / metamodel development** | 1 → 3 → 4 |
+| **Deploy something quickly** | 1 → 2 → 6 |
+
+---
+
+## Solutions for educators
+
+A private repository with full solutions to every exercise is available to instructors. To request access, email us at **info@besser-pearl.org**.
+
+---
+
+## Getting help
+
+- **Documentation**
+  - [BESSER low-code platform](https://besser.readthedocs.io/en/latest/)
+  - [BESSER Agentic Framework](https://besser-agentic-framework.readthedocs.io/latest/)
+- **Source code**
+  - [BESSER on GitHub](https://github.com/BESSER-PEARL/BESSER)
+  - [BAF on GitHub](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework)
+- **Web Modeling Editor:** https://editor.besser-pearl.org/
+- **Contact:** info@besser-pearl.org
+
+---
+
+## License
+
+See [LICENSE](LICENSE).
