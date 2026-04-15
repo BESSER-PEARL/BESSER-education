@@ -1,79 +1,138 @@
-# Lab Guide 4: Metamodel extension and code generator improvements
+# Lab 4 — Metamodeling and Advanced Generators
 
-## Welcome to our BESSER lab guide!
+## At a glance
 
-In this guide, you will use [BESSER](https://github.com/BESSER-PEARL/BESSER.git) from the perspective of a developer user. Specifically you will extend the B-UML metamodel and improve some code generators.
+- **You'll learn:** How to extend the B-UML **structural metamodel** to introduce new modeling concepts, and how to update existing code generators to consume them.
+- **You'll produce:** A patched BESSER install where `Property` carries an `is_unique` flag, the SQLAlchemy generator emits unique constraints, and the Java generator emits class methods.
+- **You'll need first:** [Lab 3 — Developing Code Generators](../lab3_developing_code_generators/README.md) for Jinja/generator fundamentals.
+
+---
+
+## Prerequisites
+
+- **Python** 3.11+
+- A **local dev install** of BESSER — you will modify BESSER's own source files, so `pip install besser` is not enough:
+  ```bash
+  git clone https://github.com/BESSER-PEARL/BESSER.git
+  cd BESSER
+  pip install -e ".[all]"
+  ```
+- [Lab 3](../lab3_developing_code_generators/README.md) completed (Jinja + `GeneratorInterface`)
+- Basic Java and SQLAlchemy knowledge
+
+---
 
 ## 1. Context
 
-BESSER provides the B-UML modeling language for creating different [types of models](https://besser.readthedocs.io/en/latest/buml_language/model_types.html) including structural, object, deployment, graphical user interface, etc. These models help define various aspects of a system's architecture and behavior.
+BESSER ships with a rich [B-UML metamodel](https://besser.readthedocs.io/en/latest/buml_language/model_types.html) covering structural, object, deployment, GUI, and other model types. These cover most use cases, but when you build complex systems you inevitably hit features that **aren't yet modeled** — new attributes, constraints, relationships, or behaviors.
 
-However, when developing complex systems, new requirements may arise that go beyond the predefined elements of B-UML. For instance, you might need to specify additional features, new attributes, constraints, relationships, or behaviors that are not currently supported by the existing metamodel.
+When that happens, you **extend the metamodel**. This lab walks you through two representative extensions:
 
-In such cases, extending the BESSER metamodel becomes necessary. By adding new concepts or refining existing ones, you can customize B-UML to better represent the details and specific needs of your system or domain.
+1. Adding a new property attribute to the **structural metamodel**
+2. Propagating a metamodel feature that already exists into a generator that currently ignores it
 
-In this guide, we will focus on:
+Both exercises require you to run BESSER from source so your changes take effect.
 
-- Extending the [Structural model](https://besser.readthedocs.io/en/latest/buml_language/model_types/structural.html) in B-UML to incorporate additional specifications.
+The structural metamodel is the foundation of every B-UML model. Browse its implementation at [`besser/BUML/metamodel/structural/structural.py`](https://github.com/BESSER-PEARL/BESSER/blob/master/besser/BUML/metamodel/structural/structural.py).
 
-- Improving existing code generation templates to produce richer and more detailed outputs based on the extended metamodel.
+---
 
-The structural model serves as the foundation for defining the static structure of an application or system. You can explore its [metamodel in the BESSER documentation](https://besser.readthedocs.io/en/latest/buml_language/model_types/structural.html), while its implementation in Python is available in the [BESSER repository](https://github.com/BESSER-PEARL/BESSER/blob/master/besser/BUML/metamodel/structural/structural.py).
+## 2. Walkthrough
 
-## 2. Requirements
+BESSER's generators use [Jinja2](https://jinja.palletsprojects.com/en/stable/) templates to walk a B-UML model and render target code. Each built-in generator lives in `besser/generators/<tech>/` and contains:
 
-For this lab guide, [running BESSER locally](https://besser.readthedocs.io/en/latest/installation.html#running-besser-locally) is necessary as we will modify the source code.
+- `<tech>_generator.py` — the `GeneratorInterface` subclass
+- `templates/` — the Jinja templates
 
-## 3. Code Generators to Improve
+Low-code platforms can generate up to 80% of an application's code out of the box — but there is always a last 20% where the generator has to be extended. This lab targets two such gaps.
 
-BESSER's code generators use [Jinja](https://jinja.palletsprojects.com/en/stable/), a templating engine for Python, used to dynamically generate HTML or other text-based formats by embedding logic within template files. Each generator in BESSER contains at least one jinja template, which traverses the B-UML model to generate code dynamically.
+---
 
-Low-code platforms can generate up to 80% of an application’s code. However, these generators can often be improved or extended to support additional specifications.
+## 3. Exercises
 
-Let's explore two possible improvements.
+### Exercise 3.1 — Add unique-field support to SQLAlchemy
 
-### 3.1 SQLAlchemy Generator
-
-BESSER provides a [code generator that creates SQLAlchemy models](https://besser.readthedocs.io/en/latest/generators/alchemy.html#) to define the structure of a relational database.
-
-Let's consider the following basic model, where a *Library* can has several *Book*s, and a *Book* is written by at least one *Author*.
+**Problem.** BESSER provides a [SQLAlchemy generator](https://besser.readthedocs.io/en/latest/generators/alchemy.html#) that produces relational models. It does not currently support **unique** columns — you cannot declare that, say, a book's title must be unique (without being a foreign key).
 
 <div align="center">
-  <img src="figs/library_model.png" alt="Example model domain" width="700"/>
+  <img src="figs/library_model.png" alt="Library model" width="700"/>
 </div>
 
-The SQLAlchemy generator currently does not support unique fields. For example, if we want to specify that the book title should be unique (but not necessarily a ForeignKey), the current generator does not allow this.
+**Your tasks**
 
-To address this limitation, we need to extend the Structural metamodel of B-UML, to enable the definition of unique attributes in a class. And then, modify the jinja templates to produce the SQLAlchemy code covering unique fields.
+1. **Extend the metamodel.** Open `besser/BUML/metamodel/structural/structural.py`. Add a new boolean parameter `is_unique` to the `Property` class (constructor, getter, setter). Default to `False`.
 
-> ### **Exercise:**
->
-> Address the limitation above in the SQLAlchemy generator, following the next recommendations:
-> - Update the code of the structural metamodel of B-UML, to include a new parameter in the *Property* class to capture the *is_unique* information. This metamodel is defined in the file *besser/BUML/metamodel/structural/structural.py*
-> - Check the [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/20/core/constraints.html) to identify how to define unique fields in a table.
-> - Update the jinja template of the SQLAlchemy Generator to address the uniqueness of fields. The templates and the generator code are located in the directory *besser/generators/sql_alchemy*
+2. **Wire it through `DomainModel` serialization** if the project has a B-UML JSON/PlantUML converter that currently doesn't round-trip your new flag. (Optional — only if you care about reading/writing files.)
 
-### 3.2 Java Generator
+3. **Update the SQLAlchemy template.** The generator templates live in `besser/generators/sql_alchemy/templates/`. Modify the Jinja so that `Column_(..., unique=True)` is emitted when `property.is_unique` is true. The [SQLAlchemy unique constraint docs](https://docs.sqlalchemy.org/en/20/core/constraints.html) show the expected output syntax.
 
-BESSER also provides a [code generator for Java](https://besser.readthedocs.io/en/latest/generators/java.html). This generator produces a Java domain model based on a structural model to create *Classes*, *constructors*, *getters*, and *setters* methods. You can test the code generator output by using the Library example in the [Web Modeling Editor](https://editor.besser-pearl.org/): Navigate to *File -> Start from Template -> Library*, and select *Generate Code -> OPP -> Java Classes*.
+4. **Smoke test.** Build a small B-UML model programmatically that marks an attribute as unique and run `SQLAlchemyGenerator(...).generate()`. Inspect the generated `output/sql_alchemy.py` and confirm your new `unique=True` argument is present.
 
-Currently, the Java generator does not support class methods generation. For example, suppose your model includes new methods such as `searchBook`, and `notifyByEmail`, as shown below.
+**Acceptance criteria**
 
-<div align="center">
-  <img src="figs/methods_model.png" alt="Library example with methods" width="700"/>
-</div>
+- `Property(name="isbn", type=StringType, is_unique=True)` is accepted by the metamodel without error
+- The generated SQLAlchemy column declaration contains `unique=True`
+- Inserting a duplicate into the generated SQLite database raises an `IntegrityError`
 
-However, the current version of the Java code generator does not process these methods, meaning they will not appear in the generated code.
+---
 
-> ### **Exercise:**
->
-> Modify the Java generator to include method generation by following these recommendations:
-> - The B-UML structural metamodel already supports method definitions, so it's not necessary to modify or extend it.
-> - Modify the jinja templates to address the methods generation. The templates and the generator code are located in the directory *besser/generators/java_classes*
-> - Below is a sample of the code that the generator should produce for the `searchBook` method in the *Library* class.
+### Exercise 3.2 — Add method generation to the Java generator
 
-```java
-public void searchBook(String title) {
-    // Method implementation goes here
-}
-```
+**Problem.** BESSER's [Java generator](https://besser.readthedocs.io/en/latest/generators/java.html) produces classes, fields, constructors, getters, and setters — but **not class methods**. Any operation you define on a class in B-UML is silently dropped at generation time.
+
+**Your tasks**
+
+1. **Confirm the gap.** Model the library example in the [Web Modeling Editor](https://editor.besser-pearl.org/) with an extra method, for example `searchBook(title: String)` on `Library` and `notifyByEmail()` on `Author`. Generate Java via **Generate Code → OOP → Java Classes** and verify the methods are missing.
+
+    <div align="center">
+      <img src="figs/methods_model.png" alt="Library example with methods" width="700"/>
+    </div>
+
+2. **Good news: the metamodel already supports methods.** B-UML's `Class.methods` is already populated — you don't need to change `structural.py`. The gap is purely in the generator template.
+
+3. **Update the Java template.** In `besser/generators/java_classes/templates/java_template.py.j2`, add a loop over `class_obj.methods` that emits each method signature and an empty body. Target output for `searchBook`:
+
+    ```java
+    public void searchBook(String title) {
+        // Method implementation goes here
+    }
+    ```
+
+    Map B-UML types to Java types the same way the template already does for fields (see `java_fields.py.j2`). Loop over `method.parameters` to produce the argument list.
+
+4. **Smoke test.** Regenerate and confirm both `searchBook` and `notifyByEmail` now appear in the Java output with the correct signatures.
+
+**Acceptance criteria**
+
+- The generated Java class contains one method per B-UML method
+- Parameter types are mapped to idiomatic Java types
+- Return type reflects the method's declared return type (default `void` when unset)
+
+---
+
+## 4. Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| Your metamodel changes don't seem to take effect | You have a pip-installed `besser` shadowing your clone | Uninstall with `pip uninstall besser` and reinstall editable: `pip install -e ".[all]"` from your clone |
+| `TypeError: Property.__init__() got an unexpected keyword argument 'is_unique'` | Editing the wrong file (or a stale `.pyc` cache) | Delete `__pycache__` in `besser/BUML/metamodel/structural/` and re-run |
+| SQLAlchemy reserved-name validation fails | Class or attribute named `Base`, `Enum`, `List`, `Table`, `Column`, etc. | Rename — BESSER 7.1.0+ blocks these to avoid SQLAlchemy symbol collisions |
+| Java template error: `'Class' has no attribute 'methods'` | Using an older BESSER checkout | Update to current `master` |
+| Generated tests fail on your local branch | You skipped running BESSER's own test suite | Run `pytest besser/tests` before submitting a patch upstream |
+
+---
+
+## 5. What's next
+
+Head to **[Lab 5 — BESSER Agentic Framework](../lab5_besser_agentic_framework/README.md)** to shift from modeling + generating to building intelligent agents with BAF. If you are happy with your metamodel extensions, consider opening a PR against [BESSER-PEARL/BESSER](https://github.com/BESSER-PEARL/BESSER) — contributions are welcome.
+
+---
+
+## Resources
+
+- [B-UML model types](https://besser.readthedocs.io/en/latest/buml_language/model_types.html)
+- [Structural metamodel](https://besser.readthedocs.io/en/latest/buml_language/model_types/structural.html)
+- [BESSER source on GitHub](https://github.com/BESSER-PEARL/BESSER)
+- [SQLAlchemy generator docs](https://besser.readthedocs.io/en/latest/generators/alchemy.html#)
+- [Java generator docs](https://besser.readthedocs.io/en/latest/generators/java.html)
+- [SQLAlchemy constraints reference](https://docs.sqlalchemy.org/en/20/core/constraints.html)
