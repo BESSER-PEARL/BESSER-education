@@ -94,8 +94,8 @@ lib_book_association: BinaryAssociation = BinaryAssociation(name="lib_book_assoc
 
 # Book-Author association definition
 publishes: Property = Property(name="publishes", type=book, multiplicity=Multiplicity(0, "*"))
-writed_by: Property = Property(name="writtenBy", type=author, multiplicity=Multiplicity(1, "*"))
-book_author_association: BinaryAssociation = BinaryAssociation(name="book_author_assoc", ends={writed_by, publishes})
+written_by: Property = Property(name="writtenBy", type=author, multiplicity=Multiplicity(1, "*"))
+book_author_association: BinaryAssociation = BinaryAssociation(name="book_author_assoc", ends={written_by, publishes})
 
 # Domain model definition
 library_model: DomainModel = DomainModel(name="Library_model", types={library, book, author},
@@ -122,15 +122,22 @@ Modify the `rails_template.py.j2` to build a Ruby on Rails code generator. In ot
 
 ```ruby
 class Library < ApplicationRecord
+  attribute :name, :string
+  attribute :address, :string
   has_many :books
 end
 
 class Book < ApplicationRecord
+  attribute :title, :string
+  attribute :pages, :integer
+  attribute :release, :datetime
   belongs_to :library
   has_and_belongs_to_many :authors
 end
 
 class Author < ApplicationRecord
+  attribute :name, :string
+  attribute :email, :string
   has_and_belongs_to_many :books
 end
 ```
