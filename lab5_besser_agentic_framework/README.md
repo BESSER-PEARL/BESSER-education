@@ -1,4 +1,4 @@
-# Lab Guide 5: Building agents with BESSER Agentic Framework
+# Lab Guide 4: Building agents with BESSER Agentic Framework
 
 ## Welcome to our BESSER lab guide!
 
@@ -13,41 +13,83 @@ BAF is a Python library with which you can design agents with rule-based behavio
 ## 1. Requirements
 
 Follow the instructions in the [documentation](https://besser-agentic-framework.readthedocs.io/latest/) to install BAF.
-You will need to add the option [all]
+You will need to add the options [extras,llms,pytorch]
+
+You can check if the installation was properly done by running an example agent in the BAF library. You can try to run the Greetings Agent:
 
 ```python
-pip install besser-agentic-framework[all]
+from baf.test.examples.greetings_agent import agent
+
+agent.run()
 ```
 
-You can check if the installation was properly done by creating a minimal agent:
+## 2. No-code agent development
+
+In this exercise we will create an agent without writing any code, just by using the BESSER Web Modeling Editor.
+
+https://editor.besser-pearl.org/
+
+We will create an agent that can query a SQL database using Natural Language.
+
+Go to the agent diagram editor and load the template agent **Database Agent**
+
+Once you have loaded the agent model, we can export the actual Agent Python code.
+
+For this exercise, we will use this Database: https://github.com/lerocha/chinook-database
+
+Go to Releases and downlaod the latest .sqlite file.
+
+Then, go to the config.yaml file and add the path to the database (under the section db.sql)
+
+At this point, you can run and test the agent.
+
+The generated agent uses the LLM to generate an answer from the retrieved data from the database. We can modify it so that the agent answer is only the sql data without any LLM processing.
+To do so, we will add this function to our agent:
 
 ```python
-from baf.core.agent import Agent
+import pandas as pd
 
-agent = Agent('test_agent')
-print('BAF installed correctly. Agent created:', agent.name)
+def to_dataframe(result):
+    if result is None:
+        return None
+
+    # Multiple rows
+    if isinstance(result, list):
+        return pd.DataFrame(result)
+
+    # Single row (dict)
+    if isinstance(result, dict):
+        return pd.DataFrame([result])
+
+    # Scalar value
+    return pd.DataFrame([{"value": result}])
+
 ```
 
-## 2. Low-code agent development
+This will parse our SQL result into a Pandas Dataframe.
+The last step is to change the type of reply of the agent to a Dataframe reply.
+
+
+## 3. Low-code agent development
 
 In this exercise we will create an agent powered by [RAG](https://besser-agentic-framework.readthedocs.io/latest/wiki/nlp/rag.html)
 and an [LLM](https://besser-agentic-framework.readthedocs.io/latest/wiki/nlp/llm.html). This is how the agent's state machine will look like:
 
 <div align="center">
-  <img src="figs/smart_agent.png" alt="Agent state machine" width="600"/>
+  <img src="figs/rag_agent.png" alt="Agent state machine" width="600"/>
 </div>
 
-In [smart_agent.py](smart_agent.py), you will write the agent code. This file already contains some code to import the necessary classes and create the agent.
+In [rag_agent.py](rag_agent.py), you will write the agent code. This file already contains some code to import the necessary classes and create the agent.
 
 ```python
 agent = Agent('rag_agent')
 ```
 
-You will need an OpenAI API key. You can store it in a dedicated `config.yaml` file, or define it directly in the code:
+You will need an OpenAI API key. You can store it in a dedicated `config.ini` file, or define it directly in the code:
 
 ```python
 # option 1
-agent.load_properties('config.yaml')
+agent.load_properties('config.ini')
 # option 2
 agent.set_property(OPENAI_API_KEY, 'YOUR-API-KEY')
 ```
@@ -138,14 +180,14 @@ to be triggered when a file is received.
 (more info: https://besser-agentic-framework.readthedocs.io/latest/wiki/core/transitions.html#file-transitions)
 
 ```python
-awaiting_state.when_file_received(allowed_types='application/pdf').go_to(load_document_state)
+awaiting_state.when_file_received_go_to(load_document_state, allowed_types='application/pdf')
 ```
 
 Next, we need to implement the body of `load_document_state`:
 
 ```python
 def load_document_body(session: Session):
-    file: File = session.event.file
+    file: File = session.file
     load_pdf_from_base64(file, rag)
     session.reply('Document loaded!')
 
@@ -199,7 +241,7 @@ Now, we will define the body of the `rag_state`
 
 ```python
 def rag_body(session: Session):
-    rag_message: RAGMessage = session.run_rag(session.event.message)
+    rag_message: RAGMessage = session.run_rag(session.message)
     # You can save the answer in the session if you want it for later
     websocket_platform.reply_rag(session, rag_message)
 
@@ -223,7 +265,7 @@ This way, when a question is sent, the agent will run RAG, while when the messag
 ```python
 def llm_body(session: Session):
     # You can add some instructions together with the message to adapt the LLM message (e.g., "You are an expert in...", "You are talking to a kid...", etc.)
-    answer = gpt.predict(session.event.message)
+    answer = gpt.predict(session.message)
     session.reply(answer)
 
 
@@ -233,72 +275,11 @@ llm_state.go_to(awaiting_state)
 
 At this point, you can run the agent to test all the functionalities we implemented! Feel free to extend it for other tasks!
 
-## 3. Creating an agent generator
-
-In the previous exercise, you learned how to create an agent from scratch with the help of the BAF low-code features, where you simply had to worry about the agent logics.
-
-Now, you will follow a no-code approach where the agent will be automatically generated from a csv file.
-
-The [agent_generation](agent_generation) package contains the code of a GUI that allows you to upload a csv file, generate an agent with that file and use all the generated agents.
-
-To run it, simply:
-```bash
-streamlit run agent_generation.py
-```
-(Streamlit allows you to run updated python code without rerunning the program. Simply refresh the browser and it will run your updated code.)
-
-You will see a form to import a csv file. As an example, see the [sample_data.csv](agent_generation/sample_data.csv) we provide.
-
-The csv structure is 2 columns (question and answer), where multiple questions can result in the same answer (that is why there are questions with no answer in the sample data)
-
-Your task is to implement the function generate_agent() in [agent_generator.py](agent_generation/generator/agent_generator.py). It is called every time you press the 'Create agent' button.
-This function receives as arguments the agent name and the pandas DataFrame containing the csv content. You need to create a JSON-like object
-(a Python dictionary) containing the necessary information to generate an agent script, similar to the one you created in the previous exercise.
-
-To generate the agent, you will have to crate a Jinja template, filling the file [agent_generation.py.j2](agent_generation/generator/agent_generation.py.j2) with the agent template (i.e. a Python code template).
-This template will be filled thanks to parameters (those you will store in the dictionary, based on the csv content), such as the intents or the states.
-
-The generated agents will have a "central" state and one state for each kind of question in the csv file. The central state
-will be the entry point to receive any of the questions provided in the csv file. The other states will be in charge of replying the answers to the user.
-
-Some tips to use Jinja template:
-
-Example JSON data used to fill the template:
-
-```
-data = {
-    'elements': [
-        {
-            'name': 'e1',
-            'value': True
-        },
-    ]
-}
-```
-
-How to create loops:
-
-```
-{% for element in elements %}
- Your code here
-{% endfor %}
-```
-
-How to access elements in the JSON data:
-
-```
-{{ element.name }}
-```
-
-You can use these delimiters to generate your agent code based on the csv file data.
-
-The generated agent scripts will be stored in the [agents](agent_generation/agents) package.
-
 ## 4. Implementing a custom language processor
 
 A [processor](https://besser-agentic-framework.readthedocs.io/latest/wiki/core/processors.html) can be used to process user and/or agent messages for specific purposes.
-BAF comes with example processors to (1) [detect the message language](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework/blob/main/baf/core/processors/language_detection_processor.py)
-and (2) [adapt the agent messages to specific user profiles](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework/blob/main/baf/core/processors/user_adaptation_processor.py) (this one using an LLM).
+BAF comes with 2 example processors to (1) [detect the message language](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework/blob/v2.1.0/besser/agent/core/processors/language_detection_processor.py)
+and (2) [adapt the agent messages to specific user profiles](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework/blob/v2.1.0/besser/agent/core/processors/user_adaptation_processor.py) (this one using an LLM).
 
 In this exercise, you will create a custom processor for your agent. Read the processors documentation and the existing processors to understand how to create it. Here you have some ideas for processors:
 

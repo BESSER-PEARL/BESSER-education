@@ -26,7 +26,7 @@ logger.setLevel(logging.INFO)
 agent = Agent('rag_agent')
 # Load agent properties stored in a dedicated file
 agent.load_properties('config.yaml')
-# agent.set_property(OPENAI_API_KEY, 'YOUR-API-KEY')  # Uncomment if not using config.yaml
+# agent.set_property(OPENAI_API_KEY, 'YOUR-API-KEY')  # You can also specify a property here
 # Define the platform your agent will use
 websocket_platform = agent.use_websocket_platform(use_ui=True)
 
