@@ -1,4 +1,4 @@
-# Lab Guide 4: Building agents with BESSER Agentic Framework
+# Lab Guide 5: Building agents with BESSER Agentic Framework
 
 ## Welcome to our BESSER lab guide!
 
