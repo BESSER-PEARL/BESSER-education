@@ -205,7 +205,60 @@ Test the web application, the agent, and all related components.
 
 ---
 
-# 7. Support Us
+## 7. Extending the Library Application
+
+In many real projects, applications evolve as new requirements appear. In this section, you will extend the existing system by modifying the models and redeploying the application.
+
+You will introduce a new concept into the domain model and propagate the changes through the agent, the GUI, and the deployed application.
+
+### 7.1 Extend the Class Diagram
+
+The library system should now also keep track of **publishers** responsible for publishing books.
+
+Extend the current domain model to represent this new concept.
+
+Each **publisher** should store relevant information such as its name, the country where it is based, and the year it was founded. Books in the system should be associated with the publisher that released them. A publisher may release many books, while each book is published by a single publisher.
+
+In addition to representing publishers in the model, the system should be able to provide simple analytics about them. In particular, a publisher should be able to determine the **average price of the books it has published**.
+
+Update the class diagram accordingly by introducing the necessary class, attributes, relationship with books, and a method that computes this information.
+
+**Tip:** In BESSER, method bodies can be implemented either in **Python** or using the **[BESSER Action Language (BAL)](https://besser.readthedocs.io/en/latest/besser_action_language/overview.html)**. You are free to choose either option. The current model already contains two example methods that you can use as inspiration for syntax and structure.
+
+### 7.2 Extend the Agent Model
+
+The library assistant should now also help users understand how to obtain information about **publishers** in the application.
+
+Extend the agent model so that users can ask how to compute the **average price of the books published by a publisher**.
+
+Add a new **intent** related to this question. Include a few example user phrases such as:
+
+- "how can I get the average price of books from a publisher?"
+- "average book price for a publisher"
+- "how do I compute the publisher average price?"
+
+When this intent is detected, the agent should transition from the **Idle** state to a new state that explains how to perform this action in the application.
+
+In this new state, the agent can provide simple instructions, similar to the existing *CheapestBook* explanation. For example:
+
+1. Go to the **Publisher** tab.  
+2. Select a publisher in the table.  
+3. Click on **Average Book Price**.  
+4. Click **Execute** to compute the result.
+
+After responding, the agent should automatically return to the **Idle** state, following the same transition pattern used by the other states.
+
+### 7.3 Update the GUI
+
+After extending the domain model and the agent, the graphical user interface must be updated to reflect these changes.
+
+Go to the **GUI perspective** in the BESSER editor and update the interface so that the new **Publisher** entity can be managed in the application.
+
+As a tip, you can use the **Auto‑Generate GUI from Class Diagram** feature again. This will regenerate the GUI based on the updated class diagram and automatically create the necessary interface components, including a new page for **Publisher** with its corresponding table and form.
+
+After regenerating the GUI, note that the **agent component will be removed** by the auto‑generation process. You will therefore need to add it again manually.
+
+# 8. Support Us
 
 If you found this laboratory guide helpful and would like to support our work, you can:
 
@@ -225,7 +278,7 @@ If you found this laboratory guide helpful and would like to support our work, y
 
 Your support is greatly appreciated and helps us continue developing and improving these resources.
 
-## 8. Additional Resources
+## 9. Additional Resources
 
 - [BESSER Documentation](https://besser.readthedocs.io/en/latest/)
 - [BESSER Web Modeling Editor Documentation](https://besser.readthedocs.io/projects/besser-web-modeling-editor/en/latest/)
@@ -237,7 +290,7 @@ Your support is greatly appreciated and helps us continue developing and improvi
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 
 
-## 9. Summary
+## 10. Summary
 
 In this lab, you have learned how to:
 
