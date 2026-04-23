@@ -258,6 +258,23 @@ As a tip, you can use the **Auto‑Generate GUI from Class Diagram** feature aga
 
 After regenerating the GUI, note that the **agent component will be removed** by the auto‑generation process. You will therefore need to add it again manually.
 
+### 7.4 Redeploy and Test the Application
+
+After updating the class diagram, agent, and GUI, you need to regenerate and redeploy the application to reflect these changes.
+
+Repeat the same deployment process described in **Section 6.3**:
+
+1. Click **Deploy → Publish Web App to Render**  
+2. Update the existing repository or create a new one  
+3. Trigger the deployment in Render  
+
+Once the deployment is complete, open the application and verify that:
+
+- The new **Publisher** entity is available in the GUI  
+- You can create and manage publishers  
+- The **Average Book Price** method works correctly  
+- The agent correctly answers questions based on the new intents created
+
 # 8. Support Us
 
 If you found this laboratory guide helpful and would like to support our work, you can:
