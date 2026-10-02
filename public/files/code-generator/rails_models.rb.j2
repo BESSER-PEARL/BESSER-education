@@ -1,0 +1,5 @@
+{% for class in sort_by_timestamp(model.get_classes()) %}
+class {{ class.name }} < ApplicationRecord
+end
+
+{% endfor %}

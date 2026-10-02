@@ -1,0 +1,21 @@
+# BAF configuration for the BESSER Labs "agents-baf" lab.
+# Replace YOUR-API-KEY with your own OpenAI API key. Never commit this file with a real key.
+agent:
+  check_transitions_delay: 5
+
+nlp:
+  language: en
+  region: US
+  timezone: Europe/Madrid
+  pre_processing: True
+  intent_threshold: 0.4
+  openai:
+    api_key: YOUR-API-KEY
+
+platforms:
+  websocket:
+    host: localhost
+    port: 8765
+    streamlit:
+      host: localhost
+      port: 5000

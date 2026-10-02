@@ -1,0 +1,644 @@
+{
+  "project": {
+    "id": "2ae769c0-26dc-47dc-9514-b8ad29bd9c17",
+    "type": "Project",
+    "schemaVersion": 4,
+    "name": "Research_Lab",
+    "description": "Modern workspace project for UML, GUI and quantum modeling.",
+    "owner": "BESSER User",
+    "createdAt": "2026-10-02T09:05:42.490Z",
+    "currentDiagramType": "ClassDiagram",
+    "currentDiagramIndices": {
+      "ClassDiagram": 0,
+      "ObjectDiagram": 0,
+      "StateMachineDiagram": 0,
+      "AgentDiagram": 0,
+      "UserDiagram": 0,
+      "GUINoCodeDiagram": 0,
+      "QuantumCircuitDiagram": 0,
+      "NNDiagram": 0,
+      "BPMN": 0
+    },
+    "diagrams": {
+      "ClassDiagram": [
+        {
+          "id": "8483146c-ef52-424b-a096-c37acb534803",
+          "title": "Class Diagram",
+          "model": {
+            "version": "3.0.0",
+            "type": "ClassDiagram",
+            "size": {
+              "width": 1020,
+              "height": 780
+            },
+            "interactive": {
+              "elements": {},
+              "relationships": {}
+            },
+            "elements": {
+              "98751e50-b236-4e58-adec-0104d820f170": {
+                "id": "98751e50-b236-4e58-adec-0104d820f170",
+                "name": "ResearchEvent",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -400,
+                  "y": -320,
+                  "width": 160,
+                  "height": 160
+                },
+                "attributes": [
+                  "e13a91b5-ebf2-425d-8b62-e08557c47e6b",
+                  "4b89f072-d6e8-42e8-acc2-4fffc1e6179b",
+                  "2aac8154-ddcf-43e8-a091-d20d4d0066fc",
+                  "c53b7782-2715-4ea1-b784-c0c2efa70026"
+                ],
+                "methods": []
+              },
+              "e13a91b5-ebf2-425d-8b62-e08557c47e6b": {
+                "id": "e13a91b5-ebf2-425d-8b62-e08557c47e6b",
+                "name": "name",
+                "type": "ClassAttribute",
+                "owner": "98751e50-b236-4e58-adec-0104d820f170",
+                "bounds": {
+                  "x": -399.5,
+                  "y": -279.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "4b89f072-d6e8-42e8-acc2-4fffc1e6179b": {
+                "id": "4b89f072-d6e8-42e8-acc2-4fffc1e6179b",
+                "name": "start",
+                "type": "ClassAttribute",
+                "owner": "98751e50-b236-4e58-adec-0104d820f170",
+                "bounds": {
+                  "x": -399.5,
+                  "y": -249.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "date",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "2aac8154-ddcf-43e8-a091-d20d4d0066fc": {
+                "id": "2aac8154-ddcf-43e8-a091-d20d4d0066fc",
+                "name": "end",
+                "type": "ClassAttribute",
+                "owner": "98751e50-b236-4e58-adec-0104d820f170",
+                "bounds": {
+                  "x": -399.5,
+                  "y": -219.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "date",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "c53b7782-2715-4ea1-b784-c0c2efa70026": {
+                "id": "c53b7782-2715-4ea1-b784-c0c2efa70026",
+                "name": "mode",
+                "type": "ClassAttribute",
+                "owner": "98751e50-b236-4e58-adec-0104d820f170",
+                "bounds": {
+                  "x": -399.5,
+                  "y": -189.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "EventMode",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "c6c5920d-49bf-4298-bcf1-7d8c2121d40a": {
+                "id": "c6c5920d-49bf-4298-bcf1-7d8c2121d40a",
+                "name": "Paper",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -80,
+                  "y": -320,
+                  "width": 160,
+                  "height": 130
+                },
+                "attributes": [
+                  "50cabdee-09a3-4c82-918a-22f184d635a2",
+                  "b7efc836-c550-4a9a-8987-248c68576604",
+                  "1b1bb1f1-1e60-44fc-8143-2e5f49ebf774"
+                ],
+                "methods": []
+              },
+              "50cabdee-09a3-4c82-918a-22f184d635a2": {
+                "id": "50cabdee-09a3-4c82-918a-22f184d635a2",
+                "name": "title",
+                "type": "ClassAttribute",
+                "owner": "c6c5920d-49bf-4298-bcf1-7d8c2121d40a",
+                "bounds": {
+                  "x": -79.5,
+                  "y": -279.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "b7efc836-c550-4a9a-8987-248c68576604": {
+                "id": "b7efc836-c550-4a9a-8987-248c68576604",
+                "name": "submitted",
+                "type": "ClassAttribute",
+                "owner": "c6c5920d-49bf-4298-bcf1-7d8c2121d40a",
+                "bounds": {
+                  "x": -79.5,
+                  "y": -249.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "date",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "1b1bb1f1-1e60-44fc-8143-2e5f49ebf774": {
+                "id": "1b1bb1f1-1e60-44fc-8143-2e5f49ebf774",
+                "name": "acceptance",
+                "type": "ClassAttribute",
+                "owner": "c6c5920d-49bf-4298-bcf1-7d8c2121d40a",
+                "bounds": {
+                  "x": -79.5,
+                  "y": -219.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "bool",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "3900fbe4-8295-413f-b1a1-c3e6b6a65c40": {
+                "id": "3900fbe4-8295-413f-b1a1-c3e6b6a65c40",
+                "name": "Researcher",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -80,
+                  "y": -10,
+                  "width": 160,
+                  "height": 100
+                },
+                "attributes": [
+                  "51818607-1059-4a33-a81a-44bfac05c551",
+                  "ef3b700a-1458-4c4f-ae59-5c76b0a0d7b7"
+                ],
+                "methods": []
+              },
+              "51818607-1059-4a33-a81a-44bfac05c551": {
+                "id": "51818607-1059-4a33-a81a-44bfac05c551",
+                "name": "name",
+                "type": "ClassAttribute",
+                "owner": "3900fbe4-8295-413f-b1a1-c3e6b6a65c40",
+                "bounds": {
+                  "x": -79.5,
+                  "y": 30.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "ef3b700a-1458-4c4f-ae59-5c76b0a0d7b7": {
+                "id": "ef3b700a-1458-4c4f-ae59-5c76b0a0d7b7",
+                "name": "institution",
+                "type": "ClassAttribute",
+                "owner": "3900fbe4-8295-413f-b1a1-c3e6b6a65c40",
+                "bounds": {
+                  "x": -79.5,
+                  "y": 60.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "1e999c06-c43d-4ff9-8326-50bad4407a7b": {
+                "id": "1e999c06-c43d-4ff9-8326-50bad4407a7b",
+                "name": "Conference",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -490,
+                  "y": 30,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "ed60f423-f49f-4082-b20b-341c2fb8c558"
+                ],
+                "methods": []
+              },
+              "ed60f423-f49f-4082-b20b-341c2fb8c558": {
+                "id": "ed60f423-f49f-4082-b20b-341c2fb8c558",
+                "name": "acronym",
+                "type": "ClassAttribute",
+                "owner": "1e999c06-c43d-4ff9-8326-50bad4407a7b",
+                "bounds": {
+                  "x": -489.5,
+                  "y": 70.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "4cf8e126-5948-4611-b23c-a7c7b109b478": {
+                "id": "4cf8e126-5948-4611-b23c-a7c7b109b478",
+                "name": "Workshop",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -280,
+                  "y": 30,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "eb02dcd4-984b-4539-b2e7-a9bf412976e2"
+                ],
+                "methods": []
+              },
+              "eb02dcd4-984b-4539-b2e7-a9bf412976e2": {
+                "id": "eb02dcd4-984b-4539-b2e7-a9bf412976e2",
+                "name": "topic",
+                "type": "ClassAttribute",
+                "owner": "4cf8e126-5948-4611-b23c-a7c7b109b478",
+                "bounds": {
+                  "x": -279.5,
+                  "y": 70.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "3aaa362c-0138-4b04-82ed-f49c27be00dc": {
+                "id": "3aaa362c-0138-4b04-82ed-f49c27be00dc",
+                "name": "EventMode",
+                "type": "Enumeration",
+                "owner": null,
+                "bounds": {
+                  "x": -320,
+                  "y": 230,
+                  "width": 160,
+                  "height": 140
+                },
+                "attributes": [
+                  "aaabce48-f0bb-493b-802f-72d0e8371352",
+                  "b81e68bb-cb63-4c84-b00f-1171a41913bc",
+                  "34ea1d76-a9f6-452e-af5b-2ed7f73c5f9b"
+                ],
+                "methods": []
+              },
+              "aaabce48-f0bb-493b-802f-72d0e8371352": {
+                "id": "aaabce48-f0bb-493b-802f-72d0e8371352",
+                "name": "in_person",
+                "type": "ClassAttribute",
+                "owner": "3aaa362c-0138-4b04-82ed-f49c27be00dc",
+                "bounds": {
+                  "x": -319.5,
+                  "y": 280.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "b81e68bb-cb63-4c84-b00f-1171a41913bc": {
+                "id": "b81e68bb-cb63-4c84-b00f-1171a41913bc",
+                "name": "online",
+                "type": "ClassAttribute",
+                "owner": "3aaa362c-0138-4b04-82ed-f49c27be00dc",
+                "bounds": {
+                  "x": -319.5,
+                  "y": 310.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "34ea1d76-a9f6-452e-af5b-2ed7f73c5f9b": {
+                "id": "34ea1d76-a9f6-452e-af5b-2ed7f73c5f9b",
+                "name": "hybrid",
+                "type": "ClassAttribute",
+                "owner": "3aaa362c-0138-4b04-82ed-f49c27be00dc",
+                "bounds": {
+                  "x": -319.5,
+                  "y": 340.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              }
+            },
+            "relationships": {
+              "3b51138a-4c73-4ec4-a79a-792b88c1111c": {
+                "id": "3b51138a-4c73-4ec4-a79a-792b88c1111c",
+                "name": "authorship",
+                "type": "ClassBidirectional",
+                "owner": null,
+                "bounds": {
+                  "x": -58.375,
+                  "y": -190,
+                  "width": 88.1640625,
+                  "height": 189
+                },
+                "path": [
+                  {
+                    "x": 58.375,
+                    "y": 0
+                  },
+                  {
+                    "x": 58.375,
+                    "y": 180
+                  }
+                ],
+                "source": {
+                  "direction": "Down",
+                  "element": "c6c5920d-49bf-4298-bcf1-7d8c2121d40a",
+                  "multiplicity": "*",
+                  "role": "papers",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Up",
+                  "element": "3900fbe4-8295-413f-b1a1-c3e6b6a65c40",
+                  "multiplicity": "1..*",
+                  "role": "authors",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "cde98ed4-a3f8-4b14-ae9d-8f3a4124795a": {
+                "id": "cde98ed4-a3f8-4b14-ae9d-8f3a4124795a",
+                "name": "presented_at",
+                "type": "ClassComposition",
+                "owner": null,
+                "bounds": {
+                  "x": -240,
+                  "y": -265,
+                  "width": 160,
+                  "height": 48
+                },
+                "path": [
+                  {
+                    "x": 160,
+                    "y": 10
+                  },
+                  {
+                    "x": 0,
+                    "y": 10
+                  }
+                ],
+                "source": {
+                  "direction": "Left",
+                  "element": "c6c5920d-49bf-4298-bcf1-7d8c2121d40a",
+                  "multiplicity": "*",
+                  "role": "papers",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Right",
+                  "element": "98751e50-b236-4e58-adec-0104d820f170",
+                  "multiplicity": "1",
+                  "role": "event",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "ab2e874a-1d75-4c80-afe4-a75aea60be71": {
+                "id": "ab2e874a-1d75-4c80-afe4-a75aea60be71",
+                "name": "",
+                "type": "ClassInheritance",
+                "owner": null,
+                "bounds": {
+                  "x": -370,
+                  "y": -160,
+                  "width": 10,
+                  "height": 190
+                },
+                "path": [
+                  {
+                    "x": 5,
+                    "y": 190
+                  },
+                  {
+                    "x": 5,
+                    "y": 0
+                  }
+                ],
+                "source": {
+                  "direction": "Up",
+                  "element": "1e999c06-c43d-4ff9-8326-50bad4407a7b",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Down",
+                  "element": "98751e50-b236-4e58-adec-0104d820f170",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "552e13e0-26e1-4a78-b0b8-6a07b86c5efc": {
+                "id": "552e13e0-26e1-4a78-b0b8-6a07b86c5efc",
+                "name": "",
+                "type": "ClassInheritance",
+                "owner": null,
+                "bounds": {
+                  "x": -265,
+                  "y": -160,
+                  "width": 10,
+                  "height": 190
+                },
+                "path": [
+                  {
+                    "x": 5,
+                    "y": 190
+                  },
+                  {
+                    "x": 5,
+                    "y": 0
+                  }
+                ],
+                "source": {
+                  "direction": "Up",
+                  "element": "4cf8e126-5948-4611-b23c-a7c7b109b478",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Down",
+                  "element": "98751e50-b236-4e58-adec-0104d820f170",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              }
+            },
+            "assessments": {}
+          },
+          "lastUpdate": "2026-10-02T09:06:06.476Z"
+        }
+      ]
+    },
+    "settings": {
+      "defaultDiagramType": "ClassDiagram",
+      "autoSave": true,
+      "collaborationEnabled": false,
+      "perspectives": {
+        "ClassDiagram": true,
+        "ObjectDiagram": true,
+        "StateMachineDiagram": false,
+        "AgentDiagram": false,
+        "UserDiagram": false,
+        "GUINoCodeDiagram": false,
+        "QuantumCircuitDiagram": false,
+        "NNDiagram": false,
+        "BPMN": false
+      },
+      "preferredInterface": "model"
+    }
+  },
+  "exportedAt": "2026-10-02T09:06:14.013Z",
+  "version": "2.0.0",
+  "besserVersion": "8.0.0",
+  "editorVersion": "1.0.0"
+}
