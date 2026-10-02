@@ -5,7 +5,8 @@ import { getLabs, formatDuration } from '../lib/labs';
 import { labUrl, withBase } from '../lib/paths';
 
 const labs = await getLabs();
-const first = labs[0];
+const modelStart = labs.find((l) => l.id === 'first-model') ?? labs[0];
+const describeStart = labs.find((l) => l.id === 'modeling-assistant');
 const browserOnly = labs.filter((l) => l.data.setup.every((s) => s === 'Browser' || s === 'GitHub')).length;
 const totalMinutes = labs.reduce((sum, l) => sum + l.data.duration, 0);
 ---
@@ -20,17 +21,38 @@ const totalMinutes = labs.reduce((sum, l) => sum + l.data.duration, 0);
         Each lab is a guided exercise you can finish in one sitting. You model something, generate code
         from it, and check that it runs. {browserOnly} of the {labs.length} labs run entirely in the browser.
       </p>
-      <div class="hero__actions">
-        {first && <a class="btn btn--primary" href={labUrl(first.id)}>Start Lab {first.data.number}</a>}
-        <a class="btn" href={withBase('/labs/')}>See all labs</a>
-      </div>
     </div>
+  </section>
+
+  <section class="wrap paths" aria-labelledby="paths-title">
+    <h2 id="paths-title" class="paths__title">How do you want to build?</h2>
+    <div class="paths__grid">
+      <a class="path" href={labUrl(modelStart.id)}>
+        <span class="path__name">Model it</span>
+        <span class="path__text">
+          Draw the model yourself on the canvas and generate code from it. The way to learn model-driven
+          engineering, from your first class diagram up.
+        </span>
+        <span class="path__go">Start with Lab {modelStart.data.number}, {formatDuration(modelStart.data.duration)}</span>
+      </a>
+      {describeStart && (
+        <a class="path" href={labUrl(describeStart.id)}>
+          <span class="path__name">Describe it</span>
+          <span class="path__text">
+            Say what you want in plain words. The assistant builds the model and the code, and you check and
+            refine it. No modeling knowledge needed.
+          </span>
+          <span class="path__go">Start with Lab {describeStart.data.number}, {formatDuration(describeStart.data.duration)}</span>
+        </a>
+      )}
+    </div>
+    <p class="paths__more">These are the same two choices the editor offers when you first open it. <a href={withBase('/labs/')}>See all labs</a></p>
   </section>
 
   <section class="wrap map-section" aria-label="Curriculum">
     <p class="map-section__lede">
-      Every track builds on the foundations. After Lab 1, take the tracks in any order.
-      The full set takes about {Math.round(totalMinutes / 60)} hours.
+      The labs as a model: every track builds on the foundations, except Build with AI, which you can
+      start without them. The full set takes about {Math.round(totalMinutes / 60)} hours.
     </p>
     <CurriculumMap />
   </section>
@@ -64,7 +86,13 @@ const totalMinutes = labs.reduce((sum, l) => sum + l.data.duration, 0);
         Suggested sequences for a two-hour workshop, a one-day bootcamp and a full semester, plus how to get
         the solutions repository.
       </p>
-      <a href={withBase('/teach/')}>Plan a course with the labs</a>
+      <p>
+        We're also happy to come to your classroom to give a talk and run a hands-on workshop with your students.
+      </p>
+      <div class="closing__actions">
+        <a class="btn btn--primary" href="mailto:info@besser-pearl.org?subject=BESSER%20talk%20and%20workshop">Contact us</a>
+        <a href={withBase('/teach/')}>Plan a course with the labs</a>
+      </div>
     </div>
     <div class="closing__item">
       <h2>Missing a lab?</h2>
@@ -94,7 +122,6 @@ const totalMinutes = labs.reduce((sum, l) => sum + l.data.duration, 0);
   }
   .hero__intro { max-width: 46ch; padding-bottom: 6px; }
   .hero__intro p { font-size: var(--step-1); line-height: 1.5; color: var(--ink-soft); }
-  .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 
   .map-section__lede { color: var(--ink-soft); margin-bottom: 16px; max-width: 70ch; }
 
@@ -122,6 +149,23 @@ const totalMinutes = labs.reduce((sum, l) => sum + l.data.duration, 0);
   .closing__item h2 { font-size: var(--step-2); }
   .closing__item p { margin-block: 10px 14px; color: var(--ink-soft); max-width: 52ch; }
   .closing__item a { font-weight: 700; }
+  .closing__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+
+  .paths { margin-bottom: clamp(48px, 7vw, 80px); }
+  .paths__title { font-size: var(--step-2); }
+  .paths__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 18px; }
+  .path {
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 24px 26px; border: 1.5px solid var(--line-strong); border-radius: var(--radius-m);
+    background: var(--surface); color: var(--ink); text-decoration: none;
+  }
+  .path:hover { background: var(--teal-wash); }
+  .path:hover .path__go { text-decoration: underline; }
+  .path__name { font: 700 var(--step-3) / 1 var(--font-display); font-stretch: 85%; }
+  .path__text { color: var(--ink-soft); max-width: 52ch; }
+  .path__go { margin-top: auto; padding-top: 6px; font-weight: 700; color: var(--teal); }
+  .paths__more { margin-top: 14px; color: var(--ink-soft); font-size: var(--step--1); }
+  @media (max-width: 760px) { .paths__grid { grid-template-columns: minmax(0, 1fr); } }
 
   @media (max-width: 900px) {
     .hero { grid-template-columns: minmax(0, 1fr); align-items: start; }

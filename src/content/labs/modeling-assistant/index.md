@@ -8,26 +8,26 @@ level: Beginner
 setup: [Browser]
 needs:
   - A modern desktop browser (Chrome, Edge or Firefox)
-  - Lab 1 (Your first class diagram) or equivalent familiarity with the editor canvas
+  - No modeling experience (the lab explains what you see on the canvas)
 outcomes:
   - Start a project in the Describe it (agentic) interface
   - Create a class diagram from a plain-language description
   - Refine a model with follow-up prompts and undo an assistant edit with Ctrl+Z
   - Verify what the assistant changed on the canvas and with Quality Check
   - Add a state machine and trigger a code generator from the chat
-before: [first-model]
+before: []
 files: []
 updated: 2026-10-02
 version: "8.0"
 draft: false
 ---
 
-In Lab 1 you drew every class and association by hand. The Web Modeling Editor also has an agentic interface: you describe what you want in plain words, and the Modeling Assistant creates and edits the diagrams on the live canvas. The diagrams it produces are ordinary B-UML models, so everything you learned on the canvas still applies, and you can switch between chatting and drawing at any time.
+This is the lab to start with if you want to build software with BESSER without learning modeling first. The Web Modeling Editor has an agentic interface: you describe what you want in plain words, and the Modeling Assistant creates and edits the diagrams for you on a live canvas. Those diagrams are the model BESSER generates code from, so you only need to read them, not draw them. If you later want to draw them yourself, [Lab 1](/labs/first-model/) shows how, and you can switch between chatting and drawing at any time.
 
 In this lab you model a small clinic: patients book appointments with doctors. You build the class diagram by conversation, refine it, add a rule, add a state machine for the appointment lifecycle, and generate a PostgreSQL schema, all from the chat. Throughout, you check the result yourself instead of trusting the reply.
 
 :::note
-The assistant runs on a separate BESSER service. On [editor.besser-pearl.org](https://editor.besser-pearl.org) it is hosted for you and needs no API key or account; requests are rate limited per browser tab. Your messages and a snapshot of the current project are sent to that service so it can answer. The project itself stays in your browser's storage, as in Lab 1. Do not paste personal or confidential data into the chat.
+The assistant runs on a separate BESSER service. On [editor.besser-pearl.org](https://editor.besser-pearl.org) it is hosted for you and needs no API key or account; requests are rate limited per browser tab. Your messages and a snapshot of the current project are sent to that service so it can answer. The project itself stays in your browser's storage. Do not paste personal or confidential data into the chat.
 :::
 
 ## Start a project in Describe it mode
@@ -70,7 +70,7 @@ The wording of the reply, the attribute names and the layout differ from run to 
 :::
 
 :::troubleshoot
-**The reply says "I had a bit of trouble building everything at once, but I set up 3 item(s)..." and each class only has `+ id: str`.** The assistant fell back to placeholder classes because its language-model call failed on the server. The same happens if every follow-up returns "I couldn't process that modification. Please try again or rephrase your request." This is a service problem, not a problem with your prompt. Wait a few minutes and click :ui[New Chat] to try again, or continue the lab on the canvas: add the attributes and associations by hand as in [Lab 1](/labs/first-model/), then come back to the chat for the later steps.
+**The reply says "I had a bit of trouble building everything at once, but I set up 3 item(s)..." and each class only has `+ id: str`.** The assistant fell back to placeholder classes because its language-model call failed on the server. The same happens if every follow-up returns "I couldn't process that modification. Please try again or rephrase your request." This is a service problem, not a problem with your prompt. Wait a few minutes and click :ui[New Chat] to try again, or continue the lab on the canvas: add the attributes and associations by hand as shown in [Lab 1](/labs/first-model/), then come back to the chat for the later steps.
 :::
 
 :::checkpoint
@@ -86,7 +86,11 @@ The assistant edits the model you see on the canvas. Look at the canvas after ev
    - There are three classes: `Patient`, `Doctor` and `Appointment`, each with several typed attributes.
    - There is an association between `Patient` and `Appointment` with a many end (`*` or `0..*`) on the Appointment side.
    - There is an association between `Appointment` and `Doctor` with multiplicity `1` on the Doctor side.
-3. Double-click an association to open its properties and read the exact multiplicities, as you did in Lab 1.
+3. Double-click an association to open its properties and read the exact multiplicities.
+
+:::note[New to class diagrams?]
+Each box is a **class**: a kind of thing your application stores, such as a patient. The lines inside the box are its **attributes**, the data kept for each one, written `name: type` (for example `+ birth_date: date`). A line between two boxes is an **association**: the things are related. The numbers at each end are **multiplicities**. They say how many: `1` means exactly one, `*` or `0..*` means any number. So `Appointment 0..*` next to `Patient 1` reads "a patient has any number of appointments, and each appointment belongs to exactly one patient". That is all you need to read what the assistant builds.
+:::
 
 <!-- TODO screenshot: the clinic class diagram on the canvas after Review the model, showing Patient, Doctor, Appointment and both associations (clinic-class-diagram.png). -->
 
@@ -208,7 +212,7 @@ Two short prompts work better than one long one: first create the class and its 
 :::
 
 :::exercise[Compare chat and canvas]
-Rebuild the same three-class clinic model by hand on the canvas in a second project, as in Lab 1. Export both projects as B-UML (:ui[File > Export Project], then :ui[Export as B-UML]) and compare the two Python files. Which differences come from the assistant's choices (names, types, multiplicities) and which are only layout?
+Rebuild the same three-class clinic model by hand on the canvas in a second project, following [Lab 1](/labs/first-model/). Export both projects as B-UML (:ui[File > Export Project], then :ui[Export as B-UML]) and compare the two Python files. Which differences come from the assistant's choices (names, types, multiplicities) and which are only layout?
 :::
 
 :::solution

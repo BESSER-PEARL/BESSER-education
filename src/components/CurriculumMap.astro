@@ -10,6 +10,7 @@ const byTrack = (id: string) => labs.filter((l) => l.data.track === id);
 const [root, ...children] = tracks;
 const rootLabs = byTrack(root.id);
 const firstLab = rootLabs[0];
+const describeLab = labs.find((l) => l.id === 'modeling-assistant');
 ---
 <figure class="map canvas" aria-labelledby="map-caption">
   <figcaption id="map-caption" class="visually-hidden">
@@ -37,7 +38,15 @@ const firstLab = rootLabs[0];
 
     {firstLab && (
       <aside class="uml-note map__note">
-        <p>Start here. Lab {firstLab.data.number} needs only a browser and takes about {formatDuration(firstLab.data.duration)}.</p>
+        <p>
+          Start here to learn modeling: Lab {firstLab.data.number} needs only a browser.
+          {describeLab && (
+            <>
+              {' '}No modeling background? Start with <a href={labUrl(describeLab.id)}>Lab {describeLab.data.number}</a> in
+              Build with AI instead.
+            </>
+          )}
+        </p>
       </aside>
     )}
   </div>
@@ -98,7 +107,8 @@ const firstLab = rootLabs[0];
     gap: var(--gap);
   }
   .uml-class--root { grid-column: 2; }
-  .map__note { grid-column: 3; justify-self: start; max-width: 240px; position: relative; }
+  .map__note { grid-column: 3; justify-self: start; max-width: 260px; position: relative; }
+  .map__note a { color: inherit; font-weight: 700; }
   .map__note::before {
     /* the dashed anchor line UML uses to attach a note */
     content: ''; position: absolute; right: 100%; top: 50%; width: var(--gap);
