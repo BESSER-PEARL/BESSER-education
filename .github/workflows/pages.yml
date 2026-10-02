@@ -1,7 +1,8 @@
 name: Labs site
 
 on:
-  # Every push and pull request builds the site; only main is deployed.
+  # Every push and pull request builds the site. Pushes to main are deployed;
+  # set the repository variable PAGES_BRANCH to deploy another branch for testing.
   push:
   pull_request:
   workflow_dispatch:
@@ -29,12 +30,12 @@ jobs:
           BASE_PATH: ${{ vars.BASE_PATH }}
           SITE_URL: ${{ vars.SITE_URL }}
       - uses: actions/upload-pages-artifact@v5
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref_name == (vars.PAGES_BRANCH || 'main')
         with:
           path: dist
 
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref_name == (vars.PAGES_BRANCH || 'main')
     needs: build
     runs-on: ubuntu-latest
     permissions:
