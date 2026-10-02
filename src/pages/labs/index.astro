@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import LabCatalog, { type CatalogLab } from '../../components/LabCatalog.tsx';
 import { getLabs, formatDuration } from '../../lib/labs';
-import { labUrl } from '../../lib/paths';
+import { labUrl, withBase } from '../../lib/paths';
 import { tracks } from '../../data/tracks';
 
 const labs: CatalogLab[] = (await getLabs()).map((l) => ({
@@ -24,6 +24,9 @@ const labs: CatalogLab[] = (await getLabs()).map((l) => ({
       Labs are grouped into tracks and numbered in the order we suggest. Filter by what you have installed;
       the browser-only labs work on any machine, including a locked-down classroom PC.
     </p>
+    <p class="index-head__export">
+      <a href={withBase('/labs/all-labs.md')} download="besser-labs.md">Download all labs as one Markdown file</a>
+    </p>
   </div>
   <div class="wrap">
     <LabCatalog client:load labs={labs} tracks={tracks} />
@@ -34,6 +37,9 @@ const labs: CatalogLab[] = (await getLabs()).map((l) => ({
   .index-head { padding-block: clamp(40px, 6vw, 72px) 24px; }
   .index-head h1 { font-size: var(--step-4); font-stretch: 85%; font-weight: 700; }
   .index-head p { margin-top: 12px; max-width: 62ch; color: var(--ink-soft); font-size: var(--step-1); line-height: 1.5; }
+
+  .index-head__export { margin-top: 12px; font-size: var(--step--1); }
+  .index-head__export a { font-weight: 600; }
 
   .catalog__filters { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip {
