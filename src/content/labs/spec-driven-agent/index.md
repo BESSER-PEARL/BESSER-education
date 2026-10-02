@@ -118,7 +118,7 @@ Instead of typing, you can click a :ui[Generate web app] or :ui[Generate applica
 
 ![The run card during Customising output: five phase rows including a model switch, 9 actions, the Working strip, the model's commentary about the backend contract and the React frontend, 12m 11s / 40m and Stop](./run-card-customising.png "The commentary shows what the model is doing. The timer keeps moving while the run is alive")
 
-5. Let it run. In our free-tier run, :ui[Selecting generator] took about 5 minutes, the deterministic generator and gap analysis less than half a minute, and :ui[Customising output] was still going after 12 minutes. Expect a free-tier run to take well over 10 minutes; the hosted runtime cap is 40 minutes. You can keep working in another tab. Reloading the page does not cancel the run: the editor reattaches to it and replays what you missed. It finds the run through this browser's storage, so stay in the same browser; a private window you close loses the card, and with it the download, even though the run keeps going on the server.
+5. Let it run. Free-tier runs are slow and the phase times vary a lot. In one of our runs :ui[Selecting generator] alone took 5 minutes; in another the scaffold was generated within the first minute, :ui[Customising output] started after 7 minutes, :ui[Validating] after 21 minutes, and the run stopped at the 40-minute runtime cap. Plan for a run of 20 to 40 minutes. You can keep working in another tab. Reloading the page does not cancel the run: the editor reattaches to it and replays what you missed. It finds the run through this browser's storage, so stay in the same browser; a private window you close loses the card, and with it the download, even though the run keeps going on the server.
 6. :ui[Stop] ends the run (the button reads "Stopping…" while it winds down). The card then reports `CANCELLED`. Only one run can be live per tab; a second request gets "Spec-Driven Agent is already running — please wait for it to finish or click Stop."
 
 :::troubleshoot
@@ -133,32 +133,36 @@ A run card is visible, its phases tick off one after another, and the :ui[Workin
 
 ## Read the finished run card
 
-When the run ends, the card collapses to one line.
+When the run ends, the card collapses to a short summary.
 
-1. Read the status. :ui[Application ready] means the run finished without unresolved blockers. Other outcomes are :ui[Generated — incomplete] (with a count of unresolved blockers), :ui[Delivered — rules not enforced] (a rule from your model was checked and found missing in the code), or an error code: `COST_CAP`, `TIMEOUT` or `INCOMPLETE` keep partial output; `UPSTREAM_LLM`, `INTERNAL` or `BAD_REQUEST` mean a provider or backend failure, so retry; `INVALID_KEY` clears your key.
-2. Next to the status you see the generator the run started from and the file count.
-3. Click the badge that reads "N% files unchanged from scaffold". It opens :ui[How this was built]: the share of scaffold files the run did not edit, the share BESSER generated and the model then edited, and the share the model wrote from scratch. This is provenance, not a quality score. A high percentage means more of the app is deterministic BESSER output that follows your model exactly; the rest was written by a language model and deserves a closer review.
-4. Click :ui[Show steps] to expand the phase timeline and the model's commentary again. :ui[Hide steps] collapses it.
-5. Read the verification findings on the card. They are grouped as :ui[Not enforced], :ui[Could not verify] and :ui[Verified]. "Could not verify" means unknown, not absent: the check could not run, so you have to test that part yourself.
+![The finished run card: Generated — incomplete, 12 unresolved blockers, generate_fastapi_backend, 15 files, the 20% files unchanged from scaffold badge, 383k tokens, Show steps, Download and Push to GitHub, a Verification line with 5 verified and 12 unverified, and two warnings about the runtime cap and unresolved issues](./run-card-status.png "Our free-tier run hit the 40-minute cap. It still delivered a working app, but the card says plainly that it is not verified complete")
 
-<!-- TODO screenshot: finished card with status, generator, file count, the "% files unchanged from scaffold" badge, Download and Push to GitHub, with Show steps expanded (run-card-finished.png). Not captured: the approved free-tier run was healthy at 12 min (Customising output), but the capture script crashed and the browser session holding the run was lost. Needs a second approved run. -->
+1. Read the status. :ui[Application ready] means the run finished without unresolved blockers. Other outcomes are :ui[Generated — incomplete] (with a count of unresolved blockers), :ui[Delivered — rules not enforced] (a rule from your model was checked and found missing in the code), or an error code: `COST_CAP`, `TIMEOUT` or `INCOMPLETE` keep partial output; `UPSTREAM_LLM`, `INTERNAL` or `BAD_REQUEST` mean a provider or backend failure, so retry; `INVALID_KEY` clears your key. Our run ended as :ui[Generated — incomplete] · 12 unresolved blockers, with the warnings "Runtime cap reached (2426.7s > 2400s). Output may be incomplete." and "The download is available for inspection and further work."
+2. Next to the status you see the generator the run started from (`generate_fastapi_backend`) and the file count (15 files).
+3. Click the badge that reads "N% files unchanged from scaffold". It opens :ui[How this was built]: the share of scaffold files the run did not edit, the share BESSER generated and the model then edited, and the share of additional files outside the scaffold. Below that come the token counts and, on the free tier, "No cost — this run used the free tier." This is provenance, not a quality score. A high percentage means more of the app is deterministic BESSER output that follows your model exactly; the rest was written or edited by a language model and deserves a closer review.
 
-<!-- TODO screenshot: the "How this was built" breakdown opened from the badge (run-card-how-built.png). Not captured, same reason as above. -->
+![How this was built: 20% scaffold files not edited in this run, 47% generated by BESSER then edited in this run, 33% additional files outside the scaffold, 383k active tokens with 1.92M cached context, and No cost — this run used the free tier](./run-card-how-built.png "Only 20% of the files are untouched BESSER output in this run, so most of the code needs a review")
+
+4. Click :ui[Show steps] to expand the phase timeline and the model's commentary again. :ui[Hide steps] collapses it. Each phase row has a :ui[details] link or an action count (here 56 actions while customising and 84 while validating) that you can open.
+
+![The finished card with Show steps expanded: the five phase rows Selecting generator, Running deterministic generator, Analysing gaps, Customising output with 56 actions and Validating with 16 blockers / 38 total and 84 actions, followed by the model's plan](./run-card-finished.png "The plan shows what the model decided on its own: here it added login and a ticket purchase endpoint, and built a static frontend served by FastAPI instead of a React app")
+
+5. Read the verification line. It summarises the checks (in our run "5 verified · 12 unverified"); click it to see the individual findings. Unverified means unknown, not absent: the check could not run or did not pass, so you have to test that part yourself. In our run, the automatic check of `POST /auth/login` was refused because it sent an unknown user, while registering and logging in worked when we tried them by hand.
 
 :::note
 Validation has a defined scope: syntax, imports, contracts and lint, plus sandboxed checks such as booting the backend or building the frontend where the server allows them. It does not prove every business requirement. Read the findings even when the card says :ui[Application ready].
 :::
 
 :::checkpoint
-You can say which generator the run started from, how many files it produced, what percentage of files are unchanged from the scaffold, and whether any finding is listed under :ui[Not enforced] or :ui[Could not verify].
+You can say which generator the run started from, how many files it produced, what percentage of files are unchanged from the scaffold, and how many checks are unverified.
 :::
 
 ## Download the application and run it locally
 
-1. Click :ui[Download] on the card. The button changes to :ui[Download again]. Nothing is written to your machine until you click, and the archive stays on the server for about 30 minutes, so download it now.
+1. Click :ui[Download] on the card. Nothing is written to your machine until you click, and the archive stays on the server for about 30 minutes, so download it now.
 2. Unzip the archive (named like `besser_smart_<run id>.zip`) into an empty folder.
-3. Open `BESSER_GENERATION.md` at the top level. It records the BESSER version, the generator `spec_driven_agent`, the base generator and the language model that the run used. Keep it with the code.
-4. Open `README.md` if there is one, and follow its run instructions; they describe this particular output. The layout depends on the run, so check which case you have:
+3. Open `BESSER_GENERATION.md` at the top level. It records the BESSER version and build, the generator `spec_driven_agent`, the base generator (`generate_fastapi_backend` in our run) and the language model the run used. Keep it with the code.
+4. Look at the layout before you run anything; it depends on the run. Our archive had no `README.md` and no `docker-compose.yml`, only a `backend/` folder with `main_api.py`, `requirements.txt`, the routers (`venue.py`, `event.py`, `ticket.py`, plus an added `auth.py`) and a `static/` folder with `index.html`, `app.js` and `styles.css`. Check which case you have:
 
 **Case A: there is a `docker-compose.yml` at the top level.** With Docker running:
 
@@ -168,7 +172,7 @@ docker compose up --build
 
 The web app is at http://localhost:3000, the API at http://localhost:8000, and the interactive API documentation at http://localhost:8000/docs. Stop it with :kbd[Ctrl+C], then `docker compose down`.
 
-**Case B: no compose file.** Run the backend and the frontend in two terminals. Replace `backend` and `frontend` with the folder names in your archive (the folder that contains `main_api.py` and `requirements.txt`, and the folder that contains `package.json`):
+**Case B: no compose file.** Start the backend from the folder that contains `main_api.py` and `requirements.txt`:
 
 ```bash
 cd backend
@@ -186,20 +190,14 @@ pip install -r requirements.txt
 python main_api.py
 ```
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+The backend listens on port 8000. If the backend has a `static/` folder (as in our run), it also serves the web app: open http://localhost:8000. If the archive instead has a separate frontend folder with a `package.json`, start it in a second terminal with `npm install` and `npm run dev`, and open http://localhost:3000.
 
-The backend listens on port 8000 and the Vite dev server on port 3000.
+5. Open the web app, create a venue, an event for it and a ticket, and check that the lists update. If the app asks you to log in, register an account first. Then open http://localhost:8000/docs and confirm there are endpoints for each class of your model.
 
-5. Open http://localhost:3000, create a venue, an event for it and a ticket, and check that the lists update. Then open http://localhost:8000/docs and confirm there are endpoints for each class of your model.
-
-<!-- TODO screenshot: the generated app running at localhost:3000 with a created event (running-app.png). Not captured: no archive was downloaded (see above), so the run instructions in this step are not yet verified against a real download. -->
+![The generated Event Ticketing web app at localhost:8000, logged in as student, showing an upcoming event Spring Jazz Night at the venue Rockhal with Expected: 800, Tickets: 1, and Buy ticket, Edit and Delete buttons](./running-app.png "Our run's app after registering, creating a venue and an event, and buying one ticket. The event was entered as 20:00 local time but is shown as 18:00: a time-zone bug in the generated frontend")
 
 :::troubleshoot
-**Port 3000 or 8000 is already in use.** Stop the other process, or (case B) start the backend on another port and point the frontend at it with the `VITE_API_URL` environment variable, for example `VITE_API_URL=http://localhost:8080 npm run dev`. **The build fails.** Check the run card's findings first; a step listed under :ui[Could not verify] may be exactly what fails. Fix the generated code by hand, or ask the agent to fix it within the retention window (next step).
+**Port 3000 or 8000 is already in use.** Stop the other process, or start the backend on another port and, for a separate frontend, point it at the backend with the `VITE_API_URL` environment variable, for example `VITE_API_URL=http://localhost:8080 npm run dev`. **The build fails.** Check the run card's findings first; a check listed as unverified may be exactly what fails. Fix the generated code by hand, or ask the agent to fix it within the retention window (next step).
 :::
 
 :::checkpoint
