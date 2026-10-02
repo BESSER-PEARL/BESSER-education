@@ -25,7 +25,7 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          # For a custom domain, set repository variables BASE_PATH=/ and SITE_URL=https://<domain>.
+          # Defaults target labs.besser-pearl.org; override with repository variables BASE_PATH and SITE_URL.
           BASE_PATH: ${{ vars.BASE_PATH }}
           SITE_URL: ${{ vars.SITE_URL }}
       - uses: actions/upload-pages-artifact@v5
