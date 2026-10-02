@@ -1,0 +1,206 @@
+---
+// The curriculum drawn as a class diagram: each track is a class, its labs are
+// the attributes, and every track generalizes the foundations.
+import { tracks } from '../data/tracks';
+import { getLabs, labNumber, formatDuration } from '../lib/labs';
+import { labUrl } from '../lib/paths';
+
+const labs = await getLabs();
+const byTrack = (id: string) => labs.filter((l) => l.data.track === id);
+const [root, ...children] = tracks;
+const rootLabs = byTrack(root.id);
+const firstLab = rootLabs[0];
+---
+<figure class="map canvas" aria-labelledby="map-caption">
+  <figcaption id="map-caption" class="visually-hidden">
+    Curriculum map. Start with {root.name}; every other track builds on it.
+  </figcaption>
+
+  <div class="map__root-row">
+    <section class="uml-class uml-class--root" aria-labelledby={`track-${root.id}`}>
+      <header class="uml-class__head">
+        <span class="uml-class__stereo">«track»</span>
+        <h2 class="uml-class__name" id={`track-${root.id}`}>{root.name}</h2>
+      </header>
+      <ul class="uml-class__attrs">
+        {rootLabs.map((lab) => (
+          <li>
+            <a href={labUrl(lab.id)} data-lab={lab.id}>
+              <span class="uml-class__num">{labNumber(lab.data.number)}</span>
+              <span class="uml-class__title">{lab.data.title}</span>
+              <span class="uml-class__type">{formatDuration(lab.data.duration)}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {firstLab && (
+      <aside class="uml-note map__note">
+        <p>Start here. Lab {firstLab.data.number} needs only a browser and takes about {formatDuration(firstLab.data.duration)}.</p>
+      </aside>
+    )}
+  </div>
+
+  <div class="map__generalization" aria-hidden="true">
+    <svg class="map__triangle" width="22" height="18" viewBox="0 0 22 18"><path d="M11 1.5 20.5 16.5H1.5Z" /></svg>
+  </div>
+
+  <div class="map__children">
+    {children.map((track) => (
+      <section class="map__child uml-class" aria-labelledby={`track-${track.id}`}>
+        <header class="uml-class__head">
+          <span class="uml-class__stereo">«track»</span>
+          <h2 class="uml-class__name" id={`track-${track.id}`}>{track.name}</h2>
+        </header>
+        <ul class="uml-class__attrs">
+          {byTrack(track.id).map((lab) => (
+            <li>
+              <a href={labUrl(lab.id)} data-lab={lab.id}>
+                <span class="uml-class__num">{labNumber(lab.data.number)}</span>
+                <span class="uml-class__title">{lab.data.title}</span>
+                <span class="uml-class__type">{formatDuration(lab.data.duration)}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="uml-class__ops">{track.description}</p>
+      </section>
+    ))}
+  </div>
+</figure>
+
+<script>
+  // Tick off labs this browser has completed.
+  for (const a of document.querySelectorAll<HTMLAnchorElement>('.map a[data-lab]')) {
+    try {
+      const saved = JSON.parse(localStorage.getItem(`besser-labs:progress:${a.dataset.lab}`) ?? 'null');
+      if (saved?.complete) a.dataset.done = '';
+    } catch {}
+  }
+</script>
+
+<style>
+  .map {
+    --trunk: 1.5px solid var(--line-strong);
+    --gap: 20px;
+    --drop: 30px;
+    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: clamp(20px, 3vw, 40px);
+  }
+
+  .map__root-row {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 440px) 1fr;
+    align-items: center;
+    gap: var(--gap);
+  }
+  .uml-class--root { grid-column: 2; }
+  .map__note { grid-column: 3; justify-self: start; max-width: 240px; position: relative; }
+  .map__note::before {
+    /* the dashed anchor line UML uses to attach a note */
+    content: ''; position: absolute; right: 100%; top: 50%; width: var(--gap);
+    border-top: 1.5px dashed var(--note-edge);
+  }
+
+  .map__generalization {
+    position: relative; height: calc(var(--drop) + 18px);
+    display: flex; justify-content: center;
+  }
+  .map__generalization::after {
+    content: ''; position: absolute; top: 17px; bottom: 0; left: 50%; border-left: var(--trunk);
+  }
+  .map__triangle { position: relative; z-index: 1; margin-top: -1px; }
+  .map__triangle path { fill: var(--paper); stroke: var(--line-strong); stroke-width: 1.5; stroke-linejoin: round; }
+
+  .map__children {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    column-gap: var(--gap);
+  }
+  .map__child { position: relative; margin-top: var(--drop); }
+  .map__child::before {
+    content: ''; position: absolute; left: 50%; bottom: 100%; height: var(--drop); border-left: var(--trunk);
+  }
+  .map__child::after {
+    content: ''; position: absolute; bottom: calc(100% + var(--drop) - 1px);
+    left: calc(var(--gap) / -2 - 1px); right: calc(var(--gap) / -2 - 1px);
+    border-top: var(--trunk);
+  }
+  .map__child:first-child::after { left: 50%; }
+  .map__child:last-child::after { right: 50%; }
+
+  /* The class box itself */
+  .uml-class {
+    background: var(--surface);
+    border: 1.5px solid var(--line-strong);
+    border-radius: 3px;
+    display: flex; flex-direction: column;
+  }
+  .uml-class__head { text-align: center; padding: 10px 12px 9px; border-bottom: 1.5px solid var(--line-strong); }
+  .uml-class__stereo { display: block; font-size: var(--step--1); color: var(--ink-faint); line-height: 1.3; }
+  .uml-class__name { font-size: var(--step-1); font-weight: 680; line-height: 1.15; }
+  .uml-class--root .uml-class__name { font-size: var(--step-2); }
+  .uml-class__attrs { list-style: none; padding: 6px 0; flex: 1; }
+  .uml-class__attrs a {
+    display: grid; grid-template-columns: auto 1fr; column-gap: 8px;
+    padding: 6px 12px; text-decoration: none; color: var(--ink); line-height: 1.35;
+  }
+  .uml-class__attrs a:hover { background: var(--teal-wash); }
+  .uml-class__attrs a:hover .uml-class__title { text-decoration: underline; text-underline-offset: 0.18em; }
+  .uml-class__num { font-family: var(--font-display); font-weight: 700; color: var(--teal); font-variant-numeric: tabular-nums; }
+  .uml-class__title { font-weight: 600; }
+  .uml-class__type { grid-column: 2; font-size: var(--step--1); color: var(--ink-faint); }
+  .uml-class__type::before { content: ': '; }
+  .uml-class--root .uml-class__attrs a { grid-template-columns: auto 1fr auto; align-items: baseline; }
+  .uml-class--root .uml-class__type { grid-column: 3; }
+  .uml-class__attrs a[data-done] .uml-class__num { color: var(--check-edge); }
+  .uml-class__attrs a[data-done] .uml-class__num::after { content: ' \2713'; }
+  .uml-class__ops {
+    border-top: 1.5px solid var(--line-strong); padding: 8px 12px 10px;
+    font-size: var(--step--1); color: var(--ink-soft); line-height: 1.45;
+  }
+
+  .uml-note {
+    background: var(--note); color: var(--note-ink);
+    border: 1.5px solid var(--note-edge);
+    padding: 10px 14px; font-size: var(--step--1); line-height: 1.45;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+  }
+
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+
+  /* Below desktop, the generalization becomes a vertical trunk on the left. */
+  @media (max-width: 1099px) {
+    .map { --rail: 22px; --stub: 26px; }
+    .map__root-row { grid-template-columns: minmax(0, 1fr); }
+    .uml-class--root { grid-column: 1; max-width: 520px; }
+    .map__note { grid-column: 1; max-width: 520px; order: -1; }
+    .map__note::before { display: none; }
+    .map__generalization { justify-content: flex-start; padding-left: calc(var(--rail) - 11px); height: 30px; }
+    .map__generalization::after { left: var(--rail); }
+    .map__children {
+      grid-template-columns: minmax(0, 1fr);
+      padding-left: calc(var(--rail) + var(--stub));
+      row-gap: 16px;
+    }
+    .map__child { margin-top: 0; max-width: 520px; }
+    .map__child::before {
+      /* trunk segment alongside this box, joining the previous one */
+      left: calc(-1 * var(--stub) - 1px); bottom: auto; top: -16px; height: calc(100% + 16px);
+    }
+    .map__child:first-child::before { top: 0; height: 100%; }
+    .map__child:last-child::before { height: calc(16px + 34px); }
+    .map__child:first-child:last-child::before { height: 34px; }
+    .map__child::after {
+      left: calc(-1 * var(--stub)); right: auto; width: var(--stub); bottom: auto; top: 34px;
+    }
+    .map__child:first-child::after { left: calc(-1 * var(--stub)); }
+    .map__child:last-child::after { right: auto; }
+    .uml-class__head { text-align: left; }
+  }
+</style>

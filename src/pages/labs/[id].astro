@@ -1,0 +1,222 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import LabProgress from '../../components/LabProgress.tsx';
+import { getLabs, labNumber, formatDuration, type Lab } from '../../lib/labs';
+import { labUrl, withBase } from '../../lib/paths';
+import { trackById } from '../../data/tracks';
+
+export async function getStaticPaths() {
+  const labs = await getLabs();
+  return labs.map((lab, i) => ({
+    params: { id: lab.id },
+    props: { lab, prev: labs[i - 1], next: labs[i + 1], all: labs },
+  }));
+}
+
+interface Props {
+  lab: Lab;
+  prev?: Lab;
+  next?: Lab;
+  all: Lab[];
+}
+
+const { lab, prev, next, all } = Astro.props;
+const { Content, headings } = await render(lab);
+const d = lab.data;
+const track = trackById[d.track];
+const steps = headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text }));
+const before = d.before
+  .map((id) => all.find((l) => l.id === id))
+  .filter((l): l is Lab => Boolean(l));
+const updated = d.updated.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title={`Lab ${d.number}: ${d.title}`} description={d.summary} section="labs">
+  <article class="lab">
+    <header class="lab-head canvas">
+      <div class="wrap lab-head__inner">
+        <p class="lab-head__crumb">
+          <a href={withBase('/labs/')}>Labs</a>
+          <span aria-hidden="true">/</span>
+          <a href={withBase(`/labs/#${track.id}`)}>{track.name}</a>
+        </p>
+        <h1 class="lab-head__title">
+          <span class="lab-head__num">Lab {labNumber(d.number)}</span>
+          {d.title}
+        </h1>
+        <p class="lab-head__summary">{d.summary}</p>
+
+        <dl class="facts">
+          <div><dt>Time</dt><dd>{formatDuration(d.duration)}</dd></div>
+          <div><dt>Level</dt><dd>{d.level}</dd></div>
+          <div><dt>Runs with</dt><dd>{d.setup.join(', ')}</dd></div>
+          <div>
+            <dt>Do first</dt>
+            <dd>
+              {before.length
+                ? before.map((l, i) => (<>{i > 0 && ', '}<a href={labUrl(l.id)}>Lab {l.data.number}</a></>))
+                : 'Nothing'}
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </header>
+
+    <div class="wrap lab-body">
+      <aside class="lab-rail">
+        <LabProgress client:load labId={lab.id} steps={steps} />
+      </aside>
+
+      <div class="lab-main">
+        <section class="brief" aria-label="Before you start">
+          <div class="brief__col">
+            <h2 class="brief__title">You'll learn to</h2>
+            <ul>{d.outcomes.map((o) => <li>{o}</li>)}</ul>
+          </div>
+          <div class="brief__col">
+            <h2 class="brief__title">You'll need</h2>
+            <ul>{d.needs.map((n) => <li set:html={n} />)}</ul>
+            {d.files.length > 0 && (
+              <>
+                <h2 class="brief__title brief__title--files">Files for this lab</h2>
+                <ul class="brief__files">
+                  {d.files.map((f) => <li><a href={withBase(f.href)} download>{f.label}</a></li>)}
+                </ul>
+              </>
+            )}
+          </div>
+        </section>
+
+        <div class="prose">
+          <Content />
+        </div>
+
+        <footer class="lab-foot">
+          <p class="lab-foot__meta">
+            Checked against BESSER {d.version} on {updated}. Something out of date?{' '}
+            <a href={`https://github.com/BESSER-PEARL/BESSER-education/edit/main/src/content/labs/${lab.id}/index.md`}>Edit this lab on GitHub</a>{' '}
+            or <a href="https://github.com/BESSER-PEARL/BESSER-education/issues/new">open an issue</a>.
+          </p>
+          <nav class="pager" aria-label="More labs">
+            {prev ? (
+              <a class="pager__link" href={labUrl(prev.id)} rel="prev">
+                <span class="pager__dir">Previous lab</span>
+                <span class="pager__title">{prev.data.number}. {prev.data.title}</span>
+              </a>
+            ) : <span />}
+            {next && (
+              <a class="pager__link pager__link--next" href={labUrl(next.id)} rel="next">
+                <span class="pager__dir">Next lab</span>
+                <span class="pager__title">{next.data.number}. {next.data.title}</span>
+              </a>
+            )}
+          </nav>
+        </footer>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+  .lab-head { border-bottom: 1px solid var(--line); }
+  .lab-head__inner { padding-block: clamp(32px, 5vw, 64px) 32px; }
+  .lab-head__crumb { font-size: var(--step--1); color: var(--ink-faint); display: flex; gap: 8px; flex-wrap: wrap; }
+  .lab-head__crumb a { color: var(--ink-soft); }
+  .lab-head__title {
+    margin-top: 14px; font-size: var(--step-4); font-stretch: 85%; font-weight: 700; max-width: 22ch;
+  }
+  .lab-head__num {
+    display: block; font-size: var(--step-1); font-stretch: 100%; color: var(--teal); font-weight: 600;
+    margin-bottom: 8px; letter-spacing: 0;
+  }
+  .lab-head__summary { margin-top: 16px; font-size: var(--step-1); line-height: 1.5; color: var(--ink-soft); max-width: 58ch; }
+
+  .facts {
+    margin: 28px 0 0; display: flex; flex-wrap: wrap;
+    border: 1.5px solid var(--line-strong); border-radius: 3px; background: var(--surface);
+    width: fit-content; max-width: 100%;
+  }
+  .facts > div { padding: 10px 18px; border-right: 1px solid var(--line); }
+  .facts > div:last-child { border-right: 0; }
+  .facts dt { font-size: var(--step--1); color: var(--ink-faint); }
+  .facts dd { margin: 2px 0 0; font-weight: 700; }
+
+  .lab-body {
+    display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 56px;
+    padding-top: 40px; align-items: start;
+  }
+  .lab-rail { position: sticky; top: 88px; max-height: calc(100vh - 104px); overflow-y: auto; padding-bottom: 16px; }
+  .lab-main { min-width: 0; counter-reset: step; }
+
+  .brief {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px;
+    max-width: var(--measure); padding-bottom: 28px; border-bottom: 1px solid var(--line);
+  }
+  .brief__title { font-size: var(--step-0); font-weight: 680; }
+  .brief__title--files { margin-top: 18px; }
+  .brief ul { padding-left: 1.2em; margin-top: 8px; color: var(--ink-soft); }
+  .brief li + li { margin-top: 4px; }
+  .brief__files { list-style: none; padding-left: 0 !important; }
+  .brief__files a { font-weight: 600; }
+
+  .lab-foot { max-width: var(--measure); margin-top: 72px; }
+  .lab-foot__meta { font-size: var(--step--1); color: var(--ink-faint); }
+  .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  .pager__link {
+    display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; text-decoration: none;
+    border: 1.5px solid var(--line-strong); border-radius: 3px; background: var(--surface); color: var(--ink);
+  }
+  .pager__link:hover { background: var(--teal-wash); }
+  .pager__link--next { text-align: right; grid-column: 2; }
+  .pager__dir { font-size: var(--step--1); color: var(--ink-faint); }
+  .pager__title { font-weight: 700; color: var(--teal); }
+
+  /* Progress rail */
+  .progress { font-size: var(--step--1); }
+  .progress__toggle { display: none; }
+  .progress__heading { font: 680 var(--step-0)/1.2 var(--font-display); display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .progress__count { font: 400 var(--step--1)/1 var(--font-body); color: var(--ink-faint); }
+  .progress__bar { height: 4px; background: var(--line); border-radius: 2px; margin: 10px 0 12px; overflow: hidden; }
+  .progress__bar span { display: block; height: 100%; background: var(--check-edge); transition: width 0.25s; }
+  .progress__list { list-style: none; padding: 0; margin: 0; }
+  .progress__list li { display: grid; grid-template-columns: 20px 1fr; gap: 8px; align-items: start; padding: 5px 0 5px 8px; border-left: 2px solid transparent; }
+  .progress__list li[data-current] { border-left-color: var(--teal-brand); }
+  .progress__list input { margin: 3px 0 0; width: 16px; height: 16px; accent-color: var(--check-edge); cursor: pointer; }
+  .progress__list a { color: var(--ink-soft); text-decoration: none; line-height: 1.4; display: grid; grid-template-columns: 1.4em 1fr; }
+  .progress__list a:hover { color: var(--ink); text-decoration: underline; }
+  .progress__list li[data-current] a { color: var(--ink); font-weight: 700; }
+  .progress__list li[data-done] a { color: var(--ink-faint); }
+  .progress__n { color: var(--teal); font-weight: 700; }
+  .progress__complete { margin-top: 12px; color: var(--check-edge); font-weight: 700; }
+  .progress__reset {
+    margin-top: 10px; background: none; border: 0; padding: 0; color: var(--ink-faint);
+    font: inherit; text-decoration: underline; cursor: pointer;
+  }
+
+  @media (max-width: 1099px) {
+    .lab-body { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 0; }
+    .lab-rail {
+      position: sticky; top: 64px; z-index: 20; max-height: none; overflow: visible;
+      margin-inline: calc(-1 * var(--gutter)); padding: 0;
+      background: var(--paper); border-bottom: 1px solid var(--line);
+    }
+    .progress__heading { display: none; }
+    .progress__toggle {
+      display: flex; justify-content: space-between; align-items: center; width: 100%;
+      padding: 12px var(--gutter); background: none; border: 0; color: var(--ink);
+      font: 680 var(--step-0)/1.2 var(--font-display); cursor: pointer;
+    }
+    .progress__bar { margin: 0 var(--gutter) 10px; }
+    .progress__list, .progress__complete, .progress__reset { display: none; }
+    .progress[data-open='true'] .progress__list { display: block; padding: 0 var(--gutter) 8px; max-height: 60vh; overflow-y: auto; }
+    .progress[data-open='true'] .progress__reset { display: block; margin: 0 var(--gutter) 14px; }
+    .progress[data-open='true'] .progress__complete { display: block; margin: 0 var(--gutter) 10px; }
+    .lab-main { padding-top: 32px; }
+  }
+  @media (max-width: 600px) {
+    .facts > div { flex: 1 1 45%; border-right: 0; border-bottom: 1px solid var(--line); }
+    .brief { grid-template-columns: minmax(0, 1fr); }
+    .pager { grid-template-columns: minmax(0, 1fr); }
+    .pager__link--next { grid-column: 1; }
+  }
+</style>

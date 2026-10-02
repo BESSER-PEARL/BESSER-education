@@ -1,0 +1,93 @@
+---
+import { Code } from 'astro:components';
+import Base from '../layouts/Base.astro';
+import template from '../content/labs/_template/index.md?raw';
+---
+<Base
+  title="Write a lab"
+  description="How a BESSER lab is structured and how to add one: a Markdown file, a few building blocks and a pull request."
+  section="write"
+>
+  <div class="wrap write">
+    <header class="write__head">
+      <h1>Write a lab</h1>
+      <p>
+        A lab is one Markdown file in its own folder, with its screenshots beside it. You don't need to
+        touch the site's code. Copy the template, write the steps, and preview it locally.
+      </p>
+    </header>
+
+    <div class="write__grid">
+      <div class="prose">
+        <h2 class="unnumbered">Preview on your machine</h2>
+        <p>You need Node.js 22.12 or newer.</p>
+        <pre><code>git clone https://github.com/BESSER-PEARL/BESSER-education
+cd BESSER-education
+npm install
+npm run dev</code></pre>
+        <p>
+          Open the address it prints. Copy <code>src/content/labs/_template/</code> to a new folder, for example
+          <code>src/content/labs/state-machines/</code>, and the lab appears at <code>/labs/state-machines/</code>
+          while you edit.
+        </p>
+
+        <h2 class="unnumbered">Building blocks</h2>
+        <table>
+          <thead><tr><th>Write</th><th>To get</th></tr></thead>
+          <tbody>
+            <tr><td><code>## Heading</code></td><td>A numbered step in the progress rail</td></tr>
+            <tr><td><code>:::checkpoint</code></td><td>What the learner should see before moving on</td></tr>
+            <tr><td><code>:::exercise[Name]</code></td><td>An open task at the end of the lab</td></tr>
+            <tr><td><code>:::solution</code></td><td>A collapsed hint or partial solution</td></tr>
+            <tr><td><code>:::note</code>, <code>:::tip</code></td><td>Side information, styled as a UML note</td></tr>
+            <tr><td><code>:::caution</code></td><td>Costs, accounts and things that can't be undone</td></tr>
+            <tr><td><code>:::troubleshoot</code></td><td>The most likely failure and its fix</td></tr>
+            <tr><td><code>:ui[File &gt; Export]</code></td><td>An interface label, exactly as shown on screen</td></tr>
+            <tr><td><code>:kbd[Ctrl+S]</code></td><td>A keyboard key</td></tr>
+            <tr><td><code>![alt](./shot.png "Caption")</code></td><td>A figure with a caption</td></tr>
+          </tbody>
+        </table>
+
+        <h2 class="unnumbered">What makes a good lab</h2>
+        <ul>
+          <li>It ends with something running that the learner can show someone.</li>
+          <li>Every step ends in a checkpoint the learner can verify on their own screen.</li>
+          <li>Screenshots come from the real editor at the release named in <code>version</code>, never mock-ups.</li>
+          <li>Interface labels match the editor exactly, including capitalisation.</li>
+          <li>The duration is measured on someone doing it for the first time.</li>
+          <li>Anything that costs money or needs an account is called out before the step that needs it.</li>
+        </ul>
+
+        <h2 class="unnumbered">Publishing</h2>
+        <p>
+          Set <code>draft: false</code>, run <code>npm run build</code> to catch errors, and open a pull request.
+          The site rebuilds and publishes when the pull request is merged into <code>main</code>.
+        </p>
+      </div>
+
+      <section class="write__template" aria-labelledby="tpl-title">
+        <h2 id="tpl-title">The template</h2>
+        <p>Also in the repository at <code>src/content/labs/_template/index.md</code>.</p>
+        <div class="prose"><Code code={template} lang="md" themes={{ light: 'github-light', dark: 'github-dark-dimmed' }} defaultColor={false} /></div>
+      </section>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .write__head { padding-block: clamp(40px, 6vw, 72px) 16px; max-width: 62ch; }
+  .write__head h1 { font-size: var(--step-4); font-stretch: 85%; font-weight: 700; }
+  .write__head p { margin-top: 12px; color: var(--ink-soft); font-size: var(--step-1); line-height: 1.5; }
+  .write__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; margin-top: 24px; align-items: start; }
+  .write__grid > .prose h2 { font-size: var(--step-2); margin-top: 1.8em; }
+  .write__grid > .prose h2:first-child { margin-top: 0; }
+  .write__template { position: sticky; top: 88px; }
+  .write__template h2 { font-size: var(--step-2); }
+  .write__template > p { color: var(--ink-soft); margin: 6px 0 12px; }
+  .write__template pre { max-height: calc(100vh - 220px); font-size: 0.8rem; }
+  @media (max-width: 1000px) {
+    .write__grid { grid-template-columns: minmax(0, 1fr); }
+    .write__template { position: static; }
+    .write__template pre { max-height: 70vh; }
+  }
+</style>

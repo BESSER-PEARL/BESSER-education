@@ -1,0 +1,121 @@
+---
+import Base from '../layouts/Base.astro';
+import { getLabs, formatDuration, type Lab } from '../lib/labs';
+import { labUrl } from '../lib/paths';
+
+const labs = await getLabs();
+const pick = (...ids: string[]) => ids.map((id) => labs.find((l) => l.id === id)).filter((l): l is Lab => Boolean(l));
+const total = (ls: Lab[]) => formatDuration(ls.reduce((s, l) => s + l.data.duration, 0));
+
+const plans = [
+  {
+    name: 'Two-hour workshop',
+    who: 'A first contact with model-driven engineering. Laptops with a browser are enough.',
+    labs: pick('first-model', 'modeling-assistant', 'web-app'),
+  },
+  {
+    name: 'One-day bootcamp',
+    who: 'From a first model to a deployed application with an agent and an AI-built feature.',
+    labs: pick('first-model', 'buml-python', 'databases', 'web-app', 'agents-baf', 'spec-driven-agent'),
+  },
+  {
+    name: 'Semester course on model-driven engineering',
+    who: 'One lab per session, closing with metamodeling and generator development.',
+    labs: labs,
+  },
+];
+---
+<Base
+  title="Teaching with BESSER Labs"
+  description="Suggested lab sequences for workshops, bootcamps and semester courses, and how to request the solutions."
+  section="teach"
+>
+  <div class="wrap teach">
+    <header class="teach__head">
+      <h1>Teaching with BESSER Labs</h1>
+      <p>
+        The labs are written to be handed to students as they are. Each one states its time, setup and
+        prerequisites up front, so you can build a session around them without rewriting anything.
+      </p>
+    </header>
+
+    <section class="plans" aria-label="Suggested sequences">
+      {plans.map((p) => (
+        <section class="plan">
+          <h2>{p.name}</h2>
+          <p class="plan__who">{p.who}</p>
+          <ol class="plan__labs">
+            {p.labs.map((l) => (
+              <li>
+                <a href={labUrl(l.id)}>Lab {l.data.number}: {l.data.title}</a>
+                <span>{formatDuration(l.data.duration)}</span>
+              </li>
+            ))}
+          </ol>
+          <p class="plan__total">About {total(p.labs)} of hands-on time</p>
+        </section>
+      ))}
+    </section>
+
+    <section class="teach__notes prose">
+      <h2 class="unnumbered">Solutions</h2>
+      <p>
+        Worked solutions for every exercise live in a private repository. If you teach with these labs,
+        email <a href="mailto:info@besser-pearl.org">info@besser-pearl.org</a> from your institutional address
+        and tell us the course you are running. We'll add you to the repository.
+      </p>
+
+      <h2 class="unnumbered">Before the session</h2>
+      <ul>
+        <li>
+          Open <a href="https://editor.besser-pearl.org/">editor.besser-pearl.org</a> on the classroom network.
+          Some corporate and university proxies interrupt the live connection the assistant uses, so test it once
+          from a classroom machine.
+        </li>
+        <li>
+          Labs that use Python need Python 3.11 or 3.12 and <code>pip install besser</code>. Ask students to
+          install it before the session; it is the step that eats the most class time.
+        </li>
+        <li>
+          The modeling assistant needs no API key, and the Spec-Driven Agent runs on a shared free tier by default.
+          Both are rate limited, so a full class working at once will see slower replies. Students with their own
+          key can add it in the editor.
+        </li>
+        <li>
+          The deployment lab needs a free GitHub account and a free Render account per student.
+        </li>
+      </ul>
+
+      <h2 class="unnumbered">Progress tracking</h2>
+      <p>
+        Students can tick off steps as they go. Progress is stored in their own browser only; nothing is sent
+        anywhere, and there is no account to create.
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .teach__head { padding-block: clamp(40px, 6vw, 72px) 16px; max-width: 62ch; }
+  .teach__head h1 { font-size: var(--step-4); font-stretch: 85%; font-weight: 700; }
+  .teach__head p { margin-top: 12px; color: var(--ink-soft); font-size: var(--step-1); line-height: 1.5; }
+
+  .plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 32px; }
+  .plan { border-top: 3px solid var(--ink); padding-top: 16px; }
+  .plan h2 { font-size: var(--step-2); }
+  .plan__who { margin-top: 8px; color: var(--ink-soft); }
+  .plan__labs { margin: 16px 0 0; padding-left: 1.4em; }
+  .plan__labs li { padding: 5px 0; }
+  .plan__labs li::marker { color: var(--teal); font-weight: 700; }
+  .plan__labs a { font-weight: 600; }
+  .plan__labs span { display: block; font-size: var(--step--1); color: var(--ink-faint); }
+  .plan__total { margin-top: 12px; font-weight: 700; }
+
+  .teach__notes { margin-top: 72px; }
+  .teach__notes h2 { font-size: var(--step-2); margin-top: 1.8em; }
+  .teach__notes h2:first-child { margin-top: 0; }
+
+  @media (max-width: 960px) {
+    .plans { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  }
+</style>

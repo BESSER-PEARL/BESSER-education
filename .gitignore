@@ -3,4 +3,7 @@ Pipfile
 Pipfile.lock
 besser_venv/
 .env
-venv/
+venv/node_modules/
+dist/
+.astro/
+node_modules/

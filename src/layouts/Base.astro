@@ -1,0 +1,118 @@
+---
+import '../styles/global.css';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Which top-level nav item to mark as current. */
+  section?: 'labs' | 'teach' | 'write';
+}
+const { title, description, section } = Astro.props;
+const fullTitle = title === 'BESSER Labs' ? title : `${title} | BESSER Labs`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={withBase('/favicon.ico')} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="color-scheme" content="light dark" />
+    <script is:inline>
+      try {
+        const t = localStorage.getItem('besser-labs:theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap site-header__inner">
+        <a class="brand" href={withBase('/')}>
+          <img class="brand__logo--light" src={withBase('/brand/besser-logo-light.png')} alt="BESSER" width="113" height="26" />
+          <img class="brand__logo--dark" src={withBase('/brand/besser-logo-dark.png')} alt="BESSER" width="98" height="26" />
+          <span class="brand__labs">Labs</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Main">
+          <a href={withBase('/labs/')} aria-current={section === 'labs' ? 'page' : undefined}>All labs</a>
+          <a href={withBase('/teach/')} aria-current={section === 'teach' ? 'page' : undefined}>Teaching</a>
+          <a href={withBase('/write-a-lab/')} aria-current={section === 'write' ? 'page' : undefined}>Write a lab</a>
+          <a href="https://besser.readthedocs.io/en/latest/">Docs</a>
+          <a href="https://editor.besser-pearl.org/">Editor</a>
+          <button class="theme-toggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+            <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2a8 8 0 1 0 0 16V2z" fill="currentColor"/><circle cx="10" cy="10" r="7.25" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap site-footer__grid">
+        <p>
+          BESSER Labs are hands-on guides for the <a href="https://github.com/BESSER-PEARL/BESSER">BESSER low-code platform</a>.{' '}
+          BESSER is funded through an <a href="https://www.fnr.lu/">FNR</a> PEARL grant, led by the{' '}
+          <a href="https://www.list.lu/">Luxembourg Institute of Science and Technology</a> with the participation of{' '}
+          <a href="https://www.uni.lu/snt-en/">SnT, University of Luxembourg</a>.
+        </p>
+        <ul>
+          <li><a href="https://besser-pearl.org/">besser-pearl.org</a></li>
+          <li><a href="https://besser.readthedocs.io/en/latest/">Documentation</a></li>
+          <li><a href="https://github.com/BESSER-PEARL/BESSER-education">Labs on GitHub</a></li>
+          <li><a href="mailto:info@besser-pearl.org">info@besser-pearl.org</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script>
+      const root = document.documentElement;
+      document.querySelector('.theme-toggle')?.addEventListener('click', () => {
+        const dark = root.dataset.theme
+          ? root.dataset.theme === 'dark'
+          : matchMedia('(prefers-color-scheme: dark)').matches;
+        root.dataset.theme = dark ? 'light' : 'dark';
+        try { localStorage.setItem('besser-labs:theme', root.dataset.theme); } catch {}
+      });
+
+      const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+      const nav = document.getElementById('site-nav');
+      toggle?.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(open));
+        nav?.setAttribute('data-open', String(open));
+      });
+
+      for (const pre of document.querySelectorAll<HTMLPreElement>('.prose pre')) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(pre.querySelector('code')?.innerText ?? pre.innerText);
+            btn.textContent = 'Copied';
+            btn.dataset.copied = '';
+          } catch {
+            btn.textContent = 'Press Ctrl+C';
+          }
+          setTimeout(() => { btn.textContent = 'Copy'; delete btn.dataset.copied; }, 1800);
+        });
+        pre.append(btn);
+      }
+    </script>
+  </body>
+</html>

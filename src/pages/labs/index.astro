@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+import LabCatalog, { type CatalogLab } from '../../components/LabCatalog.tsx';
+import { getLabs, formatDuration } from '../../lib/labs';
+import { labUrl } from '../../lib/paths';
+import { tracks } from '../../data/tracks';
+
+const labs: CatalogLab[] = (await getLabs()).map((l) => ({
+  id: l.id,
+  href: labUrl(l.id),
+  number: l.data.number,
+  title: l.data.title,
+  summary: l.data.summary,
+  duration: formatDuration(l.data.duration),
+  level: l.data.level,
+  setup: l.data.setup,
+  track: l.data.track,
+}));
+---
+<Base title="All labs" description="Every BESSER lab, grouped by track, with time, level and setup." section="labs">
+  <div class="wrap index-head">
+    <h1>All labs</h1>
+    <p>
+      Labs are grouped into tracks and numbered in the order we suggest. Filter by what you have installed;
+      the browser-only labs work on any machine, including a locked-down classroom PC.
+    </p>
+  </div>
+  <div class="wrap">
+    <LabCatalog client:load labs={labs} tracks={tracks} />
+  </div>
+</Base>
+
+<style is:global>
+  .index-head { padding-block: clamp(40px, 6vw, 72px) 24px; }
+  .index-head h1 { font-size: var(--step-4); font-stretch: 85%; font-weight: 700; }
+  .index-head p { margin-top: 12px; max-width: 62ch; color: var(--ink-soft); font-size: var(--step-1); line-height: 1.5; }
+
+  .catalog__filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font: 600 var(--step--1)/1 var(--font-body); color: var(--ink-soft);
+    background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px;
+    padding: 9px 14px; cursor: pointer; display: inline-flex; gap: 8px; align-items: center;
+  }
+  .chip:hover { border-color: var(--line-strong); color: var(--ink); }
+  .chip[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .chip__count { font-variant-numeric: tabular-nums; opacity: 0.7; }
+  .catalog__status { margin-top: 12px; font-size: var(--step--1); color: var(--ink-faint); }
+
+  .catalog__track { margin-top: 48px; scroll-margin-top: 88px; }
+  .catalog__track-head { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 8px 32px; align-items: baseline; padding-bottom: 12px; border-bottom: 1.5px solid var(--line-strong); }
+  .catalog__track-head h2 { font-size: var(--step-2); }
+  .catalog__track-head p { color: var(--ink-soft); max-width: 60ch; }
+  .catalog__rows { list-style: none; padding: 0; margin: 0; }
+
+  .row {
+    display: grid; grid-template-columns: 3.2rem minmax(0, 1fr) minmax(0, 330px); gap: 8px 24px;
+    padding: 20px 0; border-bottom: 1px solid var(--line); align-items: start;
+  }
+  .row__num { font: 600 var(--step-2)/1 var(--font-display); color: var(--teal); font-variant-numeric: tabular-nums; }
+  .row__num[data-done]::after { content: ' \2713'; color: var(--check-edge); font-size: 0.6em; vertical-align: 0.3em; }
+  .row__title { font-size: var(--step-1); }
+  .row__title a { color: var(--ink); text-decoration: none; }
+  .row__title a:hover { color: var(--teal); text-decoration: underline; }
+  .row__summary { margin-top: 6px; color: var(--ink-soft); max-width: 60ch; }
+  .row__meta { margin: 0; display: grid; grid-template-columns: 5.5rem 7rem minmax(0, 1fr); gap: 4px 16px; font-size: var(--step--1); }
+  .row__meta dt { color: var(--ink-faint); }
+  .row__meta dd { margin: 0; font-weight: 700; }
+
+  @media (max-width: 860px) {
+    .catalog__track-head { grid-template-columns: minmax(0, 1fr); }
+    .row { grid-template-columns: 2.6rem minmax(0, 1fr); }
+    .row__meta { grid-column: 2; }
+  }
+</style>

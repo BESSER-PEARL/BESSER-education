@@ -1,61 +1,51 @@
-# BESSER Education: Hands-On Guides and Exercises
+# BESSER Labs
 
-Welcome to BESSER Education!
-This repository provides laboratory guides and exercises to help you explore and master the [BESSER low-code framework (BLC)](https://github.com/BESSER-PEARL/BESSER.git) and the [BESSER Agentic Framework (BAF)](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework). Whether you're a beginner or an advanced user, these resources are designed to deepen your understanding and enhance your practical skills with BESSER.
+Hands-on labs for the [BESSER low-code platform](https://github.com/BESSER-PEARL/BESSER) and the
+[BESSER Agentic Framework](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework).
 
+**Read the labs at https://besser-pearl.github.io/BESSER-education/**
 
-## 🔬 Laboratory Guides Overview
+Each lab is a guided exercise you can finish in one sitting: modeling in the Web Modeling Editor and in
+Python, building with the modeling assistant and the Spec-Driven Agent, databases, full web apps and
+deployment, conversational agents, and extending BESSER with your own generators.
 
-Each lab guide focuses on a specific aspect of the BESSER ecosystem, offering hands-on experience with modeling, code generation, and agent-based systems. Here’s what each lab includes:
+## Repository layout
 
-1. Lab 1 – BESSER Basics
+| Path | What it holds |
+| --- | --- |
+| `src/content/labs/<lab-id>/index.md` | One lab, written in Markdown, with its screenshots beside it |
+| `src/content/labs/_template/` | The template for a new lab |
+| `public/files/<lab-id>/` | Files learners download (models, starter code, configuration) |
+| `src/` (everything else) | The site itself: Astro pages, React components, styles |
+| `.github/workflows/pages.yml` | Builds every pull request and publishes `main` to GitHub Pages |
 
-    - Learn the fundamentals of the BESSER Low-Code platform (BLC).
-    - Get familiar with the web-based modeling environment.
-    - Create and validate your first class diagram.
-    - Learn how to use the code generators.
+## Run the site locally
 
-2. Lab 2 - Building a Full Application with the BESSER WME
+Requires Node.js 22.12 or newer.
 
-    - Model a domain using a Class Diagram (e.g., a digital-twin scenario with devices, sensors, and measurements).
-    - Define an agent (Chatbot) for your web application.
-    - Build the graphical user interface using the No-Code UI Editor (drag-and-drop tables, forms, and views).
-    - Generate and deploy a web application from the models.
+```bash
+npm install
+npm run dev      # live preview at http://localhost:4321/BESSER-education/
+npm run build    # production build into dist/
+```
 
-3. Lab 3 – Developing Code Generators
+## Add or update a lab
 
-    - Explore how to define model-to-text transformations.
-    - Implement simple code generators using Python.
-    - Generate code from class diagrams and understand basic transformation rules.
+See [Write a lab](https://besser-pearl.github.io/BESSER-education/write-a-lab/) on the site, or start from
+`src/content/labs/_template/index.md`. In short: copy the template folder, write the steps using the exact
+labels from the editor, add real screenshots, set `draft: false`, and open a pull request.
 
-4. Lab 4 – Metamodeling and Advanced Generators
+## For educators
 
-    - Dive into metamodeling to define your own modeling languages.
-    - Extend the BESSER metamodel to support new concepts.
-    - Build and reuse code generation templates for complex models.
+Worked solutions to the exercises live in a private repository. If you teach with these labs, contact
+info@besser-pearl.org from your institutional address.
 
-5. Lab 5 – Agent-Based Modeling with BAF
+## Publishing
 
-    - Get started with the BESSER Agentic Framework (BAF).
-    - Learn how to model agent behaviors and interactions.
-    - Simulate intelligent agents based on event-driven logic.
+The workflow deploys with GitHub Pages' "GitHub Actions" source (Settings > Pages > Build and deployment >
+Source: GitHub Actions). For a custom domain, set the repository variables `BASE_PATH` to `/` and
+`SITE_URL` to the domain's URL.
 
-6. Lab 6 – From Modeling to Deployment with BESSER
+## License
 
-    - Design a complete web application using the BESSER Web Modeling Editor.
-    - Create class diagrams, agent models, and GUI layouts using no-code tools.
-    - Generate production-ready code with BESSER's Full Web App Generator.
-    - Deploy a full-stack web application to the cloud using Render.
-    - Integrate conversational agents powered by the BESSER Agentic Framework.
-
-## 🧩 Solutions for Educators
-
-We provide a private repository with solutions to all lab guides.
-
-If you're an educator using these materials for teaching, you can request access by contacting us at info@besser-pearl.org
-
-## 📚 Official Documentation
-
-[BESSER Low-code Platform](https://besser.readthedocs.io/en/latest/)
-
-[BESSER Agentic Framework](https://besser-agentic-framework.readthedocs.io/latest/)
+See [LICENSE](LICENSE).

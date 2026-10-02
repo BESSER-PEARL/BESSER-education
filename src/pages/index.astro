@@ -1,0 +1,134 @@
+---
+import Base from '../layouts/Base.astro';
+import CurriculumMap from '../components/CurriculumMap.astro';
+import { getLabs, formatDuration } from '../lib/labs';
+import { labUrl, withBase } from '../lib/paths';
+
+const labs = await getLabs();
+const first = labs[0];
+const browserOnly = labs.filter((l) => l.data.setup.every((s) => s === 'Browser' || s === 'GitHub')).length;
+const totalMinutes = labs.reduce((sum, l) => sum + l.data.duration, 0);
+---
+<Base
+  title="BESSER Labs"
+  description="Hands-on labs for the BESSER low-code platform: modeling, AI-assisted development, databases, web apps, agents and code generators."
+>
+  <section class="hero wrap">
+    <h1 class="hero__title">Hands-on labs for the BESSER low‑code platform</h1>
+    <div class="hero__intro">
+      <p>
+        Each lab is a guided exercise you can finish in one sitting. You model something, generate code
+        from it, and check that it runs. {browserOnly} of the {labs.length} labs run entirely in the browser.
+      </p>
+      <div class="hero__actions">
+        {first && <a class="btn btn--primary" href={labUrl(first.id)}>Start Lab {first.data.number}</a>}
+        <a class="btn" href={withBase('/labs/')}>See all labs</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap map-section" aria-label="Curriculum">
+    <p class="map-section__lede">
+      Every track builds on the foundations. After Lab 1, take the tracks in any order.
+      The full set takes about {Math.round(totalMinutes / 60)} hours.
+    </p>
+    <CurriculumMap />
+  </section>
+
+  <section class="wrap anatomy" aria-labelledby="anatomy-title">
+    <h2 id="anatomy-title">Every lab has the same shape</h2>
+    <ol class="anatomy__steps">
+      <li>
+        <h3>Know what you're getting into</h3>
+        <p>The top of each lab lists the time it takes, what you need installed and what you'll have at the end.</p>
+      </li>
+      <li>
+        <h3>Follow numbered steps</h3>
+        <p>Steps use the exact labels you see in the editor, with real screenshots and code you can copy.</p>
+      </li>
+      <li>
+        <h3>Check your work</h3>
+        <p>Green checkpoints tell you what you should see before you move on, and what to try if you don't.</p>
+      </li>
+      <li>
+        <h3>Stretch with an exercise</h3>
+        <p>Each lab ends with an open exercise. Instructors can request worked solutions.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="wrap closing">
+    <div class="closing__item">
+      <h2>Teaching a course?</h2>
+      <p>
+        Suggested sequences for a two-hour workshop, a one-day bootcamp and a full semester, plus how to get
+        the solutions repository.
+      </p>
+      <a href={withBase('/teach/')}>Plan a course with the labs</a>
+    </div>
+    <div class="closing__item">
+      <h2>Missing a lab?</h2>
+      <p>
+        A lab is one Markdown file in a folder. Copy the template, fill in the steps and open a pull request.
+      </p>
+      <a href={withBase('/write-a-lab/')}>Write a lab</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 24px 64px;
+    align-items: end;
+    padding-block: clamp(48px, 8vw, 104px) 40px;
+  }
+  .hero__title {
+    font-size: var(--step-5);
+    font-weight: 700;
+    font-stretch: 78%;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    max-width: 15ch;
+  }
+  .hero__intro { max-width: 46ch; padding-bottom: 6px; }
+  .hero__intro p { font-size: var(--step-1); line-height: 1.5; color: var(--ink-soft); }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+  .map-section__lede { color: var(--ink-soft); margin-bottom: 16px; max-width: 70ch; }
+
+  .anatomy { margin-top: clamp(72px, 10vw, 128px); }
+  .anatomy h2 { font-size: var(--step-3); max-width: 24ch; }
+  .anatomy__steps {
+    list-style: none; padding: 0; margin-top: 32px;
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px;
+    counter-reset: anat;
+  }
+  .anatomy__steps li { counter-increment: anat; border-top: 1.5px solid var(--line-strong); padding-top: 16px; }
+  .anatomy__steps li::before {
+    content: counter(anat);
+    font: 600 var(--step-1) / 1 var(--font-display); color: var(--teal);
+    display: block; margin-bottom: 12px;
+  }
+  .anatomy__steps h3 { font-size: var(--step-1); }
+  .anatomy__steps p { margin-top: 8px; color: var(--ink-soft); }
+
+  .closing {
+    margin-top: clamp(72px, 10vw, 128px);
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 64px;
+  }
+  .closing__item { border-left: 3px solid var(--teal-brand); padding-left: 24px; }
+  .closing__item h2 { font-size: var(--step-2); }
+  .closing__item p { margin-block: 10px 14px; color: var(--ink-soft); max-width: 52ch; }
+  .closing__item a { font-weight: 700; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: minmax(0, 1fr); align-items: start; }
+    .anatomy__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .closing { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .anatomy__steps { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  }
+</style>
