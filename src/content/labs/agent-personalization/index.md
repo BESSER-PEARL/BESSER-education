@@ -50,20 +50,22 @@ Read the diagram:
 The canvas shows five states and the :ui[Intents] section lists three intents: `Muscles_intent`, `Nutrition_intent` and `Other`, each with a description.
 :::
 
-## Give the agent an LLM
+## Check the agent's LLM
 
-The template uses an LLM in two places: to classify messages into intents and to answer in `OtherQuestions`. The personalized variants also pass their profile to this LLM. Declare it now, before you create variants.
+The template uses an LLM in two places: to classify messages into intents and to answer in `OtherQuestions`. The personalized variants also pass their profile to this LLM. The template already declares it; check it before you create variants.
 
-1. On :ui[Components], open :ui[LLMs] and click :ui[Add LLM]. Enter `gpt-4o-mini` as :ui[Model Name], keep :ui[Provider] on :ui[OpenAI] and tick :ui[Set as default LLM].
+1. On :ui[Components], open :ui[LLMs]. It lists one LLM, `gpt-4o-mini` with the provider `openai`. Click its name to see its settings.
 
-   ![The LLMs section with an OpenAI LLM named gpt-4o-mini set as default](./components-llm.png "For OpenAI, the model name is the OpenAI model id")
+   ![The LLMs section with one OpenAI LLM named gpt-4o-mini, Set as default LLM unticked](./components-llm.png "For OpenAI, the model name is the OpenAI model id")
+
+   You do not need to tick :ui[Set as default LLM]: when the agent has a single LLM, the generated code uses it as the default.
 
 2. Click :ui[Agent Customization] under :ui[Agent]. On the :ui[Agent Runtime] tab, set :ui[Intent Recognition] to :ui[LLM-based]. Keep :ui[Platform] on :ui[WebSocket] with :ui[Use Streamlit UI] ticked.
 
    ![The Agent Runtime tab with Platform WebSocket, Use Streamlit UI and Intent Recognition LLM-based](./customization-runtime.png "LLM-based recognition matches messages by the intent descriptions you just read")
 
 :::checkpoint
-:ui[LLMs] shows a 1, and :ui[Agent Runtime] shows :ui[LLM-based].
+:ui[LLMs] shows a 1 and lists `gpt-4o-mini`, and :ui[Agent Runtime] shows :ui[LLM-based].
 :::
 
 ## Model the Elderly profile
@@ -113,9 +115,11 @@ There are two User diagram tabs, `Elderly` and `Paraplegic`, and the sidebar sho
 
    The three :ui[Automatically propose configuration using ...] buttons fill the form for you, from predefined rules, an LLM or a RAG source. They need a GitHub sign-in (:ui[GitHub] button in the top bar); without one they show `Sign in to GitHub to use recommendations.` You can skip them and set the values by hand.
 
-3. Under :ui[Personalization Overview], click :ui[Presentation]. Under :ui[Style of text in interface], set :ui[Size] to `20` and :ui[Contrast] to :ui[High].
+3. Under :ui[Personalization Overview], click :ui[Presentation]. Set :ui[Style] to :ui[Formal]. Under :ui[Style of text in interface], set :ui[Size] to `20` and :ui[Contrast] to :ui[High].
 
-   ![The Presentation section with Size 20 and Contrast High; Language, Style, Language Complexity and Sentence Length on Original](./customization-presentation.png "Leave the four text-rewriting lists on Original for now")
+   ![The Presentation section with Style Formal, Size 20 and Contrast High; Language, Language Complexity and Sentence Length on Original](./customization-presentation.png "Style rewrites the agent's fixed replies; size and contrast change the chat interface")
+
+   :ui[Language], :ui[Style], :ui[Language Complexity] and :ui[Sentence Length] rewrite every fixed reply with an LLM on the BESSER server when you apply.
 
 4. Click :ui[Modality] and tick :ui[Enable speech input] and :ui[Enable speech output].
 
@@ -130,7 +134,7 @@ A toast says `Configuration transformed, saved, and applied successfully.` and t
 :::
 
 :::troubleshoot
-:ui[Language], :ui[Style], :ui[Language Complexity] and :ui[Sentence Length] rewrite every reply with an LLM on the BESSER server when you apply. An elderly visitor might like a :ui[Formal] style and :ui[Simple] language, so try them. If :ui[Save & Apply Configuration] then shows `Failed to transform agent model: Internal server error`, the server could not complete the rewrite: set those lists back to :ui[Original] and apply again. Size, contrast and speech do not need the server LLM.
+The server-side rewrite takes from a few seconds to a few minutes, and the page shows `Working on it...` meanwhile. Wait for the toast. If it shows `Failed to transform agent model` instead, the server could not complete the rewrite: set the four text lists back to :ui[Original] and apply again. Size, contrast and speech do not need the server LLM.
 :::
 
 ## Customize the agent for the Paraplegic profile
@@ -148,7 +152,7 @@ The variant selector lists three entries: `Base agent model`, `Elderly (Elderly)
 :::
 
 :::note
-With content adaptation, the generated agent hands the profile to its LLM as context, so LLM answers take the disability into account. When the server-side LLM is available, :ui[Save & Apply Configuration] also rewrites the fixed replies of the variant. Switch to `Paraplegic (Paraplegic)` and open `TrainingPlan` to see which happened: rewritten replies avoid leg exercises, while unchanged replies still mention squats and deadlifts.
+With content adaptation, :ui[Save & Apply Configuration] rewrites the fixed replies of the variant for the profile, and the generated agent also hands the profile to its LLM as context, so LLM answers take the disability into account. Switch to `Paraplegic (Paraplegic)` and open `TrainingPlan`: the first reply no longer suggests squats and deadlifts but upper-body lifts you can do seated or supported. The exact wording comes from an LLM and differs from run to run. In `Elderly (Elderly)`, the replies keep their content but are rewritten in a formal style.
 :::
 
 ## Generate the personalized agent

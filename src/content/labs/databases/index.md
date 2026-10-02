@@ -139,15 +139,10 @@ What the two files tell you:
 Because both associations are called `books`, the second table is renamed `books_1`. The columns are named
 after the association ends (`authors`, `books`, `library`), so role names matter in the schema.
 
-:::caution
-In BESSER 8.0 the SQLite file also starts with the `CREATE TYPE genre AS ENUM (...)` line, which is
-PostgreSQL syntax. SQLite rejects it with `near "TYPE": syntax error`. Delete that first statement before
-you run the SQLite file (see the optional part of the SQLAlchemy step below).
-:::
-
 :::checkpoint
 You have `tables_sqlite.sql` and `tables_postgresql.sql`. Both contain the tables `author`, `book`,
-`library`, `books` and `books_1`. Only the PostgreSQL file uses `SERIAL` and a `genre` column of type `genre`.
+`library`, `books` and `books_1`. Only the PostgreSQL file starts with `CREATE TYPE genre AS ENUM` and uses
+`SERIAL` and a `genre` column of type `genre`.
 :::
 
 ## Turn one association into a foreign key and add a subclass
@@ -264,7 +259,7 @@ for the many-to-many association, `library_id ... ForeignKey_("library.id")` on 
 `class EBook(Book)` with `"polymorphic_on": "type_spec"`. The connection string is read from the
 `DATABASE_URL` environment variable and falls back to `sqlite:///./data/Library.db`.
 
-5. Optional: run the SQL file directly. Delete its `CREATE TYPE` line first, then save this as `run_ddl.py` and run it:
+5. Optional: run the SQL file directly. Save this as `run_ddl.py` and run it:
 
 ```python
 import sqlite3

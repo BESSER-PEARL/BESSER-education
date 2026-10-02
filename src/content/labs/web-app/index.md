@@ -170,21 +170,6 @@ about it with "(empty - will be skipped)". Go back to the GUI editor and run
 `docker-compose.yml` defines three services: `frontend` on port 3000, `backend` on port 8000 with a SQLite
 database in the volume `sqlite_data`, and `greeting_agent_agent` with its WebSocket on port 8765 (and 5000).
 
-:::caution
-In BESSER 8.0 the generated agent listens only inside its own container, so the chat window would stay on
-"Connecting to agent..." forever. Before you build, open `agents/greeting_agent/config.yaml` and change the
-first `host` under `platforms:` > `websocket:` from `localhost` to `0.0.0.0`:
-
-```text
-platforms:
-  websocket:
-    host: 0.0.0.0
-    port: 8765
-```
-
-Leave the `streamlit` host below it unchanged.
-:::
-
 1. Make sure ports 3000, 8000, 8765 and 5000 are free, then start everything from `library_app/`:
 
 ```bash
@@ -309,5 +294,4 @@ fallback body that answers messages matching no intent. Put the agent on the das
 :::solution
 Start from the Greeting Agent structure: one hub state that every answer state returns to with an
 :ui[Auto] transition. Intent names must differ from state names, so use names like `sensor_intent`.
-Remember the `host: 0.0.0.0` change in the new agent's `config.yaml` before you run it.
 :::

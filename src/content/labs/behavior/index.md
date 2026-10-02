@@ -154,7 +154,7 @@ def accept(self):
 ![The accept method with Type Python Code and its Python implementation](./python-method.png "Python methods take self and change the object directly.")
 
 :::note
-In BESSER 8.0.x (checked with 8.0.1), the generated backend runs BAL bodies that read attributes and parameters and compute a result, like the two above. BAL bodies that assign to an attribute (`this.acceptance = true;`) or navigate an association (`this.papers.size()`) fail when called, with errors such as `name 'update_paper' is not defined`. Use Python for those methods until this is fixed.
+In BESSER 8.0.x (checked on the public editor on 2 October 2026), the generated backend runs BAL bodies that read attributes and parameters and compute a result, like the two above. BAL bodies that assign to an attribute (`this.acceptance = true;`) fail when called on a paper, because `Paper` has associations: the call returns code 500 with `validation errors for PaperCreate ... Input should be a valid integer`. Navigating an association does not work yet either: `this.authors.size()` returns the text `<coroutine object BAL_size ...>` instead of a number. Use Python for those methods until this is fixed.
 :::
 
 ![The class diagram with pages added to Paper, its three methods, and the page_limit OCL note](./class-diagram-behavior.png "The model so far: one invariant and three implemented methods.")

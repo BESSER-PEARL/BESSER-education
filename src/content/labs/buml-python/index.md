@@ -327,7 +327,7 @@ python generate_django.py
 The script prints a line ending in `Django project generation completed successfully!` and creates the folder `research_site` with `manage.py`, `requirements.txt`, the project package `research_site` and the app `research_app`.
 
 :::troubleshoot
-On Windows, if the script stops with `UnicodeEncodeError: 'charmap' codec can't encode character '✅'`, the console cannot print the check-mark character in the success message (this happens, for example, when the output is redirected). Run it as `python -X utf8 generate_django.py`, or set the environment variable `PYTHONIOENCODING=utf-8` first, and generate again.
+On Windows, if the script stops with `UnicodeEncodeError: 'charmap' codec can't encode character '✅'`, the console cannot print the check-mark character in the success message (this happens, for example, when the output is redirected). Run it as `python -X utf8 generate_django.py`, or set the environment variable `PYTHONIOENCODING=utf-8` first, and generate again. This is fixed in the next BESSER release after 8.0.1.
 :::
 
 Install the project's dependencies and create its database. `requirements.txt` pins its own Django version, so it may replace the one BESSER installed in your virtual environment; that is expected.

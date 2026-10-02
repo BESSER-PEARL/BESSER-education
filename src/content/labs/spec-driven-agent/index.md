@@ -3,7 +3,7 @@ title: From a description to a running app with the Spec-Driven Agent
 number: 5
 track: ai
 summary: A generated full-stack web app for a small event-ticketing model, downloaded, run on your machine, and optionally pushed to GitHub and reopened for further changes.
-duration: 60
+duration: 90
 level: Intermediate
 setup: [Browser, Docker, GitHub]
 needs:
@@ -44,10 +44,10 @@ Create a class diagram for a small event ticketing system with the classes Venue
 ```
 
 3. When the reply arrives, click :ui[Review the model]. The workspace closes and you see the class diagram on the canvas.
-4. Check the model as in Lab 4: three classes, typed attributes, an association `Venue` 1 to many `Event`, and an association `Event` 1 to many `Ticket`. Fix anything wrong with a follow-up prompt or directly on the canvas.
-5. Click :ui[Quality Check] and resolve any errors.
+4. Check the model as in Lab 4: three classes, typed attributes, an association `Venue` 1 to many `Event`, and an association `Event` 1 to many `Ticket`. The assistant may draw `Event` to `Ticket` as a composition (a filled diamond), and the role names at the `Event` end can overlap; double-click an association to read its multiplicities. Fix anything wrong with a follow-up prompt or directly on the canvas.
+5. Click :ui[Quality Check] and resolve any errors. A valid model shows "Diagram is valid".
 
-<!-- TODO screenshot: the Event Ticketing class diagram on the canvas after Review the model (ticketing-class-diagram.png). Not captured: on 2026-10-02 the hosted assistant returned only placeholder classes. -->
+![The Event Ticketing class diagram: Event, Venue and Ticket with typed attributes, venue 1 to events 0..*, and event 1 to tickets 0..* drawn with a filled diamond](./ticketing-class-diagram.png "Ticket has a price: float attribute. The two role names at the Event end overlap; drag a class to separate them")
 
 Creating or editing a model never starts a generation run. The editor always waits for an explicit request.
 
@@ -67,11 +67,11 @@ The :ui[Class] editor shows a valid model of three connected classes (yours or t
 
 A run uses a language model for the customisation and repair phases. There are two ways to pay for it.
 
-- **No key (free tier).** If you have not saved an API key, the first run silently uses the server-hosted free tier. No dialog opens, no account is needed, and the run card says the run had no cost. The server picks the free model, and quality is lower than with paid providers. It runs on shared hardware, so use it for real work, not for repeated test runs.
-- **Your own key.** If you saved a key, the run starts immediately and is billed to that key.
+- **No key (free tier).** If you have not saved an API key, the run uses the server-hosted free tier. No key dialog opens and no account is needed. The server picks the free model (the run card shows it, for example `free / moonshotai/Kimi-K3`), and it may switch to another free model during the run if the first one is unavailable. Quality is lower than with paid providers. It runs on shared hardware, so use it for real work, not for repeated test runs.
+- **Your own key.** If you saved a key, the run is billed to that key as soon as you confirm it.
 
 :::caution
-With a saved API key, sending "generate the web app" starts a paid run straight away, without a confirmation dialog. Set the run budget before you ask. The key is kept only in this browser tab's session storage, is never stored on the BESSER server, and is cleared when you close the tab.
+With a saved API key, clicking :ui[Continue] after "generate the web app" starts a paid run. Set the run budget before you ask. The key is kept only in this browser tab's session storage, is never stored on the BESSER server, and is cleared when you close the tab.
 :::
 
 1. Open the key dialog from the workspace: click :ui[API key] in the bottom bar of the chat (or the :ui[Change the model] link under the composer, or :ui[Settings > AI / LLM API Key] in the sidebar). The dialog is titled :ui[Use your own API key].
@@ -103,18 +103,23 @@ generate the web app
 
 Instead of typing, you can click a :ui[Generate web app] or :ui[Generate application] chip if the assistant offered one under its last reply. A request for an app, a web app, a UI or a dashboard always gets a frontend, even when the project has no GUI diagram.
 
-3. A run card appears in the chat. While it runs it shows:
-   - a phase list that ticks off in order: :ui[Selecting generator], :ui[Running deterministic generator], :ui[Analysing gaps], :ui[Customising output], :ui[Validating];
-   - a :ui[Working…] strip with the elapsed time against the runtime budget (after about 45 seconds it reminds you that big steps take a few minutes);
+3. The assistant does not start right away. It explains that BESSER generates the application with its built-in generators and uses a language model only for what they do not cover, mentions the free model and the :ui[set up your own API key] link, and asks "Do you want to continue?". Click the :ui[Continue] chip. If you do nothing, no run starts.
+
+![The assistant's confirmation after generate the web app: an explanation of built-in generators and the free model, a set up your own API key link, Do you want to continue?, and a Continue chip](./generate-web-app-continue.png "Nothing runs until you click Continue. The link opens the API key dialog from the previous step")
+
+4. A run card titled :ui[Spec-Driven Agent] appears a few seconds later, with the start of the run id, the provider and model (`free / ...` on the free tier) and a :ui[Running] pill. While it runs it shows:
+   - a phase list that ticks off in order: :ui[Selecting generator], :ui[Running deterministic generator], :ui[Analysing gaps], :ui[Customising output], :ui[Validating]. The deterministic step names the BESSER generator it runs, for example `running generate_fastapi_backend`, and the customising step counts the model's actions;
+   - extra rows when something changes, for example "Switched to poolside/laguna-s-2.1-free — The primary model was unavailable.";
+   - a :ui[Working…] strip (after about 45 seconds it adds "Big steps can take a few minutes — the timer keeps moving while it's running.");
    - streamed commentary from the model;
-   - a red :ui[Stop] button.
+   - a footer with the elapsed time against the runtime cap (for example `5m 9s / 40m`) and a red :ui[Stop] button.
 
-<!-- TODO screenshot: run card during Running deterministic generator (run-card-deterministic.png) -->
+![The run card at the Running deterministic generator phase: Selecting generator done, running generate_fastapi_backend with a spinner, the Working strip, 5m 9s / 40m and a red Stop button](./run-card-deterministic.png "On the free tier, Selecting generator took about five minutes in our run; the deterministic generator itself then finished in seconds")
 
-<!-- TODO screenshot: run card during Customising output, with the Working strip, elapsed time and the red Stop button (run-card-customising.png) -->
+![The run card during Customising output: five phase rows including a model switch, 9 actions, the Working strip, the model's commentary about the backend contract and the React frontend, 12m 11s / 40m and Stop](./run-card-customising.png "The commentary shows what the model is doing. The timer keeps moving while the run is alive")
 
-4. Let it run. A run takes several minutes; the hosted runtime cap is 40 minutes. You can keep working in another tab. Reloading the page does not cancel the run: the editor reattaches to it and replays what you missed.
-5. :ui[Stop] ends the run (the button reads "Stopping…" while it winds down). The card then reports `CANCELLED`. Only one run can be live per tab; a second request gets "Spec-Driven Agent is already running — please wait for it to finish or click Stop."
+5. Let it run. In our free-tier run, :ui[Selecting generator] took about 5 minutes, the deterministic generator and gap analysis less than half a minute, and :ui[Customising output] was still going after 12 minutes. Expect a free-tier run to take well over 10 minutes; the hosted runtime cap is 40 minutes. You can keep working in another tab. Reloading the page does not cancel the run: the editor reattaches to it and replays what you missed. It finds the run through this browser's storage, so stay in the same browser; a private window you close loses the card, and with it the download, even though the run keeps going on the server.
+6. :ui[Stop] ends the run (the button reads "Stopping…" while it winds down). The card then reports `CANCELLED`. Only one run can be live per tab; a second request gets "Spec-Driven Agent is already running — please wait for it to finish or click Stop."
 
 :::troubleshoot
 **The assistant answers with a list of generators ("What would you like me to generate? Here are the available options...") and no run card appears.** The request was not routed to the Spec-Driven Agent; no run started and nothing was charged. Reply with the exact sentence `generate the web app` again, or click a :ui[Generate application] chip under an earlier reply. If it keeps happening, the assistant service is degraded; try again later.
@@ -136,9 +141,9 @@ When the run ends, the card collapses to one line.
 4. Click :ui[Show steps] to expand the phase timeline and the model's commentary again. :ui[Hide steps] collapses it.
 5. Read the verification findings on the card. They are grouped as :ui[Not enforced], :ui[Could not verify] and :ui[Verified]. "Could not verify" means unknown, not absent: the check could not run, so you have to test that part yourself.
 
-<!-- TODO screenshot: finished card with "Application ready", generator, file count, the "% files unchanged from scaffold" badge, Download and Push to GitHub, with Show steps expanded (run-card-finished.png) -->
+<!-- TODO screenshot: finished card with status, generator, file count, the "% files unchanged from scaffold" badge, Download and Push to GitHub, with Show steps expanded (run-card-finished.png). Not captured: the approved free-tier run was healthy at 12 min (Customising output), but the capture script crashed and the browser session holding the run was lost. Needs a second approved run. -->
 
-<!-- TODO screenshot: the "How this was built" breakdown opened from the badge (run-card-how-built.png) -->
+<!-- TODO screenshot: the "How this was built" breakdown opened from the badge (run-card-how-built.png). Not captured, same reason as above. -->
 
 :::note
 Validation has a defined scope: syntax, imports, contracts and lint, plus sandboxed checks such as booting the backend or building the frontend where the server allows them. It does not prove every business requirement. Read the findings even when the card says :ui[Application ready].
@@ -191,7 +196,7 @@ The backend listens on port 8000 and the Vite dev server on port 3000.
 
 5. Open http://localhost:3000, create a venue, an event for it and a ticket, and check that the lists update. Then open http://localhost:8000/docs and confirm there are endpoints for each class of your model.
 
-<!-- TODO screenshot: the generated app running at localhost:3000 with a created event (running-app.png) -->
+<!-- TODO screenshot: the generated app running at localhost:3000 with a created event (running-app.png). Not captured: no archive was downloaded (see above), so the run instructions in this step are not yet verified against a real download. -->
 
 :::troubleshoot
 **Port 3000 or 8000 is already in use.** Stop the other process, or (case B) start the backend on another port and point the frontend at it with the `VITE_API_URL` environment variable, for example `VITE_API_URL=http://localhost:8080 npm run dev`. **The build fails.** Check the run card's findings first; a step listed under :ui[Could not verify] may be exactly what fails. Fix the generated code by hand, or ask the agent to fix it within the retention window (next step).
@@ -211,7 +216,7 @@ While the previous run is still held on the server (about 30 minutes after it fi
 add a search page for events by name
 ```
 
-2. The agent starts a new run in modify mode: it seeds the workspace with the previous output and changes it. This is a second run, with the same cost rules as the first (free tier, or billed to your key).
+2. The assistant asks you to confirm again before anything runs. For a change to an existing app the message reads "I'll update your existing app to make that change." and the chip is :ui[Fix it]; otherwise it is the :ui[Continue] message from before. Click the chip. The agent starts a new run in modify mode: it seeds the workspace with the previous output and changes it. This is a second run, with the same cost rules as the first (free tier, or billed to your key).
 3. Download the new archive and compare it with the first one. Only the files related to the search page should have changed.
 
 :::caution
@@ -229,16 +234,12 @@ This step is optional and needs a GitHub account.
 1. On a finished run card, click :ui[Push to GitHub]. If you are not signed in, the editor first sends you through GitHub sign-in and reopens the dialog when you come back.
 2. In the :ui[Push to GitHub] dialog choose :ui[Create new repo], enter a :ui[Repository Name] (for example `event-ticketing-app`), an optional :ui[Description], tick :ui[Private repository] if you want, and click :ui[Push to GitHub]. If the name already exists, the dialog tells you to push to it as an existing repository instead; :ui[Use existing repo] pushes a later run into the same repository with :ui[Push update].
 
-<!-- TODO screenshot: the Push to GitHub dialog with Create new repo selected (push-to-github-dialog.png). Not captured: the dialog only opens after a GitHub sign-in. -->
-
 3. Open the repository on GitHub and check that it contains the application and `BESSER_GENERATION.md`.
 4. Later, or on another computer, reopen it: choose :ui[File > Import > From GitHub], or click :ui[Continue from GitHub] in the project hub (on the first-run screen, :ui[More options] opens the hub).
 
 ![The project hub with four start cards: Create Blank, From Spreadsheet, Import Project and Continue from GitHub](./project-hub-continue-github.png "Continue from GitHub reopens a repository that BESSER created")
 
 5. Pick the repository and branch. The editor imports the model stored in the repository as a new project and links the repository, so your next request ("add a search page", "add an organiser to events") edits that application. A repository BESSER did not create is rejected with "This repo has no BESSER model — it wasn't created by BESSER, so there's nothing to continue from yet." Importing never overwrites the project you have open.
-
-<!-- TODO screenshot: the Continue from GitHub repository and branch picker (continue-from-github-picker.png) -->
 
 You can also ask in the chat: `continue from github.com/<owner>/<repo>`.
 

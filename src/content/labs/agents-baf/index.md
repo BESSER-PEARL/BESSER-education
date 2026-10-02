@@ -126,9 +126,7 @@ The template has no LLM and no database yet. You add both on the :ui[Components]
 
 3. Unzip the downloaded `agent_output.zip` into a folder. It contains `Database_Agent.py`, `config.yaml`, `agent_model.py`, `readme.txt` and `BESSER_GENERATION.md`.
 4. Download `Chinook_Sqlite.sqlite` from the [Chinook releases page](https://github.com/lerocha/chinook-database/releases) (asset of release v1.4.5) into the same folder.
-5. Open `config.yaml` and make two edits:
-   - Under `nlp:` > `openai:`, replace `YOUR-API-KEY` with your key.
-   - At the end, under `db:` > `sql:` > `db1:`, rename the key `database:` to `file:`. BAF reads SQLite paths from `file`; the editor writes `database`.
+5. Open `config.yaml` and, under `nlp:` > `openai:`, replace `YOUR-API-KEY` with your key. At the end of the file, the `db:` section holds the database you declared:
 
    ```yaml
    db:
@@ -136,9 +134,11 @@ The template has no LLM and no database yet. You add both on the :ui[Components]
        - db1:
            dialect: sqlite
            file: Chinook_Sqlite.sqlite
+           host: localhost
+           port: 5432
    ```
 
-   The generated file also has `host` and `port` lines under `db1`. SQLite ignores them, so you can leave or delete them.
+   BAF opens the SQLite file named by `file`, relative to the folder you run the agent from. SQLite ignores `host` and `port`.
 
 6. From that folder, with your virtual environment active, run the agent:
 
@@ -153,7 +153,7 @@ The terminal prints `Database_Agent's WebSocketPlatform starting at ws://localho
 :::
 
 :::troubleshoot
-If every answer is empty or says it cannot find the data, look for `Missing required DB properties for 'db1' (dialect=sqlite): file` in the terminal: the `database:` key was not renamed to `file:`. If the terminal says `Port 5000 is already in use` or cannot bind to port 8765, another program uses those ports. Change `platforms.websocket.port` and `platforms.websocket.streamlit.port` in `config.yaml` and open the new Streamlit port.
+If every answer is empty or says it cannot find the data, check that `Chinook_Sqlite.sqlite` is in the folder you start the agent from and that its name matches `file:` in `config.yaml` exactly. If the terminal says `Port 5000 is already in use` or cannot bind to port 8765, another program uses those ports. Change `platforms.websocket.port` and `platforms.websocket.streamlit.port` in `config.yaml` and open the new Streamlit port.
 :::
 
 ## Start the RAG agent from the starter
