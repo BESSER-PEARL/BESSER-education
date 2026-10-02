@@ -1,8 +1,8 @@
 name: Labs site
 
 on:
+  # Every push and pull request builds the site; only main is deployed.
   push:
-    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -29,12 +29,12 @@ jobs:
           BASE_PATH: ${{ vars.BASE_PATH }}
           SITE_URL: ${{ vars.SITE_URL }}
       - uses: actions/upload-pages-artifact@v3
-        if: github.event_name != 'pull_request'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           path: dist
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     permissions:
